@@ -11,7 +11,7 @@ const EditableStat = (props: Props) => {
     return (
         <Container>
             <Icon path={healthIconPath}/>
-            {props.statName}
+            {props.currentValue} {props.maxValue !== undefined ? `/ ${props.maxValue}` : ``}
         </Container>
     )
 }

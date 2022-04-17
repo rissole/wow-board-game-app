@@ -1,11 +1,10 @@
 $navButtonHeight: 72px;
 
 .app {
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
   display: flex;
-  flex-flow: row nowrap;
-  flex: 1 0 auto;
+  flex-flow: column nowrap;
 }
 .nav {
   display: flex;
@@ -31,8 +30,14 @@ $navButtonHeight: 72px;
 
 .main {
   width: 100%;
+  height: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  flex: 1;
 }
 
-body {
+html, #root, body {
   height: 100%;
+  width: 100%;
+  margin: 0;
 }

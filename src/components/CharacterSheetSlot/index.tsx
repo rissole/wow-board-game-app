@@ -16,7 +16,7 @@ const CharacterSheetSlot = (props: Props) => {
 
 const Container = styled.div`
   background-color: #aaa;
-  width: calc(50vw - 2px);
+  width: 50vw;
   height: 96px;
   border: 1px solid black;
 `

@@ -11,20 +11,22 @@ const EditableStat = (props: Props) => {
     return (
         <Container>
             <Icon path={healthIconPath}/>
-            {props.currentValue} {props.maxValue !== undefined ? `/ ${props.maxValue}` : ``}
+            {props.currentValue}{props.maxValue !== undefined ? `/${props.maxValue}` : ``}
         </Container>
     )
 }
 
 const Container = styled.div`
   display: flex;
+  gap: 4px;
+  align-items: center;
 `
 
 const Icon = styled.div<{ path: string }>`
   background-image: url(${props => props.path});
   background-size: 100% 100%;
-  width: 32px;
-  height: 32px;
+  width: 24px;
+  height: 24px;
 `
 
 export default EditableStat

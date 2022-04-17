@@ -2,6 +2,8 @@ import React, {useEffect, useState} from 'react';
 import './App.scss';
 import EditableStat from "./components/EditableStat";
 import CharacterSheetSlot from "./components/CharacterSheetSlot";
+import styled from "styled-components";
+import CharacterInfoHeader from "./components/CharacterInfoHeader";
 
 interface CharSheetSlot {
     equipped: boolean
@@ -15,19 +17,17 @@ function App() {
     return (
         <div className="app">
             <div className="topBar">
-                <div className="charInfo">
-                    Soldy Doldyy
-                </div>
-                <div className="healthEnergyGoldSection">
-                    <EditableStat statName='health' currentValue={0} maxValue={3}/>
-                    <EditableStat statName='energy' currentValue={0} maxValue={5}/>
-                    <EditableStat statName='gold' currentValue={0}/>
-                </div>
+                <CharacterInfoHeader class='druid' faction='alliance'/>
+                <HealthEnergyGoldSection>
+                    <EditableStat statName='health' currentValue={10} maxValue={20}/>
+                    <EditableStat statName='energy' currentValue={10} maxValue={20}/>
+                    <EditableStat statName='gold' currentValue={20}/>
+                </HealthEnergyGoldSection>
             </div>
             <div className="main">
                 {charSheetSlots.map(charSheetSlot => {
-                return <CharacterSheetSlot equipped={charSheetSlot.equipped}/>
-            })}
+                    return <CharacterSheetSlot equipped={charSheetSlot.equipped}/>
+                })}
             </div>
             <div className="nav">
                 <div className="spellbook">
@@ -43,5 +43,15 @@ function App() {
         </div>
     );
 }
+
+const CharInfo = styled.div`
+  font-size: 18px;
+  flex: 0 1 auto;
+`
+
+const HealthEnergyGoldSection = styled.div`
+  display: flex;
+  gap: 8px;
+`
 
 export default App;

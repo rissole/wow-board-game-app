@@ -1,12 +1,27 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import './App.scss';
 import EditableStat from "./components/EditableStat";
 import CharacterSheetSlot from "./components/CharacterSheetSlot";
 import styled from "styled-components";
 import CharacterInfoHeader from "./components/CharacterInfoHeader";
+import {StatType} from "./types";
 
 interface CharSheetSlot {
     equipped: boolean
+}
+
+export interface CharacterStats {
+    health: {
+        current: number;
+        max: number;
+    },
+    energy: {
+        current: number;
+        max: number;
+    },
+    gold: {
+        current: number;
+    }
 }
 
 function App() {
@@ -14,14 +29,49 @@ function App() {
     useEffect(() => {
         setCharSheetSlots(Array.from({length: 8}).map(_ => ({equipped: false})))
     }, [])
+    const [characterStats, setCharacterStats] = useState<CharacterStats>({
+        health: {
+            current: 10,
+            max: 20,
+        },
+        energy: {
+            current: 10,
+            max: 20,
+        },
+        gold: {
+            current: 10,
+        }
+    })
+
+    const onHealthChange = useCallback((newCurrent: number, newMaximum?: number) => {
+        if (newMaximum === undefined) {
+            throw new Error('Health must have a maximum');
+        }
+        setCharacterStats((oldStats) => ({...oldStats, currentHealth: newCurrent}) )
+    }, [])
+
+    const generateStatChangeHandler = useCallback((statType: StatType) => {
+        return (newCurrentValue: number, newMaxCurrentValue?: number) => {
+            setCharacterStats((oldStats) => (
+                {
+                    ...oldStats,
+                    [statType]: {
+                        current: newCurrentValue,
+                        ...(newMaxCurrentValue !== undefined ? {max: newMaxCurrentValue} : {})
+                    }
+                }
+            ))
+        }
+    }, [])
+
     return (
         <div className="app">
             <div className="topBar">
                 <CharacterInfoHeader class='druid' faction='alliance'/>
                 <HealthEnergyGoldSection>
-                    <EditableStat statName='health' currentValue={10} maxValue={20}/>
-                    <EditableStat statName='energy' currentValue={10} maxValue={20}/>
-                    <EditableStat statName='gold' currentValue={20}/>
+                    <EditableStat statName='health' currentValue={characterStats.health.current} maxValue={characterStats.health.max} onStatChange={generateStatChangeHandler('health')}/>
+                    <EditableStat statName='energy' currentValue={characterStats.energy.current} maxValue={characterStats.energy.max} onStatChange={generateStatChangeHandler('energy')}/>
+                    <EditableStat statName='gold' currentValue={characterStats.gold.current} onStatChange={generateStatChangeHandler('gold')}/>
                 </HealthEnergyGoldSection>
             </div>
             <div className="main">

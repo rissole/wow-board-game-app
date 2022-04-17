@@ -1,26 +1,36 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import './App.scss';
+import EditableStat from "./components/EditableStat";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <div className="app">
+            <div className="topBar">
+                <div className="charInfo">
+                    Soldy Doldyy
+                </div>
+                <div className="healthEnergyGoldSection">
+                    <EditableStat statName='health' currentValue={0}/>
+                    <EditableStat statName='energy' currentValue={0}/>
+                    <EditableStat statName='gold' currentValue={0}/>
+                </div>
+            </div>
+            <div className="main">
+                a
+            </div>
+            <div className="nav">
+                <div className="spellbook">
+                    Spellbook
+                </div>
+                <div className="reference">
+                    Reference
+                </div>
+                <div className="more">
+                    More
+                </div>
+            </div>
+        </div>
+    );
 }
 
 export default App;

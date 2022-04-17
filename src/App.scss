@@ -1,0 +1,38 @@
+$navButtonHeight: 72px;
+
+.app {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-flow: row nowrap;
+  flex: 1 0 auto;
+}
+.nav {
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+  width: 100%;
+  > div {
+    width: 30vw;
+    height: $navButtonHeight;
+    background-color: #ccc;
+  }
+}
+
+.topBar {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  > .healthEnergyGoldSection {
+    display: flex;
+
+  }
+}
+
+.main {
+  width: 100%;
+}
+
+body {
+  height: 100%;
+}

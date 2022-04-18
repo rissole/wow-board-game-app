@@ -43,13 +43,6 @@ function App() {
         }
     })
 
-    const onHealthChange = useCallback((newCurrent: number, newMaximum?: number) => {
-        if (newMaximum === undefined) {
-            throw new Error('Health must have a maximum');
-        }
-        setCharacterStats((oldStats) => ({...oldStats, currentHealth: newCurrent}) )
-    }, [])
-
     const generateStatChangeHandler = useCallback((statType: StatType) => {
         return (newCurrentValue: number, newMaxCurrentValue?: number) => {
             setCharacterStats((oldStats) => (
@@ -93,11 +86,6 @@ function App() {
         </div>
     );
 }
-
-const CharInfo = styled.div`
-  font-size: 18px;
-  flex: 0 1 auto;
-`
 
 const HealthEnergyGoldSection = styled.div`
   display: flex;

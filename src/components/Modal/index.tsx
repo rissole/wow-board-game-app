@@ -13,7 +13,7 @@ const Modal = (props: Props) => {
         if (event.target instanceof Element && event.target.id === MODAL_ID) {
             props.onClose()
         }
-    }, [props.onClose])
+    }, [props])
 
     return (
         <Container id={MODAL_ID} onClick={onClick}>

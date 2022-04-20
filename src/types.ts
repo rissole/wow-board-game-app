@@ -1,1 +1,1 @@
-export type StatType = 'health' | 'energy' | 'gold';
+export type StatType = "health" | "energy" | "gold";

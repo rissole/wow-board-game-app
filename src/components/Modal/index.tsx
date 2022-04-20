@@ -1,26 +1,29 @@
 import styled from "styled-components";
-import {MouseEventHandler, ReactNode, useCallback} from "react";
+import { MouseEventHandler, ReactNode, useCallback } from "react";
 
-const MODAL_ID = 'currentModal';
+const MODAL_ID = "currentModal";
 
 interface Props {
-    children?: ReactNode | undefined
-    onClose: () => void
+  children?: ReactNode;
+  onClose: () => void;
 }
 
 const Modal = (props: Props) => {
-    const onClick = useCallback<MouseEventHandler<HTMLDivElement>>((event) => {
-        if (event.target instanceof Element && event.target.id === MODAL_ID) {
-            props.onClose()
-        }
-    }, [props])
+  const onClick = useCallback<MouseEventHandler<HTMLDivElement>>(
+    (event) => {
+      if (event.target instanceof Element && event.target.id === MODAL_ID) {
+        props.onClose();
+      }
+    },
+    [props]
+  );
 
-    return (
-        <Container id={MODAL_ID} onClick={onClick}>
-                {props.children}
-        </Container>
-    )
-}
+  return (
+    <Container id={MODAL_ID} onClick={onClick}>
+      {props.children}
+    </Container>
+  );
+};
 
 const Container = styled.div`
   position: absolute;
@@ -33,6 +36,6 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-`
+`;
 
-export default Modal
+export default Modal;

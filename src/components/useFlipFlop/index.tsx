@@ -3,7 +3,7 @@ import { useMemo, useState } from "react";
 export default function useFlipFlop() {
   const [value, setValue] = useState<boolean>(false);
 
-  const methods = useMemo(
+  return useMemo(
     () => ({
       value,
       toggle: () => setValue((v) => !v),
@@ -12,6 +12,4 @@ export default function useFlipFlop() {
     }),
     [value, setValue]
   );
-
-  return methods;
 }

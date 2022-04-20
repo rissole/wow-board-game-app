@@ -7,6 +7,7 @@ import CharacterInfoHeader from "./components/CharacterInfoHeader";
 import { StatType } from "./types";
 import useFlipFlop from "./components/useFlipFlop";
 import Modal from "./components/Modal";
+import SpellbookCarousel from "./components/SpellbookCarousel";
 
 interface CharSheetSlot {
   equipped: boolean;
@@ -100,7 +101,11 @@ function App() {
         <div className="reference">Reference</div>
         <div className="more">More</div>
       </div>
-      {isSpellbookModalOpen ? <Modal onClose={closeNavModal}>T</Modal> : null}
+      {isSpellbookModalOpen ? (
+        <Modal onClose={closeNavModal}>
+          <SpellbookCarousel />
+        </Modal>
+      ) : null}
     </div>
   );
 }

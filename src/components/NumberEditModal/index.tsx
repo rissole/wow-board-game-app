@@ -18,8 +18,8 @@ const NumberEditModal = (props: ModalProps) => {
     <div style={{ width: "100%", backgroundColor: "#fff" }}>
       <div style={{ textAlign: "center" }}>{props.name.toUpperCase()}</div>
       <div style={{ display: "flex", justifyContent: "center" }}>
-        {props.values.map((value) => (
-          <ValueEdit {...value} />
+        {props.values.map((value, i) => (
+          <ValueEdit key={i} {...value} />
         ))}
       </div>
     </div>

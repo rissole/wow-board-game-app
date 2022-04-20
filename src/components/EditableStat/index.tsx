@@ -41,9 +41,7 @@ const EditableStat = (props: Props) => {
         value: props.currentValue,
         onValueChange: onCurrentValueChange,
       },
-      ...(props.maxValue !== undefined
-        ? [{ value: props.maxValue, onValueChange: onMaxValueChange }]
-        : []),
+      ...(props.maxValue !== undefined ? [{ value: props.maxValue, onValueChange: onMaxValueChange }] : []),
     ],
     [onCurrentValueChange, onMaxValueChange, props.currentValue, props.maxValue]
   );

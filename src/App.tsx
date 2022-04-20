@@ -5,6 +5,8 @@ import CharacterSheetSlot from "./components/CharacterSheetSlot";
 import styled from "styled-components";
 import CharacterInfoHeader from "./components/CharacterInfoHeader";
 import { StatType } from "./types";
+import useFlipFlop from "./components/useFlipFlop";
+import Modal from "./components/Modal";
 
 interface CharSheetSlot {
   equipped: boolean;
@@ -27,10 +29,11 @@ export interface CharacterStats {
 function App() {
   const [charSheetSlots, setCharSheetSlots] = useState<CharSheetSlot[]>([]);
   useEffect(() => {
-    setCharSheetSlots(
-      Array.from({ length: 8 }).map((_) => ({ equipped: false }))
-    );
+    setCharSheetSlots(Array.from({ length: 8 }).map((_) => ({ equipped: false })));
   }, []);
+
+  const { value: isSpellbookModalOpen, toggle: toggleSpellbookModal, setOff: hideSpellbookModal } = useFlipFlop();
+
   const [characterStats, setCharacterStats] = useState<CharacterStats>({
     health: {
       current: 10,
@@ -51,13 +54,15 @@ function App() {
         ...oldStats,
         [statType]: {
           current: newCurrentValue,
-          ...(newMaxCurrentValue !== undefined
-            ? { max: newMaxCurrentValue }
-            : {}),
+          ...(newMaxCurrentValue !== undefined ? { max: newMaxCurrentValue } : {}),
         },
       }));
     };
   }, []);
+
+  const closeNavModal = useCallback(() => {
+    hideSpellbookModal();
+  }, [hideSpellbookModal]);
 
   return (
     <div className="app">
@@ -85,16 +90,17 @@ function App() {
       </div>
       <div className="main">
         {charSheetSlots.map((charSheetSlot, i) => {
-          return (
-            <CharacterSheetSlot equipped={charSheetSlot.equipped} key={i} />
-          );
+          return <CharacterSheetSlot equipped={charSheetSlot.equipped} key={i} />;
         })}
       </div>
       <div className="nav">
-        <div className="spellbook">Spellbook</div>
+        <div className="spellbook" onClick={toggleSpellbookModal}>
+          Spellbook
+        </div>
         <div className="reference">Reference</div>
         <div className="more">More</div>
       </div>
+      {isSpellbookModalOpen ? <Modal onClose={closeNavModal}>T</Modal> : null}
     </div>
   );
 }

@@ -84,8 +84,10 @@ function App() {
         </HealthEnergyGoldSection>
       </div>
       <div className="main">
-        {charSheetSlots.map((charSheetSlot) => {
-          return <CharacterSheetSlot equipped={charSheetSlot.equipped} />;
+        {charSheetSlots.map((charSheetSlot, i) => {
+          return (
+            <CharacterSheetSlot equipped={charSheetSlot.equipped} key={i} />
+          );
         })}
       </div>
       <div className="nav">

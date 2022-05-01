@@ -89,11 +89,12 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.20.0",
     "@typescript-eslint/parser": "^5.20.0",
+    "csv-loader": "^3.0.3",
     "eslint": "^8.13.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.0.0",
-    "prettier": "^2.6.2",
-    "firebase-tools": "^10.7.2"
+    "firebase-tools": "^10.7.2",
+    "prettier": "^2.6.2"
   },
   "jest": {
     "roots": [

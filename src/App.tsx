@@ -67,8 +67,20 @@ function App() {
 
   return (
     <div className="app">
-      <div className="topBar">
-        <CharacterInfoHeader class="druid" faction="alliance" />
+      <div className="nav">
+        <div className="spellbook" onClick={toggleSpellbookModal}>
+          Spellbook
+        </div>
+        <div className="inventory">Inventory</div>
+        <div className="more">More</div>
+      </div>
+      <div className="main">
+        {charSheetSlots.map((charSheetSlot, i) => {
+          return <CharacterSheetSlot equipped={charSheetSlot.equipped} key={i} />;
+        })}
+      </div>
+      <div className="statsSection">
+        <CharacterInfoHeader class="druid" faction="alliance" level={1} />
         <HealthEnergyGoldSection>
           <EditableStat
             statName="health"
@@ -88,18 +100,6 @@ function App() {
             onStatChange={generateStatChangeHandler("gold")}
           />
         </HealthEnergyGoldSection>
-      </div>
-      <div className="main">
-        {charSheetSlots.map((charSheetSlot, i) => {
-          return <CharacterSheetSlot equipped={charSheetSlot.equipped} key={i} />;
-        })}
-      </div>
-      <div className="nav">
-        <div className="spellbook" onClick={toggleSpellbookModal}>
-          Spellbook
-        </div>
-        <div className="reference">Reference</div>
-        <div className="more">More</div>
       </div>
       {isSpellbookModalOpen ? (
         <Modal onClose={closeNavModal}>

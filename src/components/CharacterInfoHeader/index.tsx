@@ -5,6 +5,7 @@ import healthPath from "./health.jpg";
 export interface Props {
   faction: "alliance" | "horde";
   class: "druid" | "hunter";
+  level: 1 | 2 | 3 | 4 | 5;
 }
 
 const CharacterInfoHeader = (props: Props) => {
@@ -12,6 +13,7 @@ const CharacterInfoHeader = (props: Props) => {
     <Container>
       <Icon height={32} width={32} path={healthPath} />
       <Icon height={32} width={32} path={healthPath} />
+      <span>Lvl {props.level}</span>
     </Container>
   );
 };

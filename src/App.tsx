@@ -4,27 +4,13 @@ import EditableStat from "./components/EditableStat";
 import CharacterSheetSlot from "./components/CharacterSheetSlot";
 import styled from "styled-components";
 import CharacterInfoHeader from "./components/CharacterInfoHeader";
-import { StatType } from "./types";
+import { CharacterLevel, CharacterStats, StatType } from "./types";
 import useFlipFlop from "./components/useFlipFlop";
 import Modal from "./components/Modal";
 import SpellbookCarousel from "./components/SpellbookCarousel";
 
 interface CharSheetSlot {
   equipped: boolean;
-}
-
-export interface CharacterStats {
-  health: {
-    current: number;
-    max: number;
-  };
-  energy: {
-    current: number;
-    max: number;
-  };
-  gold: {
-    current: number;
-  };
 }
 
 function App() {
@@ -35,6 +21,7 @@ function App() {
 
   const { value: isSpellbookModalOpen, toggle: toggleSpellbookModal, setOff: hideSpellbookModal } = useFlipFlop();
 
+  const [characterLevel, setCharacterLevel] = useState<CharacterLevel>(1);
   const [characterStats, setCharacterStats] = useState<CharacterStats>({
     health: {
       current: 10,
@@ -80,7 +67,7 @@ function App() {
         })}
       </div>
       <div className="statsSection">
-        <CharacterInfoHeader class="druid" faction="alliance" level={1} />
+        <CharacterInfoHeader class="druid" faction="alliance" level={characterLevel} setLevel={setCharacterLevel} />
         <HealthEnergyGoldSection>
           <EditableStat
             statName="health"

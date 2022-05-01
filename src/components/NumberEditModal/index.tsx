@@ -3,7 +3,7 @@ import styled from "styled-components";
 const MIN_ALLOWED_VALUE = 0;
 const MAX_ALLOWED_VALUE = 99;
 
-interface ModalProps {
+export interface ModalProps {
   name: string;
   values: ValueProps[];
 }

@@ -11,6 +11,8 @@ interface ModalProps {
 interface ValueProps {
   value: number;
   onValueChange: (newValue: number) => void;
+  maxValueAllowed?: number;
+  minValueAllowed?: number;
 }
 
 const NumberEditModal = (props: ModalProps) => {
@@ -37,11 +39,11 @@ const ValueEdit = (props: ValueProps) => {
 
   return (
     <ValueEditContainer>
-      <ValueEditButton disabled={props.value >= MAX_ALLOWED_VALUE} onClick={increaseValue}>
+      <ValueEditButton disabled={props.value >= (props.maxValueAllowed ?? MAX_ALLOWED_VALUE)} onClick={increaseValue}>
         +
       </ValueEditButton>
       <div style={{ textAlign: "center" }}>{props.value}</div>
-      <ValueEditButton disabled={props.value <= MIN_ALLOWED_VALUE} onClick={decreaseValue}>
+      <ValueEditButton disabled={props.value <= (props.minValueAllowed ?? MIN_ALLOWED_VALUE)} onClick={decreaseValue}>
         -
       </ValueEditButton>
     </ValueEditContainer>

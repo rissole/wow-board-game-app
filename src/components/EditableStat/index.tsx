@@ -40,6 +40,7 @@ const EditableStat = (props: Props) => {
       {
         value: props.currentValue,
         onValueChange: onCurrentValueChange,
+        ...(props.maxValue !== undefined ? { maxValueAllowed: props.maxValue } : {}),
       },
       ...(props.maxValue !== undefined ? [{ value: props.maxValue, onValueChange: onMaxValueChange }] : []),
     ],

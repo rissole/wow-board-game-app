@@ -43,3 +43,10 @@ export type Power = {
   spotAmount?: string;
   maxSpotAmount?: number;
 };
+
+export type LevelStats = {
+  class: HeroClass;
+  level: CharacterLevel;
+  health: number;
+  energy: number;
+};

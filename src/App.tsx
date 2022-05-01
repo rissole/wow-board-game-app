@@ -3,52 +3,29 @@ import "./App.scss";
 import EditableStat from "./components/EditableStat";
 import styled from "styled-components";
 import CharacterInfoHeader from "./components/CharacterInfoHeader";
-import { CharacterLevel, CharacterStats, DiceColour, HeroClass, Phase, Power, PowerType, StatType } from "./types";
+import { CharacterLevel, CharacterStats, Power, StatType } from "./types";
 import useFlipFlop from "./components/useFlipFlop";
 import SpellbookCarousel from "./components/SpellbookCarousel";
-import powersJson from "./powers.csv";
 import CharacterSheetSlot from "./components/CharacterSheetSlot";
-
-function parseCsvToPower(csv: ReadonlyArray<ReadonlyArray<string | number | null>>): Power[] {
-  return csv.map((row) => {
-    return {
-      name: row[0] as string,
-      class: row[1] as HeroClass,
-      type: row[2] as PowerType,
-      requiredLevel: row[3] as CharacterLevel,
-      goldCost: row[4] as number,
-      energyCost: row[5] as number,
-      rawDescription: row[6] as string,
-      iconLink: row[7] as string,
-      phase: row[8] as Phase,
-      dependantOn: row[9] === null ? undefined : (row[9] as string).split(", "),
-      attributesImpacted: (row[10] as string).split(", "),
-      effect: row[11] as string,
-      spotColour: row[12] === null ? undefined : (row[12] as string).split(", ").map((item) => item as DiceColour),
-      spotAmount: row[13] === null ? undefined : (row[13] as string),
-      maxSpotAmount: row[14] === null ? undefined : (row[14] as number),
-    };
-  });
-}
+import { powers, statsForLevel } from "./data-accessor";
 
 function App() {
-  const powers = parseCsvToPower(powersJson.slice(1));
   const [charSheetSlots, setCharSheetSlots] = useState<Power[]>([]);
   useEffect(() => {
     setCharSheetSlots(Array.from({ length: 8 }).map((_, index) => powers[index]));
-  }, [powers]);
+  }, []);
 
   const { value: isSpellbookModalOpen, toggle: toggleSpellbookModal, setOff: hideSpellbookModal } = useFlipFlop();
 
   const [characterLevel, setCharacterLevel] = useState<CharacterLevel>(1);
   const [characterStats, setCharacterStats] = useState<CharacterStats>({
     health: {
-      current: 10,
-      max: 20,
+      current: statsForLevel(characterLevel).health,
+      max: statsForLevel(characterLevel).health,
     },
     energy: {
-      current: 10,
-      max: 20,
+      current: statsForLevel(characterLevel).energy,
+      max: statsForLevel(characterLevel).energy,
     },
     gold: {
       current: 10,
@@ -65,6 +42,21 @@ function App() {
         },
       }));
     };
+  }, []);
+
+  const updateCharacterLevel = useCallback((newLevel: CharacterLevel) => {
+    setCharacterLevel(newLevel);
+    setCharacterStats((oldStats) => ({
+      ...oldStats,
+      health: {
+        current: statsForLevel(newLevel).health,
+        max: statsForLevel(newLevel).health,
+      },
+      energy: {
+        current: statsForLevel(newLevel).energy,
+        max: statsForLevel(newLevel).energy,
+      },
+    }));
   }, []);
 
   const closeNavModal = useCallback(() => {
@@ -86,7 +78,7 @@ function App() {
         })}
       </div>
       <div className="statsSection">
-        <CharacterInfoHeader class="druid" faction="alliance" level={characterLevel} setLevel={setCharacterLevel} />
+        <CharacterInfoHeader class="druid" faction="alliance" level={characterLevel} setLevel={updateCharacterLevel} />
         <HealthEnergyGoldSection>
           <EditableStat
             statName="health"

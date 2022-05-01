@@ -6,8 +6,8 @@ interface SwipeableConfiguration {
   offsetPerNode?: number;
 }
 
-export const useSwipeable = (config?: SwipeableConfiguration) => {
-  const { swipeSensitivity = 25, deceleration = 0.8, offsetPerNode } = config || {};
+export const useSwipeable = (config?: SwipeableConfiguration= {}) => {
+  const { swipeSensitivity = 25, deceleration = 0.8, offsetPerNode } = config;
   const [offset, setOffset] = useState<number>(0);
   const [isMoveInProgress, setIsMoveInProgress] = useState<boolean>(false);
   const [currentX, setCurrentX] = useState<number>(0);

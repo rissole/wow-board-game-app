@@ -6,7 +6,6 @@ import styled from "styled-components";
 import CharacterInfoHeader from "./components/CharacterInfoHeader";
 import { CharacterLevel, CharacterStats, StatType } from "./types";
 import useFlipFlop from "./components/useFlipFlop";
-import Modal from "./components/Modal";
 import SpellbookCarousel from "./components/SpellbookCarousel";
 
 interface CharSheetSlot {

@@ -1,6 +1,5 @@
-import styled from "styled-components";
 import Carousel from "../Carousel";
-import healthIconPath from "./health.jpg";
+import CardSpell from "../CardSpell";
 
 export interface Props {
   onClose: () => void;
@@ -11,23 +10,11 @@ export interface Spell {
   description: string;
 }
 
-const SPELLS: ReadonlyArray<Spell> = Array.from({ length: 50 }).map((_, i) => ({
-  icon: healthIconPath,
-  name: `Claw ${i + 1}`,
-  description: `Deals ${i + 1} damage`,
+const PLACEHOLDER_SPELLS = Array.from({ length: 50 }).map((_, i) => ({
+  title: `Claw ${i + 1}`,
+  node: <CardSpell title={`Claw ${i + 1}`} description={`Deals ${i + 1} damage`} />,
 }));
 
-const renderSpellCarouselCard = (index: number) => <SpellCarouselCard>{SPELLS[index].name}</SpellCarouselCard>;
-
 export default function SpellbookCarousel({ onClose }: Props) {
-  return <Carousel renderNode={renderSpellCarouselCard} onClose={onClose} />;
+  return <Carousel items={PLACEHOLDER_SPELLS} onClose={onClose} />;
 }
-
-const SpellCarouselCard = styled.div`
-  width: 80vw;
-  padding: 16px;
-  height: 60vh;
-  text-align: center;
-  background-color: #fff;
-  border: 1px solid #000;
-`;

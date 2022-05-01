@@ -1,19 +1,19 @@
-import React, { ReactNode, useCallback, useState, useMemo } from "react";
+import React, { ReactNode, useCallback, useMemo } from "react";
 import styled from "styled-components";
 import { useSwipeable, DEFAULT_CONFIGURATION } from "../useSwipeable";
 import Modal from "../Modal";
 
 const OFFSET_PER_NODE = DEFAULT_CONFIGURATION.offsetPerNode;
 
-interface Props {
-  onClose: () => void;
-  renderNode: (index: number) => ReactNode;
+export interface CarouselItem {
+  title: string;
+  node: ReactNode;
 }
 
-type CachedNode = {
-  node: ReactNode;
-  index: number;
-};
+interface Props {
+  onClose: () => void;
+  items: CarouselItem[];
+}
 
 const CarouselContainer = styled.div`
   width: 100%;
@@ -33,25 +33,10 @@ const CarouselCloseButton = styled.div`
   }
 `;
 
-export default function Carousel({ renderNode, onClose }: Props) {
-  const [nodeCache, setNodeCache] = useState<CachedNode[]>([]);
+export default function Carousel({ items, onClose }: Props) {
   const { offset, handleSwipeStart, handleSwipe, handleSwipeEnd } = useSwipeable({
     offsetPerNode: OFFSET_PER_NODE,
   });
-
-  const getNodeFromCache = useCallback<(index: number) => CachedNode>(
-    (index: number) => {
-      const cachedNode = nodeCache.find((cn) => cn.index === index);
-      if (cachedNode !== undefined) {
-        return cachedNode;
-      } else {
-        const node = renderNode(index);
-        setNodeCache((cache) => [...cache, { index, node }]);
-        return { index, node };
-      }
-    },
-    [nodeCache, renderNode]
-  );
 
   const onTouchStart = useCallback(
     (event: React.TouchEvent) => {
@@ -95,8 +80,8 @@ export default function Carousel({ renderNode, onClose }: Props) {
     [handleSwipeEnd]
   );
 
-  const currentNodeIndex = useMemo(() => Math.round(offset / OFFSET_PER_NODE), [offset]);
-  const nodesToRender = Array.from({ length: 50 }).map((_, i) => getNodeFromCache(i));
+  const currentItemIndex = useMemo(() => Math.round(offset / OFFSET_PER_NODE), [offset]);
+  const currentItemName = items[currentItemIndex]?.title;
 
   return (
     <Modal>
@@ -111,10 +96,10 @@ export default function Carousel({ renderNode, onClose }: Props) {
         <CarouselCloseButton onClick={onClose} />
         <div>
           {/* TODO: Show the name of the current card */}
-          <h1 style={{ textAlign: "center", color: "red" }}>Card #{currentNodeIndex}</h1>
+          <h1 style={{ textAlign: "center", color: "red" }}>{currentItemName}</h1>
         </div>
-        {nodesToRender.map((cn, i) => {
-          const x = cn.index * OFFSET_PER_NODE - offset;
+        {items.map((item, index) => {
+          const x = index * OFFSET_PER_NODE - offset;
           const scale = 1 - Math.abs(x / 400);
 
           if (scale < 0) {
@@ -123,7 +108,7 @@ export default function Carousel({ renderNode, onClose }: Props) {
 
           return (
             <NodeWrapper
-              key={i}
+              key={index}
               style={{
                 top: "10vh",
                 left: `calc(${x}px + 10vw)`,
@@ -131,7 +116,7 @@ export default function Carousel({ renderNode, onClose }: Props) {
                 zIndex: Math.floor(scale * 100),
               }}
             >
-              {cn.node}
+              {item.node}
             </NodeWrapper>
           );
         })}

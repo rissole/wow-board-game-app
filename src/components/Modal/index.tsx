@@ -5,22 +5,22 @@ const MODAL_ID = "currentModal";
 
 interface Props {
   children?: ReactNode;
-  onClose: () => void;
+  onClose?: () => void;
 }
 
-const Modal = (props: Props) => {
+const Modal = ({ children, onClose }: Props) => {
   const onClick = useCallback<MouseEventHandler<HTMLDivElement>>(
     (event) => {
       if (event.target instanceof Element && event.target.id === MODAL_ID) {
-        props.onClose();
+        onClose && onClose();
       }
     },
-    [props]
+    [onClose]
   );
 
   return (
     <Container id={MODAL_ID} onClick={onClick}>
-      {props.children}
+      {children}
     </Container>
   );
 };

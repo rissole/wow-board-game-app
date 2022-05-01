@@ -96,6 +96,9 @@
     "firebase-tools": "^10.7.2",
     "prettier": "^2.6.2"
   },
+  "engines": {
+    "node": "^16.5.0"
+  },
   "jest": {
     "roots": [
       "<rootDir>/src"

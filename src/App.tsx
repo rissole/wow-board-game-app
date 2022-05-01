@@ -5,7 +5,6 @@ import styled from "styled-components";
 import CharacterInfoHeader from "./components/CharacterInfoHeader";
 import { CharacterLevel, CharacterStats, DiceColour, HeroClass, Phase, Power, PowerType, StatType } from "./types";
 import useFlipFlop from "./components/useFlipFlop";
-import Modal from "./components/Modal";
 import SpellbookCarousel from "./components/SpellbookCarousel";
 import powersJson from "./powers.csv";
 import CharacterSheetSlot from "./components/CharacterSheetSlot";
@@ -108,11 +107,7 @@ function App() {
           />
         </HealthEnergyGoldSection>
       </div>
-      {isSpellbookModalOpen ? (
-        <Modal onClose={closeNavModal}>
-          <SpellbookCarousel />
-        </Modal>
-      ) : null}
+      {isSpellbookModalOpen ? <SpellbookCarousel onClose={closeNavModal} /> : null}
     </div>
   );
 }

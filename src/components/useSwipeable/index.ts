@@ -6,7 +6,7 @@ interface SwipeableConfiguration {
   offsetPerNode?: number;
 }
 
-export const useSwipeable = (config?: SwipeableConfiguration= {}) => {
+export const useSwipeable = (config: SwipeableConfiguration = {}) => {
   const { swipeSensitivity = 25, deceleration = 0.8, offsetPerNode } = config;
   const [offset, setOffset] = useState<number>(0);
   const [isMoveInProgress, setIsMoveInProgress] = useState<boolean>(false);
@@ -18,15 +18,7 @@ export const useSwipeable = (config?: SwipeableConfiguration= {}) => {
     const animationInterval = setInterval(() => {
       if (velocity !== 0) {
         const newVelocity = velocity * deceleration;
-        if (offsetPerNode != null) {
-          const distanceToClosestNode = offset % offsetPerNode;
-          console.log("# distanceToClosestNode", distanceToClosestNode);
-          console.log("# offset", offset);
-
-          setVelocity(Math.abs(newVelocity) < 1 ? 0 : newVelocity);
-        } else {
-          setVelocity(Math.abs(newVelocity) < 1 ? 0 : newVelocity);
-        }
+        setVelocity(Math.abs(newVelocity) < 1 ? 0 : newVelocity);
       }
       setOffset(offset + velocity);
     }, 25);

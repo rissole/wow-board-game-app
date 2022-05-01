@@ -1,8 +1,8 @@
 import React, { ReactNode, useCallback, useState, useMemo } from "react";
 import styled from "styled-components";
-import { useSwipeable } from "../useSwipeable";
+import { useSwipeable, DEFAULT_CONFIGURATION } from "../useSwipeable";
 
-const OFFSET_PER_NODE = 225;
+const OFFSET_PER_NODE = DEFAULT_CONFIGURATION.offsetPerNode;
 
 interface Props {
   renderNode: (index: number) => ReactNode;

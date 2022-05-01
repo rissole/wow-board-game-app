@@ -2,6 +2,9 @@ import styled from "styled-components";
 import Carousel from "../Carousel";
 import healthIconPath from "./health.jpg";
 
+export interface Props {
+  onClose: () => void;
+}
 export interface Spell {
   icon: string;
   name: string;
@@ -16,8 +19,8 @@ const SPELLS: ReadonlyArray<Spell> = Array.from({ length: 50 }).map((_, i) => ({
 
 const renderSpellCarouselCard = (index: number) => <SpellCarouselCard>{SPELLS[index].name}</SpellCarouselCard>;
 
-export default function SpellbookCarousel() {
-  return <Carousel renderNode={renderSpellCarouselCard} />;
+export default function SpellbookCarousel({ onClose }: Props) {
+  return <Carousel renderNode={renderSpellCarouselCard} onClose={onClose} />;
 }
 
 const SpellCarouselCard = styled.div`

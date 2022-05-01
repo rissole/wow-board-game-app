@@ -88,11 +88,7 @@ function App() {
           />
         </HealthEnergyGoldSection>
       </div>
-      {isSpellbookModalOpen ? (
-        <Modal onClose={closeNavModal}>
-          <SpellbookCarousel />
-        </Modal>
-      ) : null}
+      {isSpellbookModalOpen ? <SpellbookCarousel onClose={closeNavModal} /> : null}
     </div>
   );
 }

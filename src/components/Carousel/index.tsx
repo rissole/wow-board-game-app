@@ -1,10 +1,12 @@
 import React, { ReactNode, useCallback, useState, useMemo } from "react";
 import styled from "styled-components";
-import { useSwipeable } from "../useSwipeable";
+import { useSwipeable, DEFAULT_CONFIGURATION } from "../useSwipeable";
+import Modal from "../Modal";
 
-const OFFSET_PER_NODE = 225;
+const OFFSET_PER_NODE = DEFAULT_CONFIGURATION.offsetPerNode;
 
 interface Props {
+  onClose: () => void;
   renderNode: (index: number) => ReactNode;
 }
 
@@ -13,7 +15,25 @@ type CachedNode = {
   index: number;
 };
 
-export default function Carousel({ renderNode }: Props) {
+const CarouselContainer = styled.div`
+  width: 100%;
+  height: 100%;
+`;
+
+const CarouselCloseButton = styled.div`
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  top: 8px;
+  right: 8px;
+  &:after {
+    content: "\\00d7";
+    font-size: 48px;
+    color: white;
+  }
+`;
+
+export default function Carousel({ renderNode, onClose }: Props) {
   const [nodeCache, setNodeCache] = useState<CachedNode[]>([]);
   const { offset, handleSwipeStart, handleSwipe, handleSwipeEnd } = useSwipeable({
     offsetPerNode: OFFSET_PER_NODE,
@@ -79,45 +99,44 @@ export default function Carousel({ renderNode }: Props) {
   const nodesToRender = Array.from({ length: 50 }).map((_, i) => getNodeFromCache(i));
 
   return (
-    <div
-      style={{
-        width: "100%",
-        height: "100%",
-      }}
-      onTouchStart={onTouchStart}
-      onTouchMove={onTouchMove}
-      onTouchEnd={onTouchEnd}
-      onMouseDown={onMouseDown}
-      onMouseMove={onMouseMove}
-      onMouseUp={onMouseUp}
-    >
-      <div>
-        {/* TODO: Show the name of the current card */}
-        <h1 style={{ textAlign: "center", color: "red" }}>Card #{currentNodeIndex}</h1>
-      </div>
-      {nodesToRender.map((cn, i) => {
-        const x = cn.index * OFFSET_PER_NODE - offset;
-        const scale = 1 - Math.abs(x / 400);
+    <Modal>
+      <CarouselContainer
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
+        onMouseDown={onMouseDown}
+        onMouseMove={onMouseMove}
+        onMouseUp={onMouseUp}
+      >
+        <CarouselCloseButton onClick={onClose} />
+        <div>
+          {/* TODO: Show the name of the current card */}
+          <h1 style={{ textAlign: "center", color: "red" }}>Card #{currentNodeIndex}</h1>
+        </div>
+        {nodesToRender.map((cn, i) => {
+          const x = cn.index * OFFSET_PER_NODE - offset;
+          const scale = 1 - Math.abs(x / 400);
 
-        if (scale < 0) {
-          return null;
-        }
+          if (scale < 0) {
+            return null;
+          }
 
-        return (
-          <NodeWrapper
-            key={i}
-            style={{
-              top: "10vh",
-              left: `calc(${x}px + 10vw)`,
-              transform: `scale(${scale}, ${scale})`,
-              zIndex: Math.floor(scale * 100),
-            }}
-          >
-            {cn.node}
-          </NodeWrapper>
-        );
-      })}
-    </div>
+          return (
+            <NodeWrapper
+              key={i}
+              style={{
+                top: "10vh",
+                left: `calc(${x}px + 10vw)`,
+                transform: `scale(${scale}, ${scale})`,
+                zIndex: Math.floor(scale * 100),
+              }}
+            >
+              {cn.node}
+            </NodeWrapper>
+          );
+        })}
+      </CarouselContainer>
+    </Modal>
   );
 }
 

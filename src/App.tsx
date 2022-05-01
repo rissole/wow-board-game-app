@@ -36,7 +36,7 @@ function App() {
   const [charSheetSlots, setCharSheetSlots] = useState<Power[]>([]);
   useEffect(() => {
     setCharSheetSlots(Array.from({ length: 8 }).map((_, index) => powers[index]));
-  }, []);
+  }, [powers]);
 
   const { value: isSpellbookModalOpen, toggle: toggleSpellbookModal, setOff: hideSpellbookModal } = useFlipFlop();
 

@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import styled from "styled-components";
-import { CharacterLevel, isValidLevel } from "../../types";
+import { CharacterLevel, HeroClass, isValidLevel } from "../../types";
 import Icon from "../Icon";
 import Modal from "../Modal";
 import NumberEditModal, { ModalProps } from "../NumberEditModal";
@@ -9,7 +9,7 @@ import healthPath from "./health.jpg";
 
 export interface Props {
   faction: "alliance" | "horde";
-  class: "druid" | "hunter";
+  class: HeroClass;
   level: CharacterLevel;
   setLevel: (newLevel: CharacterLevel) => void;
 }

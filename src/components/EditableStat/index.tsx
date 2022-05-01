@@ -30,7 +30,7 @@ const EditableStat = (props: Props) => {
 
   const onMaxValueChange = useCallback(
     (newMaxValue: number) => {
-      props.onStatChange(props.currentValue, newMaxValue);
+      props.onStatChange(newMaxValue < props.currentValue ? props.currentValue - 1 : props.currentValue, newMaxValue);
     },
     [props]
   );

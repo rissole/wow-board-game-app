@@ -7,18 +7,10 @@ import useFlipFlop from "../useFlipFlop";
 import SpellbookCarousel from "../SpellbookCarousel";
 import ListPowers from "../ListPowers";
 import ListInventory from "../ListInventory";
+import { getPowers, statsForLevel } from "../../data-accessor";
 
-export interface Data {
-  powers: Power[];
-}
-
-interface Props {
-  data: Data;
-}
-
-const MainScreen = ({ data }: Props) => {
+const MainScreen = () => {
   const [activeList, setActiveList] = useState<List>("powers");
-  const [_, setPowers] = useState<Power[]>([]);
   const [charSheetSlots, setCharSheetSlots] = useState<Power[]>([]);
 
   const { value: isSpellbookModalOpen, toggle: toggleSpellbookModal, setOff: hideSpellbookModal } = useFlipFlop();
@@ -26,12 +18,12 @@ const MainScreen = ({ data }: Props) => {
   const [characterLevel, setCharacterLevel] = useState<CharacterLevel>(1);
   const [characterStats, setCharacterStats] = useState<CharacterStats>({
     health: {
-      current: 10,
-      max: 20,
+      current: statsForLevel(characterLevel).health,
+      max: statsForLevel(characterLevel).health,
     },
     energy: {
-      current: 10,
-      max: 20,
+      current: statsForLevel(characterLevel).energy,
+      max: statsForLevel(characterLevel).energy,
     },
     gold: {
       current: 10,
@@ -39,10 +31,8 @@ const MainScreen = ({ data }: Props) => {
   });
 
   useEffect(() => {
-    const { powers } = data;
-    setPowers(powers);
-    setCharSheetSlots(Array.from({ length: 8 }).map((_, index) => powers[index]));
-  }, [data]);
+    setCharSheetSlots(Array.from({ length: 8 }).map((_, index) => getPowers()[index]));
+  }, []);
 
   const generateStatChangeHandler = useCallback((statType: StatType) => {
     return (newCurrentValue: number, newMaxCurrentValue?: number) => {
@@ -54,6 +44,21 @@ const MainScreen = ({ data }: Props) => {
         },
       }));
     };
+  }, []);
+
+  const updateCharacterLevel = useCallback((newLevel: CharacterLevel) => {
+    setCharacterLevel(newLevel);
+    setCharacterStats((oldStats) => ({
+      ...oldStats,
+      health: {
+        current: statsForLevel(newLevel).health,
+        max: statsForLevel(newLevel).health,
+      },
+      energy: {
+        current: statsForLevel(newLevel).energy,
+        max: statsForLevel(newLevel).energy,
+      },
+    }));
   }, []);
 
   const closeNavModal = useCallback(() => {
@@ -87,7 +92,7 @@ const MainScreen = ({ data }: Props) => {
       </div>
       <div className="main">{renderActiveList()}</div>
       <div className="statsSection">
-        <CharacterInfoHeader class="druid" faction="alliance" level={characterLevel} setLevel={setCharacterLevel} />
+        <CharacterInfoHeader class="druid" faction="alliance" level={characterLevel} setLevel={updateCharacterLevel} />
         <HealthEnergyGoldSection>
           <EditableStat
             statName="health"

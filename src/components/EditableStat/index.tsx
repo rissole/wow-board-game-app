@@ -1,9 +1,22 @@
 import styled from "styled-components";
 import healthIconPath from "./health.jpg";
+import manaIconPath from "./mana.jpg";
+import goldIconPath from "./gold.jpg";
 import { useCallback, useMemo, useState } from "react";
 import Modal from "../Modal";
 import { StatType } from "../../types";
 import NumberEditModal from "../NumberEditModal";
+
+const renderIcon = (stat: StatType) => {
+  switch (stat) {
+    case "health":
+      return <Icon path={healthIconPath} />;
+    case "energy":
+      return <Icon path={manaIconPath} />;
+    case "gold":
+      return <Icon path={goldIconPath} />;
+  }
+};
 
 export interface Props {
   statName: StatType;
@@ -42,7 +55,7 @@ const EditableStat = (props: Props) => {
   return (
     <>
       <Container onClick={handleClick}>
-        <Icon path={healthIconPath} />
+        {renderIcon(props.statName)}
         {props.currentValue}
         {props.maxValue !== undefined ? `/${props.maxValue}` : ``}
       </Container>

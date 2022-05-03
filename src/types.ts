@@ -49,7 +49,7 @@ export type GameData = {
   levelStats: LevelStats;
 };
 
-export type Screen = "loading" | "main";
+export type Screen = "loading" | "main" | "character-select";
 
 export type List = "powers" | "inventory";
 

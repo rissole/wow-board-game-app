@@ -28,13 +28,6 @@ const EditableStat = (props: Props) => {
     [props]
   );
 
-  const onMaxValueChange = useCallback(
-    (newMaxValue: number) => {
-      props.onStatChange(newMaxValue < props.currentValue ? props.currentValue - 1 : props.currentValue, newMaxValue);
-    },
-    [props]
-  );
-
   const values = useMemo(
     () => [
       {
@@ -42,9 +35,8 @@ const EditableStat = (props: Props) => {
         onValueChange: onCurrentValueChange,
         ...(props.maxValue !== undefined ? { maxValueAllowed: props.maxValue } : {}),
       },
-      ...(props.maxValue !== undefined ? [{ value: props.maxValue, onValueChange: onMaxValueChange }] : []),
     ],
-    [onCurrentValueChange, onMaxValueChange, props.currentValue, props.maxValue]
+    [onCurrentValueChange, props.currentValue, props.maxValue]
   );
 
   return (

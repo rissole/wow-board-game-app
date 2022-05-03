@@ -4,25 +4,11 @@ import levelsJson from "./levels.csv";
 
 type CsvFile = ReadonlyArray<ReadonlyArray<string | number | null>>;
 
-let powers: Power[] | undefined;
-let levelStats: LevelStats[] | undefined;
-
-export const getPowers = () => {
-  if (!powers) {
-    powers = parseCsvToPower(powersJson.slice(1));
-  }
-  return powers;
-};
-
-export const getLevelStats = () => {
-  if (!levelStats) {
-    levelStats = parseCsvToLevels(levelsJson.slice(1));
-  }
-  return levelStats;
-};
+export const powers: Power[] = parseCsvToPower(powersJson.slice(1));
+export const levelStats: LevelStats[] = parseCsvToLevels(levelsJson.slice(1));
 
 export const statsForLevel = (level: CharacterLevel): LevelStats => {
-  const stat = getLevelStats().find((stat) => stat.level === level);
+  const stat = levelStats.find((stat) => stat.level === level);
 
   if (stat === undefined) {
     throw new Error("Could not find level");

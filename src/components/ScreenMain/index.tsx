@@ -7,7 +7,7 @@ import useFlipFlop from "../useFlipFlop";
 import SpellbookCarousel from "../SpellbookCarousel";
 import ListPowers from "../ListPowers";
 import ListInventory from "../ListInventory";
-import { getPowers, statsForLevel } from "../../data-accessor";
+import { powers, statsForLevel } from "../../data-accessor";
 
 const MainScreen = () => {
   const [activeList, setActiveList] = useState<List>("powers");
@@ -31,7 +31,7 @@ const MainScreen = () => {
   });
 
   useEffect(() => {
-    setCharSheetSlots(Array.from({ length: 8 }).map((_, index) => getPowers()[index]));
+    setCharSheetSlots(Array.from({ length: 8 }).map((_, index) => powers[index]));
   }, []);
 
   const generateStatChangeHandler = useCallback((statType: StatType) => {

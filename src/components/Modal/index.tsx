@@ -34,8 +34,6 @@ const Container = styled.div`
   background-color: rgba(0, 0, 0, 0.7);
   padding: 8px;
   display: flex;
-  justify-content: center;
-  align-items: center;
   overflow: hidden;
 `;
 

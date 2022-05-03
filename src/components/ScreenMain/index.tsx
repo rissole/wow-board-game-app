@@ -65,6 +65,10 @@ const MainScreen = () => {
     hideSpellbookModal();
   }, [hideSpellbookModal]);
 
+  const selectSpellbookItem = useCallback(() => {
+    hideSpellbookModal();
+  }, [hideSpellbookModal]);
+
   const toggleScreen = useCallback(() => {
     setActiveList(activeList === "powers" ? "inventory" : "powers");
   }, [activeList]);
@@ -113,7 +117,7 @@ const MainScreen = () => {
           />
         </HealthEnergyGoldSection>
       </div>
-      {isSpellbookModalOpen ? <SpellbookCarousel onClose={closeNavModal} /> : null}
+      {isSpellbookModalOpen ? <SpellbookCarousel onClose={closeNavModal} onSelectItem={selectSpellbookItem} /> : null}
     </>
   );
 };

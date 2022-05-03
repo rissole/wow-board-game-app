@@ -12,12 +12,51 @@ export interface CarouselItem {
 
 interface Props {
   onClose: () => void;
+  onSelectItem: (item: CarouselItem) => void;
   items: CarouselItem[];
+  buttonText?: string;
 }
 
 const CarouselContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  top: 0;
   width: 100%;
-  height: 100%;
+`;
+
+const CarouselHeader = styled.div``;
+
+const CarouselMain = styled.div`
+  width: 100vw;
+  height: 60vh;
+`;
+
+const CarouselFooter = styled.div`
+  display: flex;
+  justify-content: center;
+  padding-top: 24px;
+`;
+
+const CarouselChooseButton = styled.button`
+  width: 200px;
+  height: 80px;
+  border: 1px solid black;
+  border-radius: 5px;
+
+  font-size: 48px;
+  font-weight: bold;
+
+  background-color: rgb(0, 190, 0);
+
+  &:active {
+    background-color: rgb(0, 150, 0);
+  }
+`;
+
+const CarouselTitle = styled.h1`
+  color: black;
+  text-shadow: 2px 2px white;
+  text-align: center;
 `;
 
 const CarouselCloseButton = styled.div`
@@ -28,15 +67,18 @@ const CarouselCloseButton = styled.div`
   right: 8px;
   &:after {
     content: "\\00d7";
-    font-size: 48px;
+    font-size: 64px;
     color: white;
   }
 `;
 
-export default function Carousel({ items, onClose }: Props) {
+export default function Carousel({ items, onClose, onSelectItem, buttonText = "Select" }: Props) {
   const { offset, handleSwipeStart, handleSwipe, handleSwipeEnd } = useSwipeable({
     offsetPerNode: OFFSET_PER_NODE,
   });
+
+  const currentItemIndex = useMemo(() => Math.round(offset / OFFSET_PER_NODE), [offset]);
+  const currentItemName = items[currentItemIndex]?.title;
 
   const onTouchStart = useCallback(
     (event: React.TouchEvent) => {
@@ -80,8 +122,10 @@ export default function Carousel({ items, onClose }: Props) {
     [handleSwipeEnd]
   );
 
-  const currentItemIndex = useMemo(() => Math.round(offset / OFFSET_PER_NODE), [offset]);
-  const currentItemName = items[currentItemIndex]?.title;
+  const onSelect = useCallback(() => {
+    const currentItem = items[currentItemIndex];
+    onSelectItem(currentItem);
+  }, [currentItemIndex, items, onSelectItem]);
 
   return (
     <Modal>
@@ -93,33 +137,41 @@ export default function Carousel({ items, onClose }: Props) {
         onMouseMove={onMouseMove}
         onMouseUp={onMouseUp}
       >
-        <CarouselCloseButton onClick={onClose} />
-        <div>
-          {/* TODO: Show the name of the current card */}
-          <h1 style={{ textAlign: "center", color: "red" }}>{currentItemName}</h1>
-        </div>
-        {items.map((item, index) => {
-          const x = index * OFFSET_PER_NODE - offset;
-          const scale = 1 - Math.abs(x / 400);
+        <CarouselHeader>
+          <CarouselTitle>{currentItemName}</CarouselTitle>
+          <CarouselCloseButton role="button" onClick={onClose} />
+        </CarouselHeader>
+        <CarouselMain>
+          {items.map((item, index) => {
+            const x = index * OFFSET_PER_NODE - offset;
+            const scale = 1 - Math.abs(x / 400);
 
-          if (scale < 0) {
-            return null;
-          }
+            if (scale < 0) {
+              return null;
+            }
 
-          return (
-            <NodeWrapper
-              key={index}
-              style={{
-                top: "10vh",
-                left: `calc(${x}px + 10vw)`,
-                transform: `scale(${scale}, ${scale})`,
-                zIndex: Math.floor(scale * 100),
-              }}
-            >
-              {item.node}
-            </NodeWrapper>
-          );
-        })}
+            return (
+              <NodeWrapper
+                key={index}
+                style={{
+                  top: "10vh",
+                  left: `calc(${x}px + 10vw)`,
+                  transform: `scale(${scale}, ${scale})`,
+                  zIndex: Math.floor(scale * 100),
+                }}
+              >
+                {item.node}
+              </NodeWrapper>
+            );
+          })}
+        </CarouselMain>
+        <CarouselFooter>
+          <CarouselChooseButton type="button" onClick={onSelect}>
+            <span>{buttonText}</span>
+          </CarouselChooseButton>
+        </CarouselFooter>
+
+        <div>{/* TODO: Show the name of the current card */}</div>
       </CarouselContainer>
     </Modal>
   );

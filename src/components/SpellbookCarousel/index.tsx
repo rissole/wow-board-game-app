@@ -1,8 +1,10 @@
 import Carousel from "../Carousel";
 import CardSpell from "../CardSpell";
+import { powers } from "../../data-accessor";
 
 export interface Props {
   onClose: () => void;
+  onSelectItem: () => void;
 }
 export interface Spell {
   icon: string;
@@ -10,11 +12,11 @@ export interface Spell {
   description: string;
 }
 
-const PLACEHOLDER_SPELLS = Array.from({ length: 50 }).map((_, i) => ({
-  title: `Claw ${i + 1}`,
-  node: <CardSpell title={`Claw ${i + 1}`} description={`Deals ${i + 1} damage`} />,
+const PLACEHOLDER_SPELLS = powers.map((power) => ({
+  title: power.name,
+  node: <CardSpell title={power.name} description={power.rawDescription} />,
 }));
 
-export default function SpellbookCarousel({ onClose }: Props) {
-  return <Carousel items={PLACEHOLDER_SPELLS} onClose={onClose} />;
+export default function SpellbookCarousel({ onClose, onSelectItem }: Props) {
+  return <Carousel items={PLACEHOLDER_SPELLS} onClose={onClose} onSelectItem={onSelectItem} buttonText="Train" />;
 }

@@ -6,6 +6,7 @@ import Modal from "../Modal";
 import NumberEditModal, { ModalProps } from "../NumberEditModal";
 import useFlipFlop from "../useFlipFlop";
 import healthPath from "./health.jpg";
+import manaPath from "./mana.jpg";
 
 export interface Props {
   faction: "alliance" | "horde";
@@ -37,7 +38,7 @@ const CharacterInfoHeader = (props: Props) => {
     <>
       <Container onClick={showLevelUpModal}>
         <Icon height={32} width={32} path={healthPath} />
-        <Icon height={32} width={32} path={healthPath} />
+        <Icon height={32} width={32} path={manaPath} />
         <LevelSpan>Lvl {props.level}</LevelSpan>
       </Container>
       {isShowingLevelUpModal ? (

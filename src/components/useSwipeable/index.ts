@@ -9,7 +9,7 @@ interface SwipeableConfiguration {
 export const DEFAULT_CONFIGURATION = {
   swipeSensitivity: 25,
   deceleration: 0.8,
-  offsetPerNode: 220,
+  offsetPerNode: 225,
 };
 
 export const useSwipeable = (config: SwipeableConfiguration = {}) => {

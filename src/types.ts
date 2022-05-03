@@ -44,6 +44,15 @@ export type Power = {
   maxSpotAmount?: number;
 };
 
+export type GameData = {
+  powers: Power[];
+  levelStats: LevelStats;
+};
+
+export type Screen = "loading" | "main";
+
+export type List = "powers" | "inventory";
+
 export type LevelStats = {
   class: HeroClass;
   level: CharacterLevel;

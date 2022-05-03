@@ -20,11 +20,8 @@ interface Props {
 const CarouselContainer = styled.div`
   display: flex;
   flex-direction: column;
-  top: 0;
   width: 100%;
 `;
-
-const CarouselHeader = styled.div``;
 
 const CarouselMain = styled.div`
   width: 100vw;
@@ -34,18 +31,16 @@ const CarouselMain = styled.div`
 const CarouselFooter = styled.div`
   display: flex;
   justify-content: center;
-  padding-top: 24px;
+  padding-top: 20px;
 `;
 
-const CarouselChooseButton = styled.button`
+const CarouselSelectButton = styled.button`
   width: 200px;
   height: 80px;
   border: 1px solid black;
   border-radius: 5px;
-
   font-size: 36px;
   font-weight: bold;
-
   background-color: rgb(0, 190, 0);
 
   &:active {
@@ -63,12 +58,14 @@ const CarouselCloseButton = styled.div`
   position: absolute;
   width: 48px;
   height: 48px;
-  top: 8px;
-  right: 8px;
-  &:after {
+  top: 0;
+  right: 4px;
+  margin-top: -20px;
+  &:before {
     content: "\\00d7";
     font-size: 64px;
     color: white;
+    opacity: 0.7;
   }
 `;
 
@@ -137,10 +134,10 @@ export default function Carousel({ items, onClose, onSelectItem, buttonText = "S
         onMouseMove={onMouseMove}
         onMouseUp={onMouseUp}
       >
-        <CarouselHeader>
+        <div>
           <CarouselTitle>{currentItemName}</CarouselTitle>
           <CarouselCloseButton role="button" onClick={onClose} />
-        </CarouselHeader>
+        </div>
         <CarouselMain>
           {items.map((item, index) => {
             const x = index * OFFSET_PER_NODE - offset;
@@ -166,9 +163,9 @@ export default function Carousel({ items, onClose, onSelectItem, buttonText = "S
           })}
         </CarouselMain>
         <CarouselFooter>
-          <CarouselChooseButton type="button" onClick={onSelect}>
+          <CarouselSelectButton type="button" onClick={onSelect}>
             <span>{buttonText}</span>
-          </CarouselChooseButton>
+          </CarouselSelectButton>
         </CarouselFooter>
 
         <div>{/* TODO: Show the name of the current card */}</div>

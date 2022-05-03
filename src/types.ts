@@ -43,3 +43,11 @@ export type Power = {
   spotAmount?: string;
   maxSpotAmount?: number;
 };
+
+export type GameData = {
+  powers: Power[];
+};
+
+export type Screen = "loading" | "main";
+
+export type List = "powers" | "inventory";

@@ -43,7 +43,7 @@ const CarouselChooseButton = styled.button`
   border: 1px solid black;
   border-radius: 5px;
 
-  font-size: 48px;
+  font-size: 36px;
   font-weight: bold;
 
   background-color: rgb(0, 190, 0);
@@ -54,8 +54,8 @@ const CarouselChooseButton = styled.button`
 `;
 
 const CarouselTitle = styled.h1`
-  color: black;
-  text-shadow: 2px 2px white;
+  color: white;
+  text-shadow: 2px 2px black;
   text-align: center;
 `;
 
@@ -73,7 +73,7 @@ const CarouselCloseButton = styled.div`
 `;
 
 export default function Carousel({ items, onClose, onSelectItem, buttonText = "Select" }: Props) {
-  const { offset, handleSwipeStart, handleSwipe, handleSwipeEnd } = useSwipeable({
+  const { offset, handleSwipeStart, handleSwipe, handleSwipeEnd } = useSwipeable(items.length, {
     offsetPerNode: OFFSET_PER_NODE,
   });
 

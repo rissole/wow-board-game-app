@@ -18,6 +18,8 @@ export interface CharacterStats {
     current: number;
   };
 }
+
+export type Faction = "alliance" | "horde";
 export type HeroClass = "paladin" | "warlock" | "rogue" | "mage" | "hunter" | "druid" | "warrior" | "shaman" | "priest";
 
 export type DiceColour = "green" | "red" | "blue";

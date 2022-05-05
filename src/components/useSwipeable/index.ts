@@ -12,14 +12,33 @@ export const DEFAULT_CONFIGURATION = {
   offsetPerNode: 225,
 };
 
-export const useSwipeable = (config: SwipeableConfiguration = {}) => {
+export const useSwipeable = (numItems: number, config: SwipeableConfiguration = {}) => {
   const configuration = { ...DEFAULT_CONFIGURATION, ...config };
   const { swipeSensitivity = 25, deceleration = 0.8, offsetPerNode } = configuration;
-  const [offset, setOffset] = useState<number>(0);
+  const [offset, _setOffset] = useState<number>(0);
   const [isMoveInProgress, setIsMoveInProgress] = useState<boolean>(false);
   const [currentX, setCurrentX] = useState<number>(0);
   const [prevMoveTime, setPrevMoveTime] = useState<number>(0);
   const [velocity, setVelocity] = useState<number>(0);
+
+  const setOffset = useCallback(
+    (newOffset: number) => {
+      const flex = offsetPerNode / 2.5;
+      const minOffset = -flex;
+      const maxOffset = (numItems - 1) * offsetPerNode + flex;
+
+      if (newOffset < minOffset) {
+        _setOffset(minOffset);
+        setVelocity(0);
+      } else if (newOffset > maxOffset) {
+        _setOffset(maxOffset);
+        setVelocity(0);
+      } else {
+        _setOffset(newOffset);
+      }
+    },
+    [numItems, offsetPerNode]
+  );
 
   useEffect(() => {
     const animationInterval = setInterval(() => {
@@ -34,22 +53,20 @@ export const useSwipeable = (config: SwipeableConfiguration = {}) => {
         return;
       }
 
-      if (velocity !== 0) {
-        // Nudge the carousel towards the closest snap position
-        // yeah its kinda hacky
-        const boost = (distanceToClosestNode / offsetPerNode) * 10;
-        const newVelocity = (velocity + boost) * deceleration;
+      // Nudge the carousel towards the closest snap position
+      // yeah its kinda hacky
+      const boost = (distanceToClosestNode / offsetPerNode) * 10;
+      const newVelocity = (velocity + boost) * deceleration;
 
-        setVelocity(newVelocity);
-        setOffset(offset + velocity);
-        return;
-      }
+      setVelocity(newVelocity);
+      setOffset(offset + newVelocity);
+      return;
     }, 25);
 
     return () => {
       clearInterval(animationInterval);
     };
-  }, [deceleration, offset, offsetPerNode, velocity]);
+  }, [deceleration, offset, offsetPerNode, setOffset, velocity]);
 
   const handleSwipeStart = useCallback((swipeX: number) => {
     setIsMoveInProgress(true);
@@ -70,7 +87,7 @@ export const useSwipeable = (config: SwipeableConfiguration = {}) => {
       setPrevMoveTime(new Date().getTime());
       setVelocity(velocity);
     },
-    [currentX, isMoveInProgress, offset, prevMoveTime, swipeSensitivity]
+    [currentX, isMoveInProgress, offset, prevMoveTime, setOffset, swipeSensitivity]
   );
 
   const handleSwipeEnd = useCallback(() => {

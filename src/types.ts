@@ -18,7 +18,7 @@ export interface CharacterStats {
     current: number;
   };
 }
-export type HeroClass = "druid" | "hunter";
+export type HeroClass = "paladin" | "warlock" | "rogue" | "mage" | "hunter" | "druid" | "warrior" | "shaman" | "priest";
 
 export type DiceColour = "green" | "red" | "blue";
 

@@ -6,7 +6,7 @@ import CharacterSelectScreen from "./components/ScreenCharacterSelect";
 
 function App() {
   // TODO: Change the default value here to "character-select" once fleshed out
-  const [screen, setScreen] = useState<Screen>("main");
+  const [screen, setScreen] = useState<Screen>("character-select");
 
   const renderActiveScreen = () => {
     switch (screen) {

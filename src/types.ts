@@ -41,7 +41,7 @@ export interface IAttribute {
   audience?: AttributeAudience;
 }
 
-export type AttributeName = "damage" | "dice" | "attrition" | "health" | "energy" | "defense" | "travel";
+export type AttributeName = "damage" | "dice" | "attrition" | "health" | "energy" | "defense" | "travel" | "threat";
 
 export type AttributeAudience = "self" | "enemy" | "team";
 

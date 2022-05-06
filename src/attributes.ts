@@ -7,6 +7,7 @@ export type Attribute =
   | HealthAttribute
   | EnergyAttribute
   | DefenseAttribute
+  | ThreatAttribute
   | TravelAttribute;
 
 export const parseAttribute = (rawAttributeName: string): Attribute => {
@@ -27,9 +28,13 @@ export const parseAttribute = (rawAttributeName: string): Attribute => {
       return new EnergyAttribute(attrArr[1] as AttributeAudience);
     case "defense":
       return new DefenseAttribute(attrArr[1] as AttributeAudience);
+    case "threat":
+      return new ThreatAttribute(attrArr[1] as AttributeAudience);
     case "travel":
       return new TravelAttribute();
   }
+
+  throw new Error(`Unknown attribute: ${rawAttributeName}`);
 };
 
 export class DiceAttribute implements IAttribute {
@@ -59,6 +64,11 @@ export class EnergyAttribute implements IAttribute {
 
 export class DefenseAttribute implements IAttribute {
   readonly name = "defense";
+  constructor(readonly audience: AttributeAudience) {}
+}
+
+export class ThreatAttribute implements IAttribute {
+  readonly name = "threat";
   constructor(readonly audience: AttributeAudience) {}
 }
 

@@ -2,7 +2,7 @@ import React, { useCallback, useContext, useEffect, useState, useMemo } from "re
 import EditableStat from "../EditableStat";
 import styled from "styled-components";
 import CharacterInfoHeader from "../CharacterInfoHeader";
-import { CharacterLevel, CharacterStats, Power, StatType, MainScreenList } from "../../types";
+import { CharacterLevel, StatType, MainScreenList } from "../../types";
 import useFlipFlop from "../useFlipFlop";
 import SpellbookCarousel from "../SpellbookCarousel";
 import ListPowers from "../ListPowers";

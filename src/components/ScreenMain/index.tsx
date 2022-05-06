@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import EditableStat from "../EditableStat";
 import styled from "styled-components";
 import CharacterInfoHeader from "../CharacterInfoHeader";
-import { CharacterLevel, CharacterStats, Power, StatType, List } from "../../types";
+import { CharacterLevel, CharacterStats, StatType, List, CharacterSheetSlot } from "../../types";
 import useFlipFlop from "../useFlipFlop";
 import SpellbookCarousel from "../SpellbookCarousel";
 import ListPowers from "../ListPowers";
@@ -11,7 +11,7 @@ import { powers, statsForLevel } from "../../data-accessor";
 
 const MainScreen = () => {
   const [activeList, setActiveList] = useState<List>("powers");
-  const [charSheetSlots, setCharSheetSlots] = useState<Power[]>([]);
+  const [charSheetSlots, setCharSheetSlots] = useState<CharacterSheetSlot[]>([]);
 
   const { value: isSpellbookModalOpen, toggle: toggleSpellbookModal, setOff: hideSpellbookModal } = useFlipFlop();
 
@@ -31,7 +31,19 @@ const MainScreen = () => {
   });
 
   useEffect(() => {
-    setCharSheetSlots(Array.from({ length: 8 }).map((_, index) => powers[index]));
+    setCharSheetSlots(
+      Array.from({ length: 8 }).map((_, index) => {
+        const power = powers[index];
+        return {
+          slotTypes: [power.type],
+          name: power.name,
+          // This needs to be changed and renamed as this will also be where pet health metadata is stored
+          energyCost: power.type === "instant" ? power.energyCost : 0,
+          iconLink: power.iconLink,
+          attributesImpacted: power.attributesImpacted,
+        };
+      })
+    );
   }, []);
 
   const generateStatChangeHandler = useCallback((statType: StatType) => {

@@ -24,14 +24,29 @@ export type HeroClass = "paladin" | "warlock" | "rogue" | "mage" | "hunter" | "d
 
 export type DiceColour = "green" | "red" | "blue";
 
-export type PowerType = "active" | "instant" | "weapon";
+export type SlotType = "active" | "instant" | "weapon";
 
 export type Phase = "End_Reroll" | "Start_Dice" | "Start_Action" | "Place_Tokens" | "Team_Health_Down" | "Global";
+
+export interface AttributeImpact {
+  attribute: Attribute;
+  minImpact: number;
+  maxImpact: number;
+}
+
+export interface Attribute {
+  name: AttributeName;
+  audience?: AttributeAudience;
+}
+
+export type AttributeName = "damage" | "dice" | "attrition" | "health" | "energy" | "defense" | "travel";
+
+export type AttributeAudience = "self" | "enemy" | "team";
 
 export type Power = {
   name: string;
   class: HeroClass;
-  type: PowerType;
+  type: SlotType;
   requiredLevel: CharacterLevel;
   goldCost: number;
   energyCost: number;
@@ -39,7 +54,7 @@ export type Power = {
   iconLink: string;
   phase: Phase;
   dependantOn?: string[];
-  attributesImpacted?: string[];
+  attributesImpacted: AttributeImpact[];
   effect: string;
   spotColour?: DiceColour[];
   spotAmount?: string;
@@ -60,4 +75,12 @@ export type LevelStats = {
   level: CharacterLevel;
   health: number;
   energy: number;
+};
+
+export type CharacterSheetSlot = {
+  slotTypes: SlotType[];
+  name: string;
+  iconLink: string;
+  energyCost: number;
+  attributesImpacted: AttributeImpact[];
 };

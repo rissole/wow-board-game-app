@@ -1,17 +1,17 @@
 import React from "react";
-import { Power } from "../../types";
+import { CharacterSheetSlot } from "../../types";
 
-import CharacterSheetSlot from "../CharacterSheetSlot";
+import EquippedCharacterSheetSlot from "../EquippedCharacterSheetSlot";
 
 interface Props {
-  charSheetSlots: Power[];
+  charSheetSlots: CharacterSheetSlot[];
 }
 
 const PowersList = ({ charSheetSlots }: Props) => {
   return (
     <>
       {charSheetSlots.map((charSheetSlot, i) => {
-        return <CharacterSheetSlot power={charSheetSlot} key={i} />;
+        return <EquippedCharacterSheetSlot slot={charSheetSlot} key={i} />;
       })}
     </>
   );

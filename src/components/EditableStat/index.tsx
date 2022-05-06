@@ -21,7 +21,7 @@ const renderIcon = (stat: StatType) => {
 export interface Props {
   statName: StatType;
   currentValue: number;
-  onStatChange: (newCurrent: number, newMax?: number) => void;
+  onStatChange: (newCurrent: number) => void;
   maxValue?: number;
 }
 
@@ -36,7 +36,7 @@ const EditableStat = (props: Props) => {
 
   const onCurrentValueChange = useCallback(
     (newCurrentValue: number) => {
-      props.onStatChange(newCurrentValue, props.maxValue);
+      props.onStatChange(newCurrentValue);
     },
     [props]
   );

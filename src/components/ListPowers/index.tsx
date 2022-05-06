@@ -1,17 +1,14 @@
-import React from "react";
-import { Power } from "../../types";
-
+import React, { useContext } from "react";
+import { GameContext } from "../GameProvider";
 import CharacterSheetSlot from "../CharacterSheetSlot";
 
-interface Props {
-  charSheetSlots: Power[];
-}
+const PowersList = () => {
+  const { powers } = useContext(GameContext);
 
-const PowersList = ({ charSheetSlots }: Props) => {
   return (
     <>
-      {charSheetSlots.map((charSheetSlot, i) => {
-        return <CharacterSheetSlot power={charSheetSlot} key={i} />;
+      {powers.map((power, i) => {
+        return <CharacterSheetSlot power={power} key={i} />;
       })}
     </>
   );

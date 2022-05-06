@@ -22,7 +22,6 @@ interface Props {
 }
 
 const CharacterSelectScreen = (props: Props) => {
-  // TODO: Use context directly here?
   const [selectedFaction, setSelectedFaction] = useState<Faction | null>(null);
   const [selectedClass, setSelectedClass] = useState<HeroClass | null>(null);
 

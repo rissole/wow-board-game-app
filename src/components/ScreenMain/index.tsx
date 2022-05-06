@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState, useMemo } from "react";
 import EditableStat from "../EditableStat";
 import styled from "styled-components";
 import CharacterInfoHeader from "../CharacterInfoHeader";
@@ -11,57 +11,41 @@ import { GameContext } from "../GameProvider";
 import { powers, statsForLevel } from "../../data-accessor";
 
 const MainScreen = () => {
-  const { character } = useContext(GameContext);
+  const { character, updateCharacter, setPowers } = useContext(GameContext);
   const [activeList, setActiveList] = useState<MainScreenList>("powers");
-  const [charSheetSlots, setCharSheetSlots] = useState<Power[]>([]);
-
   const { value: isSpellbookModalOpen, toggle: toggleSpellbookModal, setOff: hideSpellbookModal } = useFlipFlop();
-
-  const [characterLevel, setCharacterLevel] = useState<CharacterLevel>(1);
-  const [characterStats, setCharacterStats] = useState<CharacterStats>({
-    health: {
-      current: statsForLevel(characterLevel).health,
-      max: statsForLevel(characterLevel).health,
-    },
-    energy: {
-      current: statsForLevel(characterLevel).energy,
-      max: statsForLevel(characterLevel).energy,
-    },
-    gold: {
-      current: 10,
-    },
-  });
+  const statsForCurrentLevel = useMemo(() => statsForLevel(character.level), [character]);
 
   useEffect(() => {
-    setCharSheetSlots(Array.from({ length: 8 }).map((_, index) => powers[index]));
-  }, []);
+    // Populate some mock data
+    setPowers(Array.from({ length: 8 }).map((_, index) => powers[index]));
+  }, [setPowers]);
 
-  const generateStatChangeHandler = useCallback((statType: StatType) => {
-    return (newCurrentValue: number, newMaxCurrentValue?: number) => {
-      setCharacterStats((oldStats) => ({
-        ...oldStats,
-        [statType]: {
-          current: newCurrentValue,
-          ...(newMaxCurrentValue !== undefined ? { max: newMaxCurrentValue } : {}),
-        },
-      }));
-    };
-  }, []);
+  const generateStatChangeHandler = useCallback(
+    (statType: StatType) => {
+      return (newCurrentValue: number) => {
+        // TODO: I think some items make it possible to go above your max class value, we may need to support this
+        updateCharacter({
+          [statType]: newCurrentValue,
+        });
+      };
+    },
+    [updateCharacter]
+  );
 
-  const updateCharacterLevel = useCallback((newLevel: CharacterLevel) => {
-    setCharacterLevel(newLevel);
-    setCharacterStats((oldStats) => ({
-      ...oldStats,
-      health: {
-        current: statsForLevel(newLevel).health,
-        max: statsForLevel(newLevel).health,
-      },
-      energy: {
-        current: statsForLevel(newLevel).energy,
-        max: statsForLevel(newLevel).energy,
-      },
-    }));
-  }, []);
+  // TODO: Rework the level up experience so that users don't accidentally lose their current health/energy stats
+  // Currently we update your stats immediately once you modify your level in the modal
+  const updateCharacterLevel = useCallback(
+    (newLevel: CharacterLevel) => {
+      const newStats = statsForLevel(newLevel);
+      updateCharacter({
+        level: newLevel,
+        health: newStats.health,
+        energy: newStats.energy,
+      });
+    },
+    [updateCharacter]
+  );
 
   const closeNavModal = useCallback(() => {
     hideSpellbookModal();
@@ -81,7 +65,7 @@ const MainScreen = () => {
         return <ListInventory />;
       case "powers":
       default:
-        return <ListPowers charSheetSlots={charSheetSlots} />;
+        return <ListPowers />;
     }
   };
 
@@ -101,25 +85,25 @@ const MainScreen = () => {
         <CharacterInfoHeader
           class={character.heroClass}
           faction={character.faction}
-          level={characterLevel}
+          level={character.level}
           setLevel={updateCharacterLevel}
         />
         <HealthEnergyGoldSection>
           <EditableStat
             statName="health"
-            currentValue={characterStats.health.current}
-            maxValue={characterStats.health.max}
+            currentValue={character.health}
+            maxValue={statsForCurrentLevel.health}
             onStatChange={generateStatChangeHandler("health")}
           />
           <EditableStat
             statName="energy"
-            currentValue={characterStats.energy.current}
-            maxValue={characterStats.energy.max}
+            currentValue={character.energy}
+            maxValue={statsForCurrentLevel.energy}
             onStatChange={generateStatChangeHandler("energy")}
           />
           <EditableStat
             statName="gold"
-            currentValue={characterStats.gold.current}
+            currentValue={character.gold}
             onStatChange={generateStatChangeHandler("gold")}
           />
         </HealthEnergyGoldSection>

@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "styled-components";
 import { Power, PowerType } from "../../types";
 import activeSpellPath from "./active_spell_icon.jpg";

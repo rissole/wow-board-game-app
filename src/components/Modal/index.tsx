@@ -35,6 +35,8 @@ const Container = styled.div`
   padding: 8px;
   display: flex;
   overflow: hidden;
+  justify-content: center;
+  align-items: center;
 `;
 
 export default Modal;

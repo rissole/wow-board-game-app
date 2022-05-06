@@ -18,14 +18,10 @@ interface SlotIconsProps {
   slotTypes: SlotType[];
 }
 
-const getIconPath = (powerType: SlotType) => {
-  if (powerType === "active") {
-    return activeSpellPath;
-  } else if (powerType === "instant") {
-    return instantSpellPath;
-  } else {
-    return weaponPath;
-  }
+const slotTypeToIcon: Record<SlotType, string> = {
+  active: activeSpellPath,
+  instant: instantSpellPath,
+  weapon: weaponPath,
 };
 
 const EquippedCharacterSheetSlot = (props: Props) => {
@@ -63,7 +59,7 @@ const SlotIcons = (props: SlotIconsProps) => {
   return (
     <SlotIconsContainer>
       {props.slotTypes.map((slotType) => {
-        return <Icon height={18} width={18} path={getIconPath(slotType)} />;
+        return <Icon height={18} width={18} path={slotTypeToIcon[slotType]} />;
       })}
     </SlotIconsContainer>
   );

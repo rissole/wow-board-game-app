@@ -5,7 +5,6 @@ import instantSpellPath from "./instant_spell_icon.jpg";
 import weaponPath from "./weapon_icon.jpg";
 import Icon from "../Icon";
 import RenderedDice from "../RenderedDice";
-import { DiceAttribute } from "../../attributes";
 
 export interface Props {
   slot: CharacterSheetSlot;
@@ -50,8 +49,11 @@ const AttributesImpactedView = (props: AttributeProps) => {
         .filter((attr) => attr.attribute.name === "dice")
         .sort()
         .map((attr) => {
-          const dice = attr.attribute as DiceAttribute;
-          return <RenderedDice diceColour={dice.diceColour} numOfDice={attr.maxImpact} />;
+          if (attr.attribute.name === "dice") {
+            const diceAttr = attr.attribute;
+            return <RenderedDice diceColour={diceAttr.diceColour} numOfDice={attr.maxImpact} />;
+          }
+          return undefined;
         })}
     </AttributesContainer>
   );

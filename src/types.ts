@@ -1,3 +1,5 @@
+import { Attribute } from "./attributes";
+
 export type StatType = "health" | "energy" | "gold";
 
 export type CharacterLevel = 1 | 2 | 3 | 4 | 5;
@@ -34,7 +36,7 @@ export interface AttributeImpact {
   maxImpact: number;
 }
 
-export interface Attribute {
+export interface IAttribute {
   name: AttributeName;
   audience?: AttributeAudience;
 }

@@ -45,8 +45,8 @@ function parseAttributesImpacted(rawAttributesEntry: string): AttributeImpact[] 
     const attrArr = rawAttribute.split(" ");
     return {
       attribute: parseAttribute(attrArr[0]),
-      minImpact: parseInt(attrArr[1]),
-      maxImpact: parseInt(attrArr[attrArr.length - 1]),
+      minImpact: parseInt(attrArr[1], 10),
+      maxImpact: parseInt(attrArr[attrArr.length - 1], 10),
     };
   });
 }

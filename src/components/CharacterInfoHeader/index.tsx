@@ -37,6 +37,9 @@ const CharacterInfoHeader = (props: Props) => {
   return (
     <>
       <Container onClick={showLevelUpModal}>
+        <span>
+          {props.faction} {props.class}
+        </span>
         <Icon height={32} width={32} path={healthPath} />
         <Icon height={32} width={32} path={manaPath} />
         <LevelSpan>Lvl {props.level}</LevelSpan>

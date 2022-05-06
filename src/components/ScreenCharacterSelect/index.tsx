@@ -18,10 +18,11 @@ import priestIcon from "./priest.png";
 const CLASSES: HeroClass[] = ["paladin", "warlock", "rogue", "mage", "hunter", "druid", "warrior", "shaman", "priest"];
 
 interface Props {
-  onConfirmSelection: () => void;
+  onConfirmSelection: (faction: Faction, heroClass: HeroClass) => void;
 }
 
 const CharacterSelectScreen = (props: Props) => {
+  // TODO: Use context directly here?
   const [selectedFaction, setSelectedFaction] = useState<Faction | null>(null);
   const [selectedClass, setSelectedClass] = useState<HeroClass | null>(null);
 
@@ -51,6 +52,12 @@ const CharacterSelectScreen = (props: Props) => {
         path={heroClassIconMap[val]}
       />
     ));
+  };
+
+  const handleConfirm = () => {
+    if (selectedFaction && selectedClass) {
+      props.onConfirmSelection(selectedFaction, selectedClass);
+    }
   };
 
   return (
@@ -83,7 +90,7 @@ const CharacterSelectScreen = (props: Props) => {
         </FactionGrid>
         <Grid>{renderClassCards()}</Grid>
       </div>
-      <ConfirmSelectionButton disabled={!selectedClass || !selectedFaction} onClick={props.onConfirmSelection}>
+      <ConfirmSelectionButton disabled={!selectedClass || !selectedFaction} onClick={handleConfirm}>
         ✓
       </ConfirmSelectionButton>
     </>

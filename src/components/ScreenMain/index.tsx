@@ -1,16 +1,18 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import EditableStat from "../EditableStat";
 import styled from "styled-components";
 import CharacterInfoHeader from "../CharacterInfoHeader";
-import { CharacterLevel, CharacterStats, Power, StatType, List } from "../../types";
+import { CharacterLevel, CharacterStats, Power, StatType, MainScreenList } from "../../types";
 import useFlipFlop from "../useFlipFlop";
 import SpellbookCarousel from "../SpellbookCarousel";
 import ListPowers from "../ListPowers";
 import ListInventory from "../ListInventory";
+import { GameContext } from "../GameProvider";
 import { powers, statsForLevel } from "../../data-accessor";
 
 const MainScreen = () => {
-  const [activeList, setActiveList] = useState<List>("powers");
+  const { character } = useContext(GameContext);
+  const [activeList, setActiveList] = useState<MainScreenList>("powers");
   const [charSheetSlots, setCharSheetSlots] = useState<Power[]>([]);
 
   const { value: isSpellbookModalOpen, toggle: toggleSpellbookModal, setOff: hideSpellbookModal } = useFlipFlop();
@@ -96,7 +98,12 @@ const MainScreen = () => {
       </div>
       <div className="main">{renderActiveList()}</div>
       <div className="statsSection">
-        <CharacterInfoHeader class="druid" faction="alliance" level={characterLevel} setLevel={updateCharacterLevel} />
+        <CharacterInfoHeader
+          class={character.heroClass}
+          faction={character.faction}
+          level={characterLevel}
+          setLevel={updateCharacterLevel}
+        />
         <HealthEnergyGoldSection>
           <EditableStat
             statName="health"

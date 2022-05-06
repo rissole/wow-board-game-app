@@ -126,7 +126,8 @@ const ClassCard = styled.div<{ isSelected: boolean; isDisabled: boolean; path: s
   background-image: url(${(props) => props.path});
   background-repeat: no-repeat;
   background-size: 100% 100%;
-  border: ${(props) => (props.isSelected ? "solid 4px gold" : "solid 4px transparent")};
+  border: ${(props) => (props.isSelected ? "solid 4px gold" : "solid 4px black")};
+  border-radius: 5px;
   display: flex;
   align-items: center;
   justify-content: center;

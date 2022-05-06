@@ -2,6 +2,11 @@
 name: Deploy preview to Firebase
 'on':
   pull_request:
+    paths:
+      - "src/**"
+      - "public/**"
+      - "config/*"
+      - "config/webpack/**"
 
 jobs:
   build_and_preview:

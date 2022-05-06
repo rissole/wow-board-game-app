@@ -81,6 +81,9 @@ const MainScreen = () => {
         <div className="more">More</div>
       </div>
       <div className="main">{renderActiveList()}</div>
+      <h3>
+        {character.faction} {character.heroClass}
+      </h3>
       <div className="statsSection">
         <CharacterInfoHeader
           class={character.heroClass}

@@ -1,0 +1,22 @@
+# Taken from example https://github.com/marketplace/actions/deploy-to-firebase-hosting#deploy-to-a-new-preview-channel-for-every-pr
+name: Deploy preview to Firebase
+'on':
+  pull_request:
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          path: |
+            **/node_modules
+          key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+      - run: npm install
+      - run: npm run build
+      - uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_WOW_BOARD_GAME }}'
+          expires: 7d
+          projectId: wow-board-game

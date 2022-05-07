@@ -1,12 +1,34 @@
-import { AttributeImpact, CharacterLevel, DiceColour, HeroClass, LevelStats, Phase, Power, SlotType } from "./types";
+import {
+  AttributeImpact,
+  CharacterLevel,
+  CharacterSheetSlot,
+  DiceColour,
+  HeroClass,
+  LevelStats,
+  Phase,
+  Power,
+  SlotPrimaryType,
+  SlotSecondaryType,
+  SlotType,
+} from "./types";
 import powersJson from "./powers.csv";
 import levelsJson from "./levels.csv";
+import slotsJson from "./slots.csv";
 import { parseAttribute } from "./attributes";
 
+const RACIAL_SLOT: CharacterSheetSlot = {
+  slotNumber: 0,
+  slotTypes: [
+    {
+      primary: "racial",
+    },
+  ],
+};
 type CsvFile = ReadonlyArray<ReadonlyArray<string | number | null>>;
-
 export const powers: Power[] = parseCsvToPower(powersJson.slice(1));
 export const levelStats: LevelStats[] = parseCsvToLevels(levelsJson.slice(1));
+
+export const slots: CharacterSheetSlot[] = parseCsvToSlots(slotsJson.slice(1));
 
 // TODO: Needs to take a hero class when we fill in the CSV data
 export const statsForLevel = (level: CharacterLevel): LevelStats => {
@@ -24,7 +46,7 @@ function parseCsvToPower(csv: CsvFile): Power[] {
     return {
       name: row[0] as string,
       class: row[1] as HeroClass,
-      type: row[2] as SlotType,
+      type: { primary: row[2] as SlotPrimaryType },
       requiredLevel: row[3] as CharacterLevel,
       goldCost: row[4] as number,
       energyCost: row[5] as number,
@@ -52,7 +74,7 @@ function parseAttributesImpacted(rawAttributesEntry: string): AttributeImpact[] 
   });
 }
 
-export function parseCsvToLevels(csv: CsvFile): LevelStats[] {
+function parseCsvToLevels(csv: CsvFile): LevelStats[] {
   return csv.map((row) => {
     return {
       class: row[0] as HeroClass,
@@ -61,4 +83,33 @@ export function parseCsvToLevels(csv: CsvFile): LevelStats[] {
       energy: row[3] as number,
     };
   });
+}
+
+function parseCsvToSlots(csv: CsvFile): CharacterSheetSlot[] {
+  return csv.reduce(
+    (slots, row) => {
+      //row[0] is class name
+      // TODO: do something with default in row6
+
+      const slotTypes: SlotType[] = [
+        {
+          primary: row[2] as SlotPrimaryType,
+          secondary: row[3] ? (row[3] as SlotSecondaryType) : undefined,
+        },
+      ];
+      if (row[4]) {
+        slotTypes.push({
+          primary: row[4] as SlotPrimaryType,
+          secondary: row[5] ? (row[5] as SlotSecondaryType) : undefined,
+        });
+      }
+
+      slots.push({
+        slotNumber: row[1] as number,
+        slotTypes,
+      });
+      return slots;
+    },
+    [RACIAL_SLOT]
+  );
 }

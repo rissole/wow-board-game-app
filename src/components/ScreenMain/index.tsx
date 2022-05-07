@@ -9,7 +9,7 @@ import ListPowers from "../ListPowers";
 import ListInventory from "../ListInventory";
 import ListReference from "../ListReference";
 import { GameContext } from "../GameProvider";
-import { powers, statsForLevel } from "../../data-accessor";
+import { powers, slots, statsForLevel } from "../../data-accessor";
 import TheFace from "../../assets/samwise.png";
 
 const MainScreen = () => {
@@ -24,13 +24,21 @@ const MainScreen = () => {
     setCharSheetSlots(
       Array.from({ length: 8 }).map((_, index) => {
         const power = powers[index];
+        const slot = slots[index];
         return {
-          slotTypes: [power.type],
-          name: power.name,
-          // This needs to be changed and renamed as this will also be where pet health metadata is stored
-          energyCost: power.type === "instant" ? power.energyCost : 0,
-          iconLink: power.iconLink,
-          attributesImpacted: power.attributesImpacted,
+          ...slot,
+          slotData: slot.slotTypes.some(
+            (value) => value.primary === power.type.primary && value.secondary === power.type.secondary
+          )
+            ? {
+                slotTypes: [power.type],
+                name: power.name,
+                // This needs to be changed and renamed as this will also be where pet health metadata is stored
+                energyCost: power.type.primary === "instant" ? power.energyCost : 0,
+                iconLink: power.iconLink,
+                attributesImpacted: power.attributesImpacted,
+              }
+            : undefined,
         };
       })
     );

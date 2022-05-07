@@ -8,6 +8,7 @@ type CsvFile = ReadonlyArray<ReadonlyArray<string | number | null>>;
 export const powers: Power[] = parseCsvToPower(powersJson.slice(1));
 export const levelStats: LevelStats[] = parseCsvToLevels(levelsJson.slice(1));
 
+// TODO: Needs to take a hero class when we fill in the CSV data
 export const statsForLevel = (level: CharacterLevel): LevelStats => {
   const stat = levelStats.find((stat) => stat.level === level);
 

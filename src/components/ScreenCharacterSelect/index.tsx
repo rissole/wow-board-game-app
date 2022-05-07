@@ -18,7 +18,7 @@ import priestIcon from "./priest.png";
 const CLASSES: HeroClass[] = ["paladin", "warlock", "rogue", "mage", "hunter", "druid", "warrior", "shaman", "priest"];
 
 interface Props {
-  onConfirmSelection: () => void;
+  onConfirmSelection: (faction: Faction, heroClass: HeroClass) => void;
 }
 
 const CharacterSelectScreen = (props: Props) => {
@@ -51,6 +51,12 @@ const CharacterSelectScreen = (props: Props) => {
         path={heroClassIconMap[val]}
       />
     ));
+  };
+
+  const handleConfirm = () => {
+    if (selectedFaction && selectedClass) {
+      props.onConfirmSelection(selectedFaction, selectedClass);
+    }
   };
 
   return (
@@ -92,7 +98,9 @@ const CharacterSelectScreen = (props: Props) => {
             flexFlow: "column nowrap",
           }}
         >
-          <ConfirmSelectionButton disabled={!selectedClass || !selectedFaction} onClick={props.onConfirmSelection} />
+          <ConfirmSelectionButton disabled={!selectedClass || !selectedFaction} onClick={handleConfirm}>
+            ✓
+          </ConfirmSelectionButton>
         </div>
       </div>
     </>

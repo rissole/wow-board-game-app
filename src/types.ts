@@ -11,6 +11,8 @@ export type Screen = "loading" | "main" | "character-select";
 export type MainScreenList = "powers" | "inventory" | "reference";
 export type SlotType = "active" | "instant" | "weapon";
 
+export type CardId = string;
+
 export const isValidLevel = (level: number): level is CharacterLevel =>
   level === 1 || level === 2 || level === 3 || level === 4 || level === 5;
 

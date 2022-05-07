@@ -1,10 +1,13 @@
+import { useContext } from "react";
 import Carousel from "../Carousel";
 import CardSpell from "../CardSpell";
 import { powers } from "../../data-accessor";
+import { CardId } from "../../types";
+import { GameContext } from "../GameProvider";
 
 export interface Props {
   onClose: () => void;
-  onSelectItem: () => void;
+  onSelectItem: (id: CardId) => void;
 }
 export interface Spell {
   icon: string;
@@ -12,11 +15,16 @@ export interface Spell {
   description: string;
 }
 
-const PLACEHOLDER_SPELLS = powers.map((power) => ({
-  title: power.name,
-  node: <CardSpell title={power.name} description={power.rawDescription} />,
-}));
-
 export default function SpellbookCarousel({ onClose, onSelectItem }: Props) {
-  return <Carousel items={PLACEHOLDER_SPELLS} onClose={onClose} onSelectItem={onSelectItem} buttonText="Train" />;
+  const { powers: ownedPowers } = useContext(GameContext);
+
+  const unavailablePowers = ownedPowers.map((power) => power.id);
+  const availablePowers = powers
+    .filter((power) => !unavailablePowers.includes(power.name))
+    .map((power) => ({
+      id: power.name,
+      node: <CardSpell title={power.name} description={power.rawDescription} />,
+    }));
+
+  return <Carousel items={availablePowers} onClose={onClose} onSelectItem={onSelectItem} buttonText="Train" />;
 }

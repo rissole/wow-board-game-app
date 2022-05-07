@@ -2,7 +2,7 @@ import React, { useCallback, useContext, useEffect, useState, useMemo } from "re
 import EditableStat from "../EditableStat";
 import styled from "styled-components";
 import CharacterInfoHeader from "../CharacterInfoHeader";
-import { CharacterLevel, StatType, MainScreenList, CharacterSheetSlot } from "../../types";
+import { CharacterLevel, StatType, MainScreenList, CharacterSheetSlot, CardId } from "../../types";
 import useFlipFlop from "../useFlipFlop";
 import SpellbookCarousel from "../SpellbookCarousel";
 import ListPowers from "../ListPowers";
@@ -13,7 +13,7 @@ import { powers, statsForLevel } from "../../data-accessor";
 import TheFace from "../../assets/samwise.png";
 
 const MainScreen = () => {
-  const { character, updateCharacter } = useContext(GameContext);
+  const { character, updateCharacter, addPower } = useContext(GameContext);
   const [activeList, setActiveList] = useState<MainScreenList>("powers");
   const [charSheetSlots, setCharSheetSlots] = useState<CharacterSheetSlot[]>([]);
 
@@ -66,9 +66,13 @@ const MainScreen = () => {
     hideSpellbookModal();
   }, [hideSpellbookModal]);
 
-  const selectSpellbookItem = useCallback(() => {
-    hideSpellbookModal();
-  }, [hideSpellbookModal]);
+  const selectSpellbookItem = useCallback(
+    (id: CardId) => {
+      addPower(id);
+      hideSpellbookModal();
+    },
+    [addPower, hideSpellbookModal]
+  );
 
   const toggleScreen = useCallback(() => {
     let newActiveList: MainScreenList = "powers";

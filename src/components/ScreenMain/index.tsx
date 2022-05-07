@@ -2,7 +2,7 @@ import React, { useCallback, useContext, useEffect, useState, useMemo } from "re
 import EditableStat from "../EditableStat";
 import styled from "styled-components";
 import CharacterInfoHeader from "../CharacterInfoHeader";
-import { CharacterLevel, StatType, MainScreenList } from "../../types";
+import { CharacterLevel, StatType, MainScreenList, CharacterSheetSlot } from "../../types";
 import useFlipFlop from "../useFlipFlop";
 import SpellbookCarousel from "../SpellbookCarousel";
 import ListPowers from "../ListPowers";
@@ -11,15 +11,28 @@ import { GameContext } from "../GameProvider";
 import { powers, statsForLevel } from "../../data-accessor";
 
 const MainScreen = () => {
-  const { character, updateCharacter, setPowers } = useContext(GameContext);
+  const { character, updateCharacter } = useContext(GameContext);
   const [activeList, setActiveList] = useState<MainScreenList>("powers");
+  const [charSheetSlots, setCharSheetSlots] = useState<CharacterSheetSlot[]>([]);
+
   const { value: isSpellbookModalOpen, toggle: toggleSpellbookModal, setOff: hideSpellbookModal } = useFlipFlop();
   const statsForCurrentLevel = useMemo(() => statsForLevel(character.level), [character]);
 
   useEffect(() => {
-    // Populate some mock data
-    setPowers(Array.from({ length: 8 }).map((_, index) => powers[index]));
-  }, [setPowers]);
+    setCharSheetSlots(
+      Array.from({ length: 8 }).map((_, index) => {
+        const power = powers[index];
+        return {
+          slotTypes: [power.type],
+          name: power.name,
+          // This needs to be changed and renamed as this will also be where pet health metadata is stored
+          energyCost: power.type === "instant" ? power.energyCost : 0,
+          iconLink: power.iconLink,
+          attributesImpacted: power.attributesImpacted,
+        };
+      })
+    );
+  }, []);
 
   const generateStatChangeHandler = useCallback(
     (statType: StatType) => {
@@ -65,7 +78,7 @@ const MainScreen = () => {
         return <ListInventory />;
       case "powers":
       default:
-        return <ListPowers />;
+        return <ListPowers charSheetSlots={charSheetSlots} />;
     }
   };
 

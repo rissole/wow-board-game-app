@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Faction, HeroClass } from "../../types";
+import { Faction, HeroClass, PropsType } from "../../types";
 
 import allianceCircle from "./alliance-circle.png";
 import hordeCircle from "./horde-circle.png";
@@ -88,10 +88,21 @@ const CharacterSelectScreen = (props: Props) => {
           />
         </FactionGrid>
         <Grid>{renderClassCards()}</Grid>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            width: "100%",
+            flex: "1 0 auto",
+            flexFlow: "column nowrap",
+          }}
+        >
+          <ConfirmSelectionButton disabled={!selectedClass || !selectedFaction} onClick={props.onConfirmSelection}>
+            ✓
+          </ConfirmSelectionButton>
+        </div>
       </div>
-      <ConfirmSelectionButton disabled={!selectedClass || !selectedFaction} onClick={handleConfirm}>
-        ✓
-      </ConfirmSelectionButton>
     </>
   );
 };
@@ -141,17 +152,21 @@ const ClassCard = styled.div<{ isSelected: boolean; isDisabled: boolean; path: s
   border-radius: 8px;
 `;
 
-const ConfirmSelectionButton = styled.button`
+const ConfirmSelectionButton = (props: PropsType<typeof ConfirmSelectionButtonInner>) => (
+  <ConfirmSelectionButtonInner type="button" {...props}>
+    ✓
+  </ConfirmSelectionButtonInner>
+);
+
+const ConfirmSelectionButtonInner = styled.button`
   border: solid 4px darkgreen;
   font-size: 120px;
   color: lightgreen;
-  background-color: #36393f;
+  background-color: #46494f;
   height: 160px;
   width: 160px;
   border-radius: 50%;
-  margin: 0 auto;
   text-align: center;
-  margin-bottom: 40px;
 
   :disabled {
     color: lightgrey;

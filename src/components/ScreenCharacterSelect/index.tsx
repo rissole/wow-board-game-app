@@ -98,7 +98,7 @@ const CharacterSelectScreen = (props: Props) => {
             flexFlow: "column nowrap",
           }}
         >
-          <ConfirmSelectionButton disabled={!selectedClass || !selectedFaction} onClick={props.onConfirmSelection}>
+          <ConfirmSelectionButton disabled={!selectedClass || !selectedFaction} onClick={handleConfirm}>
             ✓
           </ConfirmSelectionButton>
         </div>

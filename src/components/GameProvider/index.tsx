@@ -1,6 +1,6 @@
 import React, { createContext, ReactNode, useState } from "react";
 
-import { CharacterLevel, Faction, HeroClass, Power } from "../../types";
+import { CharacterLevel, Faction, HeroClass } from "../../types";
 
 export interface CharacterState {
   heroClass: HeroClass;
@@ -13,9 +13,7 @@ export interface CharacterState {
 
 export type GameContextType = {
   character: CharacterState;
-  powers: Power[]; // TODO: Rework how we represent equipped cards
   updateCharacter: (update: Partial<CharacterState>) => void;
-  setPowers: (powers: Power[]) => void;
 };
 
 const DEFAULT_CHARACTER_STATE: CharacterState = {
@@ -30,9 +28,6 @@ const DEFAULT_CHARACTER_STATE: CharacterState = {
 const DEFAULT_GAME_STATE = {
   character: DEFAULT_CHARACTER_STATE,
   updateCharacter: () => {},
-
-  powers: [],
-  setPowers: () => {},
 };
 
 export const GameContext = createContext<GameContextType>(DEFAULT_GAME_STATE);
@@ -40,17 +35,12 @@ GameContext.displayName = "GameContext";
 
 const GameProvider = (props: { children: ReactNode }) => {
   const [character, setCharacter] = useState<CharacterState>(DEFAULT_CHARACTER_STATE);
-  const [powers, setPowers] = useState<Power[]>([]);
 
   const updateCharacter = (update: Partial<CharacterState>) => {
     setCharacter({ ...character, ...update });
   };
 
-  return (
-    <GameContext.Provider value={{ character, updateCharacter, powers, setPowers }}>
-      {props.children}
-    </GameContext.Provider>
-  );
+  return <GameContext.Provider value={{ character, updateCharacter }}>{props.children}</GameContext.Provider>;
 };
 
 export default GameProvider;

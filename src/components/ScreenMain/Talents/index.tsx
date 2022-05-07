@@ -4,7 +4,7 @@ const Container = styled.div`
   width: 100%;
   text-align: center;
   background-color: #aaa;
-  height: 96px;
+  height: 80px;
 `;
 
 const Talents = () => {

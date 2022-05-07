@@ -5,7 +5,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ## Setup
 
 ```
-nvm use //https://github.com/nvm-sh/nvm
+nvm use #https://github.com/nvm-sh/nvm
 npm i -g yarn
 yarn
 ```

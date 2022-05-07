@@ -26,7 +26,7 @@ const slotTypeToIcon: Record<SlotType, string> = {
 
 const EquippedCharacterSheetSlot = (props: Props) => {
   return (
-    <Container>
+    <FullWidthListContainer>
       <SlotIcons slotTypes={props.slot.slotTypes} />
       <MainContent>
         <Icon path={props.slot.iconLink} height={32} width={32} />
@@ -34,7 +34,7 @@ const EquippedCharacterSheetSlot = (props: Props) => {
         <div style={{ width: "100px" }}> {props.slot.name} </div>
         <AttributesImpactedView attributesImpacted={props.slot.attributesImpacted} />
       </MainContent>
-    </Container>
+    </FullWidthListContainer>
   );
 };
 
@@ -65,7 +65,7 @@ const SlotIcons = (props: SlotIconsProps) => {
   );
 };
 
-const Container = styled.div`
+const FullWidthListContainer = styled.div`
   background-color: #aaa;
   width: 100vw;
   height: 55px;

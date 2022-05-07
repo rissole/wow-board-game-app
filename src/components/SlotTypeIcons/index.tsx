@@ -26,9 +26,9 @@ const slotTypeToIcon: Record<SlotPrimaryType, string> = {
   weapon: weaponPath,
 };
 
-const SlotIcons = (props: Props) => {
+const SlotTypeIcons = (props: Props) => {
   return (
-    <SlotIconsContainer isEquippedSlot={props.isEquippedSlot}>
+    <SlotTypeIconsContainer isEquippedSlot={props.isEquippedSlot}>
       {props.slotTypes.map((slotType, index) => {
         return (
           <Icon
@@ -39,13 +39,14 @@ const SlotIcons = (props: Props) => {
           />
         );
       })}
-    </SlotIconsContainer>
+    </SlotTypeIconsContainer>
   );
 };
 
-const SlotIconsContainer = styled.div<ContainerProps>`
-  display: ${(props) => (props.isEquippedSlot ? "auto" : "flex")};
+const SlotTypeIconsContainer = styled.div<ContainerProps>`
+  display: flex;
+  ${(props) => (props.isEquippedSlot ? "flex-flow: column;" : "")}
   gap: 4px;
 `;
 
-export default SlotIcons;
+export default SlotTypeIcons;

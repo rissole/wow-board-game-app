@@ -85,6 +85,7 @@ function parseCsvToLevels(csv: CsvFile): LevelStats[] {
   });
 }
 
+// csv headers: className, slotNumber, primarytype1, secondarytype1, primarytype2, secondarytype2
 function parseCsvToSlots(csv: CsvFile): SheetSlot[] {
   return csv.reduce(
     (slots, row) => {

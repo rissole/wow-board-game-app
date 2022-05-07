@@ -2,8 +2,10 @@ import styled from "styled-components";
 import { AttributeImpact, SheetSlot } from "../../types";
 import Icon from "../Icon";
 import RenderedDice from "../RenderedDice";
-import SlotIcons from "../SlotIcons";
-import CharacterSheetSlot from "../CharacterSheetSlot";
+import SlotTypeIcons from "../SlotTypeIcons";
+import CharacterSheetSlot from "../BaseCharacterSheetSlot";
+
+const NAME_BOX_WIDTH = "100px";
 
 export interface Props {
   slot: SheetSlot;
@@ -21,11 +23,11 @@ const EquippedCharacterSheetSlot = (props: Props) => {
   return (
     <CharacterSheetSlot>
       <Container>
-        <SlotIcons slotTypes={props.slot.slotTypes} isEquippedSlot={true} />
+        <SlotTypeIcons slotTypes={props.slot.slotTypes} isEquippedSlot={true} />
         <MainContent>
           <Icon path={slotData.iconLink} height={32} width={32} />
           <CostBox>{slotData.energyCost}</CostBox>
-          <div style={{ width: "100px" }}> {slotData.name} </div>
+          <div style={{ width: NAME_BOX_WIDTH }}> {slotData.name} </div>
           <AttributesImpactedView attributesImpacted={slotData.attributesImpacted} />
         </MainContent>
       </Container>

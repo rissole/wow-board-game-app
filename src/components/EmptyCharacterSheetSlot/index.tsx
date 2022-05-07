@@ -1,7 +1,7 @@
 import { SheetSlot } from "../../types";
 import styled from "styled-components";
-import SlotIcons from "../SlotIcons";
-import CharacterSheetSlot from "../CharacterSheetSlot";
+import SlotTypeIcons from "../SlotTypeIcons";
+import CharacterSheetSlot from "../BaseCharacterSheetSlot";
 
 interface Props {
   slot: SheetSlot;
@@ -10,7 +10,7 @@ interface Props {
 const EmptyCharacterSheetSlot = (props: Props) => {
   return (
     <CharacterSheetSlot style={{ justifyContent: "space-between" }}>
-      <SlotIcons slotTypes={props.slot.slotTypes} isEquippedSlot={false} />
+      <SlotTypeIcons slotTypes={props.slot.slotTypes} isEquippedSlot={false} />
       <AddIcon>+</AddIcon>
     </CharacterSheetSlot>
   );

@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { ReactNode, useState } from "react";
 import styled from "styled-components";
-import { Faction, HeroClass, PropsType } from "../../types";
+import { Faction, HeroClass } from "../../types";
 
 import allianceCircle from "./alliance-circle.png";
 import hordeCircle from "./horde-circle.png";
@@ -170,15 +170,15 @@ const ConfirmSelectionButtonInner = styled.div`
   justify-content: center;
   appearance: none;
 
-  :disabled {
+  &[aria-disabled="true"] {
     color: lightgrey;
     opacity: 10%;
     border: solid 4px lightgrey;
   }
 `;
 
-const ConfirmSelectionButton = (props: PropsType<typeof ConfirmSelectionButtonInner>) => (
-  <ConfirmSelectionButtonInner tabindex="0" role="button" aria-pressed="false" {...props}>
+const ConfirmSelectionButton = (props: { disabled: boolean; children?: ReactNode; onClick?: () => void }) => (
+  <ConfirmSelectionButtonInner role="button" aria-disabled={props.disabled} {...props}>
     <CheckMark color="lightgreen" size="64px" />
   </ConfirmSelectionButtonInner>
 );

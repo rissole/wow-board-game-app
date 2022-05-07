@@ -1,0 +1,8 @@
+Class,Slot Number,Type 1,Subtype 1,Type 2,Subtype 2,Default
+Druid,1,instant,,active,,
+Druid,2,instant,,active,,
+Druid,3,active,,,,
+Druid,4,instant,,,,Wrath
+Druid,5,weapon,"mace,staff",instant,,Darkwood Staff
+Druid,6,general,,instant,,
+Druid,7,armor,"cloth,leather",,,

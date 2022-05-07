@@ -1,40 +1,37 @@
 import styled from "styled-components";
-import { AttributeImpact, CharacterSheetSlot, SlotType } from "../../types";
-import activeSpellPath from "./active_spell_icon.jpg";
-import instantSpellPath from "./instant_spell_icon.jpg";
-import weaponPath from "./weapon_icon.jpg";
+import { AttributeImpact, SheetSlot } from "../../types";
 import Icon from "../Icon";
 import RenderedDice from "../RenderedDice";
+import SlotTypeIcons from "../SlotTypeIcons";
+import CharacterSheetSlot from "../BaseCharacterSheetSlot";
+
+const NAME_BOX_WIDTH = "100px";
 
 export interface Props {
-  slot: CharacterSheetSlot;
+  slot: SheetSlot;
 }
 
 interface AttributeProps {
   attributesImpacted: AttributeImpact[];
 }
 
-interface SlotIconsProps {
-  slotTypes: SlotType[];
-}
-
-const slotTypeToIcon: Record<SlotType, string> = {
-  active: activeSpellPath,
-  instant: instantSpellPath,
-  weapon: weaponPath,
-};
-
 const EquippedCharacterSheetSlot = (props: Props) => {
+  const slotData = props.slot.slotData;
+  if (!slotData) {
+    throw new Error("Should be data in slot");
+  }
   return (
-    <Container>
-      <SlotIcons slotTypes={props.slot.slotTypes} />
-      <MainContent>
-        <Icon path={props.slot.iconLink} height={32} width={32} />
-        <CostBox>{props.slot.energyCost}</CostBox>
-        <div style={{ width: "100px" }}> {props.slot.name} </div>
-        <AttributesImpactedView attributesImpacted={props.slot.attributesImpacted} />
-      </MainContent>
-    </Container>
+    <CharacterSheetSlot>
+      <Container>
+        <SlotTypeIcons slotTypes={props.slot.slotTypes} isEquippedSlot={true} />
+        <MainContent>
+          <Icon path={slotData.iconLink} height={32} width={32} />
+          <CostBox>{slotData.energyCost}</CostBox>
+          <div style={{ width: NAME_BOX_WIDTH }}> {slotData.name} </div>
+          <AttributesImpactedView attributesImpacted={slotData.attributesImpacted} />
+        </MainContent>
+      </Container>
+    </CharacterSheetSlot>
   );
 };
 
@@ -44,10 +41,10 @@ const AttributesImpactedView = (props: AttributeProps) => {
       {props.attributesImpacted
         .filter((attr) => attr.attribute.name === "dice")
         .sort()
-        .map((attr) => {
+        .map((attr, index) => {
           if (attr.attribute.name === "dice") {
             const diceAttr = attr.attribute;
-            return <RenderedDice diceColour={diceAttr.diceColour} numOfDice={attr.maxImpact} />;
+            return <RenderedDice diceColour={diceAttr.diceColour} numOfDice={attr.maxImpact} key={index} />;
           }
           return undefined;
         })}
@@ -55,24 +52,8 @@ const AttributesImpactedView = (props: AttributeProps) => {
   );
 };
 
-const SlotIcons = (props: SlotIconsProps) => {
-  return (
-    <SlotIconsContainer>
-      {props.slotTypes.map((slotType) => {
-        return <Icon height={18} width={18} path={slotTypeToIcon[slotType]} />;
-      })}
-    </SlotIconsContainer>
-  );
-};
-
 const Container = styled.div`
-  background-color: #aaa;
-  width: 100vw;
-  height: 55px;
-  border: 1px solid black;
   display: flex;
-  gap: 4px;
-  padding: 8px;
 `;
 
 const MainContent = styled.div`
@@ -82,8 +63,6 @@ const MainContent = styled.div`
   padding: 8px;
   flex-grow: 0;
 `;
-
-const SlotIconsContainer = styled.div``;
 
 const CostBox = styled.div`
   background-color: white;

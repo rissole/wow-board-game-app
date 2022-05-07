@@ -2,20 +2,20 @@ import React, { useCallback, useContext, useEffect, useState, useMemo } from "re
 import EditableStat from "../EditableStat";
 import styled from "styled-components";
 import CharacterInfoHeader from "../CharacterInfoHeader";
-import { CharacterLevel, StatType, MainScreenList, CharacterSheetSlot, CardId } from "../../types";
+import { CharacterLevel, StatType, MainScreenList, SheetSlot, CardId } from "../../types";
 import useFlipFlop from "../useFlipFlop";
 import SpellbookCarousel from "../SpellbookCarousel";
 import ListPowers from "../ListPowers";
 import ListInventory from "../ListInventory";
 import ListReference from "../ListReference";
 import { GameContext } from "../GameProvider";
-import { powers, statsForLevel } from "../../data-accessor";
+import { powers, slots, statsForLevel } from "../../data-accessor";
 import TheFace from "../../assets/samwise.png";
 
 const MainScreen = () => {
   const { character, updateCharacter, addPower } = useContext(GameContext);
   const [activeList, setActiveList] = useState<MainScreenList>("powers");
-  const [charSheetSlots, setCharSheetSlots] = useState<CharacterSheetSlot[]>([]);
+  const [charSheetSlots, setCharSheetSlots] = useState<SheetSlot[]>([]);
 
   const { value: isSpellbookModalOpen, toggle: toggleSpellbookModal, setOff: hideSpellbookModal } = useFlipFlop();
   const statsForCurrentLevel = useMemo(() => statsForLevel(character.level), [character]);
@@ -24,13 +24,21 @@ const MainScreen = () => {
     setCharSheetSlots(
       Array.from({ length: 8 }).map((_, index) => {
         const power = powers[index];
+        const slot = slots[index];
         return {
-          slotTypes: [power.type],
-          name: power.name,
-          // This needs to be changed and renamed as this will also be where pet health metadata is stored
-          energyCost: power.type === "instant" ? power.energyCost : 0,
-          iconLink: power.iconLink,
-          attributesImpacted: power.attributesImpacted,
+          ...slot,
+          slotData: slot.slotTypes.some(
+            (value) => value.primary === power.type.primary && value.secondary === power.type.secondary
+          )
+            ? {
+                slotTypes: [power.type],
+                name: power.name,
+                // This needs to be changed and renamed as this will also be where pet health metadata is stored
+                energyCost: power.type.primary === "instant" ? power.energyCost : 0,
+                iconLink: power.iconLink,
+                attributesImpacted: power.attributesImpacted,
+              }
+            : undefined,
         };
       })
     );

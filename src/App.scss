@@ -34,19 +34,22 @@ $navButtonHeight: 72px;
   height: 100%;
   display: flex;
   flex-flow: row wrap;
-  flex-grow: 5;
-  align-content: flex-start;
+  flex: 1 0 auto;
+  align-content: stretch;
+
+  &.powers {
+    align-content: start;
+  }
 }
 
 html,
 #root,
 body {
-  height: 100%;
+  height: calc(100% - env(safe-area-inset-bottom));
   width: 100%;
   margin: 0;
   max-width: 100%;
-  overflow: hidden;
-  background-color: #2f3136
+  background-color: #2f3136;
 }
 
 * {

@@ -14,6 +14,7 @@ import druidIcon from "./druid.png";
 import warriorIcon from "./warrior.png";
 import shamanIcon from "./shaman.png";
 import priestIcon from "./priest.png";
+import CheckMark from "./CheckMarkIcon";
 
 const CLASSES: HeroClass[] = ["paladin", "warlock", "rogue", "mage", "hunter", "druid", "warrior", "shaman", "priest"];
 
@@ -131,9 +132,10 @@ const Grid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
-  width: 100vw;
-  height: 100vw;
+  width: min(100vw, 390px);
+  height: min(100vw, 390px);
   padding: 8px;
+  margin: 0 auto;
   gap: 4px;
 `;
 
@@ -152,21 +154,21 @@ const ClassCard = styled.div<{ isSelected: boolean; isDisabled: boolean; path: s
   border-radius: 8px;
 `;
 
-const ConfirmSelectionButton = (props: PropsType<typeof ConfirmSelectionButtonInner>) => (
-  <ConfirmSelectionButtonInner type="button" {...props}>
-    ✓
-  </ConfirmSelectionButtonInner>
-);
-
-const ConfirmSelectionButtonInner = styled.button`
+/**
+ * as much as we'd like this to be a button, some in-built
+ * iOS safari styles make a real button too hard to deal with
+ */
+const ConfirmSelectionButtonInner = styled.div`
   border: solid 4px darkgreen;
-  font-size: 120px;
-  color: lightgreen;
+  font-size: 72px;
   background-color: #46494f;
-  height: 160px;
-  width: 160px;
+  height: 96px;
+  width: 96px;
   border-radius: 50%;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  appearance: none;
 
   :disabled {
     color: lightgrey;
@@ -174,5 +176,11 @@ const ConfirmSelectionButtonInner = styled.button`
     border: solid 4px lightgrey;
   }
 `;
+
+const ConfirmSelectionButton = (props: PropsType<typeof ConfirmSelectionButtonInner>) => (
+  <ConfirmSelectionButtonInner tabindex="0" role="button" aria-pressed="false" {...props}>
+    <CheckMark color="lightgreen" size="64px" />
+  </ConfirmSelectionButtonInner>
+);
 
 export default CharacterSelectScreen;

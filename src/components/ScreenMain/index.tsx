@@ -121,7 +121,7 @@ const MainScreen = () => {
         />
         <TopNavItem className="more" onClick={() => setActiveList("reference")} displayName="Reference" />
       </div>
-      <div className="main">{renderActiveList()}</div>
+      <div className="main powers">{renderActiveList()}</div>
       <h3>
         {character.faction} {character.heroClass}
       </h3>

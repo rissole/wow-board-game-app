@@ -1,13 +1,13 @@
 import { useCallback, useContext, useEffect, useState } from "react";
 import styled from "styled-components";
-import { MainScreenList, CharacterSheetSlot, CardId } from "../../types";
+import { MainScreenList, SheetSlot, CardId } from "../../types";
 import useFlipFlop from "../useFlipFlop";
 import SpellbookCarousel from "../SpellbookCarousel";
 import ListPowers from "../ListPowers";
 import ListInventory from "../ListInventory";
 import ListReference from "../ListReference";
 import { GameContext } from "../GameProvider";
-import { powers } from "../../data-accessor";
+import { powers, slots } from "../../data-accessor";
 import TheFace from "../../assets/samwise.png";
 import Talents from "./Talents";
 import Footer from "./Footer";
@@ -15,7 +15,7 @@ import Footer from "./Footer";
 const MainScreen = () => {
   const { addPower } = useContext(GameContext);
   const [activeList, setActiveList] = useState<MainScreenList>("powers");
-  const [charSheetSlots, setCharSheetSlots] = useState<CharacterSheetSlot[]>([]);
+  const [charSheetSlots, setCharSheetSlots] = useState<SheetSlot[]>([]);
 
   const { value: isSpellbookModalOpen, toggle: toggleSpellbookModal, setOff: hideSpellbookModal } = useFlipFlop();
 
@@ -23,13 +23,21 @@ const MainScreen = () => {
     setCharSheetSlots(
       Array.from({ length: 8 }).map((_, index) => {
         const power = powers[index];
+        const slot = slots[index];
         return {
-          slotTypes: [power.type],
-          name: power.name,
-          // This needs to be changed and renamed as this will also be where pet health metadata is stored
-          energyCost: power.type === "instant" ? power.energyCost : 0,
-          iconLink: power.iconLink,
-          attributesImpacted: power.attributesImpacted,
+          ...slot,
+          slotData: slot.slotTypes.some(
+            (value) => value.primary === power.type.primary && value.secondary === power.type.secondary
+          )
+            ? {
+                slotTypes: [power.type],
+                name: power.name,
+                // This needs to be changed and renamed as this will also be where pet health metadata is stored
+                energyCost: power.type.primary === "instant" ? power.energyCost : 0,
+                iconLink: power.iconLink,
+                attributesImpacted: power.attributesImpacted,
+              }
+            : undefined,
         };
       })
     );
@@ -94,7 +102,7 @@ const MainScreen = () => {
         />
         <TopNavItem className="more" onClick={() => setActiveList("reference")} displayName="Reference" />
       </div>
-      <div className="main">{renderActiveList()}</div>
+      <div className="main powers">{renderActiveList()}</div>
       <Talents />
       <Footer />
       {isSpellbookModalOpen ? <SpellbookCarousel onClose={closeNavModal} onSelectItem={selectSpellbookItem} /> : null}

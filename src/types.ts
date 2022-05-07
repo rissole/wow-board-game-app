@@ -86,3 +86,4 @@ export type CharacterSheetSlot = {
   energyCost: number;
   attributesImpacted: AttributeImpact[];
 };
+export type PropsType<Component> = Component extends (props: infer P) => any ? P : never;

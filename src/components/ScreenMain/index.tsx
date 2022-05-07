@@ -7,8 +7,10 @@ import useFlipFlop from "../useFlipFlop";
 import SpellbookCarousel from "../SpellbookCarousel";
 import ListPowers from "../ListPowers";
 import ListInventory from "../ListInventory";
+import ListReference from "../ListReference";
 import { GameContext } from "../GameProvider";
 import { powers, statsForLevel } from "../../data-accessor";
+import TheFace from "../../assets/samwise.png";
 
 const MainScreen = () => {
   const { character, updateCharacter, addPower } = useContext(GameContext);
@@ -73,11 +75,17 @@ const MainScreen = () => {
   );
 
   const toggleScreen = useCallback(() => {
-    setActiveList(activeList === "powers" ? "inventory" : "powers");
+    let newActiveList: MainScreenList = "powers";
+    if (activeList === "powers") {
+      newActiveList = "inventory";
+    }
+    setActiveList(newActiveList);
   }, [activeList]);
 
   const renderActiveList = () => {
     switch (activeList) {
+      case "reference":
+        return <ListReference />;
       case "inventory":
         return <ListInventory />;
       case "powers":
@@ -86,16 +94,32 @@ const MainScreen = () => {
     }
   };
 
+  interface TopNavItemProps {
+    className: string;
+    onClick?: () => void;
+    displayName: string;
+  }
+
+  const TopNavItem = (props: TopNavItemProps) => {
+    return (
+      <TopNavContainer className={props.className} onClick={props.onClick}>
+        {props.displayName}
+        <TopNavIcon src={TheFace} alt="The face of samwise" />
+      </TopNavContainer>
+    );
+  };
+
   return (
     <>
       <div className="nav">
-        <div className="spellbook" onClick={toggleSpellbookModal}>
-          Spellbook
-        </div>
-        <div className="inventory" onClick={toggleScreen}>
-          {activeList === "powers" ? "Inventory" : "Powers"}
-        </div>
-        <div className="more">More</div>
+        <TopNavItem className="spellbook" onClick={toggleSpellbookModal} displayName="Class Spells" />
+        <TopNavItem className="talents" onClick={() => console.log("Talents Modal")} displayName="View Talents" />
+        <TopNavItem
+          className="inventory"
+          onClick={toggleScreen}
+          displayName={activeList !== "powers" ? "Powers" : "Items"}
+        />
+        <TopNavItem className="more" onClick={() => setActiveList("reference")} displayName="Reference" />
       </div>
       <div className="main">{renderActiveList()}</div>
       <h3>
@@ -136,6 +160,17 @@ const MainScreen = () => {
 const HealthEnergyGoldSection = styled.div`
   display: flex;
   gap: 8px;
+`;
+
+const TopNavContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const TopNavIcon = styled.img`
+  height: 48px;
+  width: 48px;
 `;
 
 export default MainScreen;

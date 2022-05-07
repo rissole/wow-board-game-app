@@ -8,7 +8,7 @@ export type DiceColour = "green" | "red" | "blue";
 export type PowerType = "active" | "instant" | "weapon";
 export type Phase = "End_Reroll" | "Start_Dice" | "Start_Action" | "Place_Tokens" | "Team_Health_Down" | "Global";
 export type Screen = "loading" | "main" | "character-select";
-export type MainScreenList = "powers" | "inventory";
+export type MainScreenList = "powers" | "inventory" | "reference";
 export type SlotType = "active" | "instant" | "weapon";
 
 export type CardId = string;

@@ -73,7 +73,7 @@ export type LevelStats = {
   energy: number;
 };
 
-export type CharacterSheetSlot = {
+export type SheetSlot = {
   slotNumber: number;
   slotTypes: SlotType[];
   slotData?: CharacterSheetSlotData;

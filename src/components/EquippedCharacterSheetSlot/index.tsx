@@ -1,11 +1,12 @@
 import styled from "styled-components";
-import { AttributeImpact, CharacterSheetSlot } from "../../types";
+import { AttributeImpact, SheetSlot } from "../../types";
 import Icon from "../Icon";
 import RenderedDice from "../RenderedDice";
 import SlotIcons from "../SlotIcons";
+import CharacterSheetSlot from "../CharacterSheetSlot";
 
 export interface Props {
-  slot: CharacterSheetSlot;
+  slot: SheetSlot;
 }
 
 interface AttributeProps {
@@ -18,15 +19,17 @@ const EquippedCharacterSheetSlot = (props: Props) => {
     throw new Error("Should be data in slot");
   }
   return (
-    <Container>
-      <SlotIcons slotTypes={props.slot.slotTypes} isEquippedSlot={true} />
-      <MainContent>
-        <Icon path={slotData.iconLink} height={32} width={32} />
-        <CostBox>{slotData.energyCost}</CostBox>
-        <div style={{ width: "100px" }}> {slotData.name} </div>
-        <AttributesImpactedView attributesImpacted={slotData.attributesImpacted} />
-      </MainContent>
-    </Container>
+    <CharacterSheetSlot>
+      <Container>
+        <SlotIcons slotTypes={props.slot.slotTypes} isEquippedSlot={true} />
+        <MainContent>
+          <Icon path={slotData.iconLink} height={32} width={32} />
+          <CostBox>{slotData.energyCost}</CostBox>
+          <div style={{ width: "100px" }}> {slotData.name} </div>
+          <AttributesImpactedView attributesImpacted={slotData.attributesImpacted} />
+        </MainContent>
+      </Container>
+    </CharacterSheetSlot>
   );
 };
 
@@ -48,13 +51,7 @@ const AttributesImpactedView = (props: AttributeProps) => {
 };
 
 const Container = styled.div`
-  background-color: #aaa;
-  width: 100vw;
-  height: 55px;
-  border: 1px solid black;
   display: flex;
-  gap: 4px;
-  padding: 8px;
 `;
 
 const MainContent = styled.div`

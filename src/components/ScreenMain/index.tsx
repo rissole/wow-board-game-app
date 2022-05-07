@@ -2,7 +2,7 @@ import React, { useCallback, useContext, useEffect, useState, useMemo } from "re
 import EditableStat from "../EditableStat";
 import styled from "styled-components";
 import CharacterInfoHeader from "../CharacterInfoHeader";
-import { CharacterLevel, StatType, MainScreenList, CharacterSheetSlot, CardId } from "../../types";
+import { CharacterLevel, StatType, MainScreenList, SheetSlot, CardId } from "../../types";
 import useFlipFlop from "../useFlipFlop";
 import SpellbookCarousel from "../SpellbookCarousel";
 import ListPowers from "../ListPowers";
@@ -15,7 +15,7 @@ import TheFace from "../../assets/samwise.png";
 const MainScreen = () => {
   const { character, updateCharacter, addPower } = useContext(GameContext);
   const [activeList, setActiveList] = useState<MainScreenList>("powers");
-  const [charSheetSlots, setCharSheetSlots] = useState<CharacterSheetSlot[]>([]);
+  const [charSheetSlots, setCharSheetSlots] = useState<SheetSlot[]>([]);
 
   const { value: isSpellbookModalOpen, toggle: toggleSpellbookModal, setOff: hideSpellbookModal } = useFlipFlop();
   const statsForCurrentLevel = useMemo(() => statsForLevel(character.level), [character]);

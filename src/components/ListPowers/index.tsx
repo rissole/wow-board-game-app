@@ -1,11 +1,11 @@
 import React from "react";
-import { CharacterSheetSlot } from "../../types";
+import { SheetSlot } from "../../types";
 
 import EquippedCharacterSheetSlot from "../EquippedCharacterSheetSlot";
 import EmptyCharacterSheetSlot from "../EmptyCharacterSheetSlot";
 
 interface Props {
-  charSheetSlots: CharacterSheetSlot[];
+  charSheetSlots: SheetSlot[];
 }
 
 const PowersList = ({ charSheetSlots }: Props) => {

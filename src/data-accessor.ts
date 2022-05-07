@@ -1,7 +1,7 @@
 import {
   AttributeImpact,
   CharacterLevel,
-  CharacterSheetSlot,
+  SheetSlot,
   DiceColour,
   HeroClass,
   LevelStats,
@@ -16,7 +16,7 @@ import levelsJson from "./levels.csv";
 import slotsJson from "./slots.csv";
 import { parseAttribute } from "./attributes";
 
-const RACIAL_SLOT: CharacterSheetSlot = {
+const RACIAL_SLOT: SheetSlot = {
   slotNumber: 0,
   slotTypes: [
     {
@@ -28,7 +28,7 @@ type CsvFile = ReadonlyArray<ReadonlyArray<string | number | null>>;
 export const powers: Power[] = parseCsvToPower(powersJson.slice(1));
 export const levelStats: LevelStats[] = parseCsvToLevels(levelsJson.slice(1));
 
-export const slots: CharacterSheetSlot[] = parseCsvToSlots(slotsJson.slice(1));
+export const slots: SheetSlot[] = parseCsvToSlots(slotsJson.slice(1));
 
 // TODO: Needs to take a hero class when we fill in the CSV data
 export const statsForLevel = (level: CharacterLevel): LevelStats => {
@@ -85,7 +85,7 @@ function parseCsvToLevels(csv: CsvFile): LevelStats[] {
   });
 }
 
-function parseCsvToSlots(csv: CsvFile): CharacterSheetSlot[] {
+function parseCsvToSlots(csv: CsvFile): SheetSlot[] {
   return csv.reduce(
     (slots, row) => {
       //row[0] is class name

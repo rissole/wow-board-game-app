@@ -1,6 +1,7 @@
-import { CharacterLevel, DiceColour, HeroClass, LevelStats, Phase, Power, PowerType } from "./types";
+import { AttributeImpact, CharacterLevel, DiceColour, HeroClass, LevelStats, Phase, Power, SlotType } from "./types";
 import powersJson from "./powers.csv";
 import levelsJson from "./levels.csv";
+import { parseAttribute } from "./attributes";
 
 type CsvFile = ReadonlyArray<ReadonlyArray<string | number | null>>;
 
@@ -22,7 +23,7 @@ function parseCsvToPower(csv: CsvFile): Power[] {
     return {
       name: row[0] as string,
       class: row[1] as HeroClass,
-      type: row[2] as PowerType,
+      type: row[2] as SlotType,
       requiredLevel: row[3] as CharacterLevel,
       goldCost: row[4] as number,
       energyCost: row[5] as number,
@@ -30,11 +31,22 @@ function parseCsvToPower(csv: CsvFile): Power[] {
       iconLink: row[7] as string,
       phase: row[8] as Phase,
       dependantOn: row[9] === null ? undefined : (row[9] as string).split(", "),
-      attributesImpacted: (row[10] as string).split(", "),
+      attributesImpacted: parseAttributesImpacted(row[10] as string),
       effect: row[11] as string,
       spotColour: row[12] === null ? undefined : (row[12] as string).split(", ").map((item) => item as DiceColour),
       spotAmount: row[13] === null ? undefined : (row[13] as string),
       maxSpotAmount: row[14] === null ? undefined : (row[14] as number),
+    };
+  });
+}
+
+function parseAttributesImpacted(rawAttributesEntry: string): AttributeImpact[] {
+  return rawAttributesEntry.split(", ").map((rawAttribute) => {
+    const attrArr = rawAttribute.split(" ");
+    return {
+      attribute: parseAttribute(attrArr[0]),
+      minImpact: parseInt(attrArr[1], 10),
+      maxImpact: parseInt(attrArr[attrArr.length - 1], 10),
     };
   });
 }

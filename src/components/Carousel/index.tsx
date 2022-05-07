@@ -2,17 +2,18 @@ import React, { ReactNode, useCallback, useMemo } from "react";
 import styled from "styled-components";
 import { useSwipeable, DEFAULT_CONFIGURATION } from "../useSwipeable";
 import Modal from "../Modal";
+import { CardId } from "../../types";
 
 const OFFSET_PER_NODE = DEFAULT_CONFIGURATION.offsetPerNode;
 
 export interface CarouselItem {
-  title: string;
+  id: CardId;
   node: ReactNode;
 }
 
 interface Props {
   onClose: () => void;
-  onSelectItem: (item: CarouselItem) => void;
+  onSelectItem: (item: CardId) => void;
   items: CarouselItem[];
   buttonText?: string;
 }
@@ -75,7 +76,7 @@ export default function Carousel({ items, onClose, onSelectItem, buttonText = "S
   });
 
   const currentItemIndex = useMemo(() => Math.round(offset / OFFSET_PER_NODE), [offset]);
-  const currentItemName = items[currentItemIndex]?.title;
+  const currentItemName = items[currentItemIndex]?.id;
 
   const onTouchStart = useCallback(
     (event: React.TouchEvent) => {
@@ -121,7 +122,7 @@ export default function Carousel({ items, onClose, onSelectItem, buttonText = "S
 
   const onSelect = useCallback(() => {
     const currentItem = items[currentItemIndex];
-    onSelectItem(currentItem);
+    onSelectItem(currentItem.id);
   }, [currentItemIndex, items, onSelectItem]);
 
   return (

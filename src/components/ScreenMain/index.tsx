@@ -113,7 +113,7 @@ const MainScreen = () => {
     <>
       <div className="nav">
         <TopNavItem className="spellbook" onClick={toggleSpellbookModal} displayName="Class Spells" />
-        <TopNavItem className="talents" onClick={() => alert("Talents Modal")} displayName="View Talents" />
+        <TopNavItem className="talents" onClick={() => console.log("Talents Modal")} displayName="View Talents" />
         <TopNavItem
           className="inventory"
           onClick={toggleScreen}

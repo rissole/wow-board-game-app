@@ -7,14 +7,14 @@ import Modal from "../Modal";
 import { StatType } from "../../types";
 import NumberEditModal from "../NumberEditModal";
 
-const renderIcon = (stat: StatType) => {
+const iconPathForStatType = (stat: StatType) => {
   switch (stat) {
     case "health":
-      return <Icon path={healthIconPath} />;
+      return healthIconPath;
     case "energy":
-      return <Icon path={manaIconPath} />;
+      return manaIconPath;
     case "gold":
-      return <Icon path={goldIconPath} />;
+      return goldIconPath;
   }
 };
 
@@ -55,9 +55,10 @@ const EditableStat = (props: Props) => {
   return (
     <>
       <Container onClick={handleClick}>
-        {renderIcon(props.statName)}
-        {props.currentValue}
-        {props.maxValue !== undefined ? `/${props.maxValue}` : ``}
+        <Icon path={iconPathForStatType(props.statName)}>
+          {props.currentValue}
+          {props.maxValue !== undefined ? `/${props.maxValue}` : ``}
+        </Icon>
       </Container>
       {isShowingModal ? (
         <Modal onClose={handleModalClose}>
@@ -70,15 +71,23 @@ const EditableStat = (props: Props) => {
 
 const Container = styled.div`
   display: flex;
+  flex-flow: column nowrap;
   gap: 4px;
   align-items: center;
+  justify-content: center;
+  font-size: 28px;
 `;
 
 const Icon = styled.div<{ path: string }>`
   background-image: url(${(props) => props.path});
   background-size: 100% 100%;
-  width: 24px;
-  height: 24px;
+  height: 64px;
+  width: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-shadow: -1px 1px 0 #000, 1px 1px 0 #000, 1px -1px 0 #000, -1px -1px 0 #000;
 `;
 
 export default EditableStat;

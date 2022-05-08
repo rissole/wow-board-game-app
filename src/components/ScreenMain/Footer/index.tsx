@@ -6,28 +6,33 @@ import { GameContext } from "../../GameProvider";
 import ToggleIcon from "./backpack.png";
 import FactionText from "./FactionText";
 import ClassText from "./ClassText";
-import NumberEditModal, { ModalProps } from "../../NumberEditModal";
 import Modal from "../../Modal";
 import useFlipFlop from "../../useFlipFlop";
-import { CharacterLevel, StatType, isValidLevel } from "../../../types";
+import { StatType } from "../../../types";
+import CharacterConfigModalContent from "../CharacterConfigModalContent";
+import CogIcon from "./CogIcon";
 
 const FooterContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
   width: 100%;
   background-color: white;
+  padding: 4px;
 `;
 
 const CharacterSection = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-flow: row wrap;
   justify-content: center;
   padding: 8px;
+  gap: 16px;
+  align-items: center;
 `;
 
 const StatSection = styled.div`
   display: flex;
   flex-flow: row wrap;
+  justify-content: center;
   gap: 8px;
 `;
 
@@ -49,38 +54,12 @@ const LevelText = styled.span`
 
 const MainFooter = () => {
   const { character, updateCharacter } = useContext(GameContext);
-  const { toggle: showLevelUpModal, setOff: hideLevelUpModal, value: isShowingLevelUpModal } = useFlipFlop();
+  const {
+    toggle: showCharacterConfigModal,
+    setOff: hideCharacterConfigModal,
+    value: isShowingCharacterConfigModal,
+  } = useFlipFlop();
   const statsForCurrentLevel = useMemo(() => statsForLevel(character.level), [character]);
-
-  // TODO: Rework the level up experience so that users don't accidentally lose their current health/energy stats
-  // Currently we update your stats immediately once you modify your level in the modal
-  const updateCharacterLevel = useCallback(
-    (newLevel: CharacterLevel) => {
-      const newStats = statsForLevel(newLevel);
-      updateCharacter({
-        level: newLevel,
-        health: newStats.health,
-        energy: newStats.energy,
-      });
-    },
-    [updateCharacter]
-  );
-
-  const numberEditModalValues = useMemo<ModalProps["values"]>(
-    () => [
-      {
-        value: character.level,
-        onValueChange: (v: number) => {
-          if (isValidLevel(v)) {
-            updateCharacterLevel(v);
-          }
-        },
-        maxValueAllowed: 5,
-        minValueAllowed: 1,
-      },
-    ],
-    [character.level, updateCharacterLevel]
-  );
 
   const generateStatChangeHandler = useCallback(
     (statType: StatType) => {
@@ -97,10 +76,13 @@ const MainFooter = () => {
   return (
     <>
       <FooterContainer>
-        <CharacterSection onClick={showLevelUpModal}>
-          <LevelText>Level {character.level}</LevelText>
-          <FactionText faction={character.faction} />
-          <ClassText heroClass={character.heroClass} />
+        <CharacterSection onClick={showCharacterConfigModal}>
+          <CogIcon color="#333" size="36px" />
+          <div style={{ display: "flex", flexFlow: "column nowrap" }}>
+            <LevelText>Level {character.level}</LevelText>
+            <FactionText faction={character.faction} />
+            <ClassText heroClass={character.heroClass} />
+          </div>
         </CharacterSection>
         <StatSection>
           <EditableStat
@@ -125,9 +107,9 @@ const MainFooter = () => {
           <ToggleListButton role="button" src={ToggleIcon} />
         </ToggleListSection>
       </FooterContainer>
-      {isShowingLevelUpModal ? (
-        <Modal onClose={hideLevelUpModal}>
-          <NumberEditModal name="Level" values={numberEditModalValues} />
+      {isShowingCharacterConfigModal ? (
+        <Modal onClose={hideCharacterConfigModal}>
+          <CharacterConfigModalContent onClose={hideCharacterConfigModal} />
         </Modal>
       ) : null}
     </>

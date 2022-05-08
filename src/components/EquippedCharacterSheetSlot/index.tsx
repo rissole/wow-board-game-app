@@ -5,8 +5,6 @@ import RenderedDice from "../RenderedDice";
 import SlotTypeIcons from "../SlotTypeIcons";
 import CharacterSheetSlot from "../BaseCharacterSheetSlot";
 
-const NAME_BOX_WIDTH = "100px";
-
 export interface Props {
   slot: SheetSlot;
 }
@@ -25,9 +23,9 @@ const EquippedCharacterSheetSlot = (props: Props) => {
       <Container>
         <SlotTypeIcons slotTypes={props.slot.slotTypes} isEquippedSlot={true} />
         <MainContent>
-          <Icon path={slotData.iconLink} height={32} width={32} />
+          <Icon path={slotData.iconLink} height={36} width={36} />
           <CostBox>{slotData.energyCost}</CostBox>
-          <div style={{ width: NAME_BOX_WIDTH }}> {slotData.name} </div>
+          <NameBox>{slotData.name}</NameBox>
           <AttributesImpactedView attributesImpacted={slotData.attributesImpacted} />
         </MainContent>
       </Container>
@@ -67,17 +65,23 @@ const MainContent = styled.div`
 const CostBox = styled.div`
   background-color: white;
   width: 24px;
-  height: 32px;
+  height: 36px;
   text-align: center;
   padding: 6px 0;
   border-radius: 4px;
   border: 1px solid black;
+  font-size: 18px;
 `;
 
 const AttributesContainer = styled.div`
   display: flex;
   align-content: center;
   gap: 4px;
+`;
+
+const NameBox = styled.span`
+  max-width: 96px;
+  font-weight: 700;
 `;
 
 export default EquippedCharacterSheetSlot;

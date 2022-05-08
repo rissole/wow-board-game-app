@@ -15,28 +15,31 @@ const FooterContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 2fr 1fr;
   width: 100%;
-  background-color: white;
   padding: 4px;
 `;
 
 const CharacterSection = styled.div`
   display: flex;
-  flex-flow: row wrap;
+  flex-flow: row no-wrap;
   justify-content: center;
   padding: 8px;
   gap: 16px;
   align-items: center;
+  font-size: 20px;
+  color: white;
 `;
 
 const StatSection = styled.div`
   display: flex;
-  flex-flow: row wrap;
+  flex-flow: row no-wrap;
   justify-content: center;
   gap: 8px;
+  align-items: center;
 `;
 
 const ToggleListSection = styled.div`
-  padding: 8px 8px 8px 0;
+  // padding: 8px 0 8px 8px;
+  padding-left: 16px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -45,13 +48,21 @@ const ToggleListSection = styled.div`
 const ToggleListButton = styled.img`
   width: 64px;
   height: 64px;
+  padding: 4px;
+  border-radius: 20px;
+  border: 2px solid green;
+  background-color: #000;
 `;
 
 const LevelText = styled.span`
   font-weight: bold;
 `;
 
-const MainFooter = () => {
+interface Props {
+  toggleList: () => void;
+}
+
+const MainFooter = ({ toggleList }: Props) => {
   const { character, updateCharacter } = useContext(GameContext);
   const {
     toggle: showCharacterConfigModal,
@@ -102,7 +113,7 @@ const MainFooter = () => {
           />
         </StatSection>
         <ToggleListSection>
-          <ToggleListButton role="button" src={ToggleIcon} />
+          <ToggleListButton role="button" src={ToggleIcon} onClick={toggleList} />
         </ToggleListSection>
       </FooterContainer>
       {isShowingCharacterConfigModal ? (

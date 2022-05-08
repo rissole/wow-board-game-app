@@ -10,7 +10,6 @@ import Modal from "../../Modal";
 import useFlipFlop from "../../useFlipFlop";
 import { StatType } from "../../../types";
 import CharacterConfigModalContent from "../CharacterConfigModalContent";
-import CogIcon from "./CogIcon";
 
 const FooterContainer = styled.div`
   display: grid;
@@ -77,7 +76,6 @@ const MainFooter = () => {
     <>
       <FooterContainer>
         <CharacterSection onClick={showCharacterConfigModal}>
-          <CogIcon color="#333" size="36px" />
           <div style={{ display: "flex", flexFlow: "column nowrap" }}>
             <LevelText>Level {character.level}</LevelText>
             <FactionText faction={character.faction} />

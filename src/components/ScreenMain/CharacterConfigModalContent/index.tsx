@@ -86,7 +86,7 @@ const ActionButton = styled.div<{ type?: "danger" | "default" }>(({ type = "defa
   padding: 12px;
   border: 1px solid black;
   border-radius: 5px;
-  font-size: 24px;
+  font-size: 18px;
   font-weight: bold;
   background-color: rgb(${rgbMap[type]});
   color: #fff;

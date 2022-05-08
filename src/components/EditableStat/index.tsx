@@ -81,8 +81,8 @@ const Container = styled.div`
 const Icon = styled.div<{ path: string }>`
   background-image: url(${(props) => props.path});
   background-size: 100% 100%;
-  height: 48px;
-  width: 48px;
+  height: 52px;
+  width: 52px;
   border-radius: 4px;
   display: flex;
   align-items: center;

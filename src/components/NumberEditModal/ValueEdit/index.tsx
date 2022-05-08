@@ -42,6 +42,7 @@ const ValueEditContainer = styled.div`
   flex-flow: column nowrap;
   width: 50%;
   font-size: 64px;
+  align-items: center;
 `;
 
 const ValueEditButton = styled.button`
@@ -74,6 +75,7 @@ const Icon = styled.div<{ path: string }>`
   text-shadow: -1px 1px 0 #000, 1px 1px 0 #000, 1px -1px 0 #000, -1px -1px 0 #000;
   filter: grayscale(50%);
   width: 100%;
+  max-width: 50vh;
   font-size: 80px;
   margin: 8px 0 8px;
 

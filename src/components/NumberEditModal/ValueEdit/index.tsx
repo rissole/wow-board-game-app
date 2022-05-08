@@ -51,7 +51,7 @@ const ValueEditButton = styled.button`
   font-size: 48px;
   font-weight: bold;
   border: 2px solid black;
-  border-radius: 20px;
+  border-radius: 10px;
   background-color: rgb(240, 240, 240);
 
   &:disabled {
@@ -64,7 +64,7 @@ const ValueEditButton = styled.button`
 const Icon = styled.div<{ path: string }>`
   background-image: url(${(props) => props.path});
   background-size: 100% 100%;
-  border-radius: 20px;
+  border-radius: 10px;
   border: 2px solid black;
   box-sizing: border-box;
   display: flex;

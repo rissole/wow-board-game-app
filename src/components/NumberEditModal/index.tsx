@@ -25,7 +25,7 @@ const Container = styled.div`
   width: 100%;
   background-color: #fff;
   font-size: 24px;
-  border-radius: 4px;
+  border-radius: 10px;
   padding: 8px;
 `;
 

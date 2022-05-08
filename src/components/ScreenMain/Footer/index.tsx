@@ -3,7 +3,7 @@ import styled from "styled-components";
 import EditableStat from "../../EditableStat";
 import { statsForLevel } from "../../../data-accessor";
 import { GameContext } from "../../GameProvider";
-import ToggleIcon from "../../../assets/samwise.png";
+import ToggleIcon from "./backpack.png";
 import FactionText from "./FactionText";
 import ClassText from "./ClassText";
 import NumberEditModal, { ModalProps } from "../../NumberEditModal";
@@ -21,15 +21,26 @@ const FooterContainer = styled.div`
 const CharacterSection = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  padding: 8px;
 `;
 
-const StatSection = styled.div``;
+const StatSection = styled.div`
+  display: flex;
+  flex-flow: row wrap;
+  gap: 8px;
+`;
 
-const ToggleListSection = styled.div``;
+const ToggleListSection = styled.div`
+  padding: 8px 8px 8px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
 const ToggleListButton = styled.img`
-  width: 48px;
-  height: 48px;
+  width: 64px;
+  height: 64px;
 `;
 
 const LevelText = styled.span`

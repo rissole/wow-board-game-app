@@ -52,28 +52,31 @@ const EditableStat = (props: Props) => {
     [props]
   );
 
+  const iconPath = useMemo(() => iconPathForStatType(props.statName), [props.statName]);
+
   const values = useMemo(
     () => [
       {
         value: props.currentValue,
         onValueChange: onCurrentValueChange,
         ...(props.maxValue !== undefined ? { maxValueAllowed: props.maxValue } : {}),
+        iconPath,
       },
     ],
-    [onCurrentValueChange, props.currentValue, props.maxValue]
+    [iconPath, onCurrentValueChange, props.currentValue, props.maxValue]
   );
 
   return (
     <>
       <Container onClick={handleClick} color={colorForStatType(props.statName)}>
-        <Icon path={iconPathForStatType(props.statName)}>
+        <Icon path={iconPath}>
           {props.currentValue}
           {props.maxValue !== undefined ? `/${props.maxValue}` : ``}
         </Icon>
       </Container>
       {isShowingModal ? (
         <Modal onClose={handleModalClose}>
-          <NumberEditModal name={props.statName} values={values} />
+          <NumberEditModal name={props.statName} values={values} iconPath={iconPath} />
         </Modal>
       ) : null}
     </>

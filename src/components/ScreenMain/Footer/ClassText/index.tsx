@@ -16,7 +16,7 @@ const getClassColor = (heroClass: HeroClass) => {
     case "warlock":
       return "purple";
     case "rogue":
-      return "yellow";
+      return "gold";
     case "mage":
       return "cyan";
     case "hunter":
@@ -28,7 +28,7 @@ const getClassColor = (heroClass: HeroClass) => {
     case "shaman":
       return "blue";
     case "priest":
-      return "white";
+      return "#bbb";
     default:
       return "black";
   }

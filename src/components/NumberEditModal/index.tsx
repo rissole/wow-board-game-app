@@ -1,67 +1,38 @@
 import styled from "styled-components";
-
-const MIN_ALLOWED_VALUE = 0;
-const MAX_ALLOWED_VALUE = 99;
+import ValueEdit, { ValueProps } from "./ValueEdit";
 
 export interface ModalProps {
   name: string;
   values: ValueProps[];
+  iconPath: string;
 }
 
-interface ValueProps {
-  value: number;
-  onValueChange: (newValue: number) => void;
-  maxValueAllowed?: number;
-  minValueAllowed?: number;
-}
-
+// TODO: Clean this up if we don't need to support editing multiple values in a single modal
 const NumberEditModal = (props: ModalProps) => {
   return (
-    <div style={{ width: "100%", backgroundColor: "#fff" }}>
-      <div style={{ textAlign: "center" }}>{props.name.toUpperCase()}</div>
+    <Container>
+      <Title>{props.name.toUpperCase()}</Title>
       <div style={{ display: "flex", justifyContent: "center" }}>
         {props.values.map((value, i) => (
-          <ValueEdit key={i} {...value} />
+          <ValueEdit key={i} {...value} iconPath={props.iconPath} />
         ))}
       </div>
-    </div>
+    </Container>
   );
 };
 
-const ValueEdit = (props: ValueProps) => {
-  const increaseValue = () => {
-    props.onValueChange(props.value + 1);
-  };
-
-  const decreaseValue = () => {
-    props.onValueChange(props.value - 1);
-  };
-
-  return (
-    <ValueEditContainer>
-      <ValueEditButton disabled={props.value >= (props.maxValueAllowed ?? MAX_ALLOWED_VALUE)} onClick={increaseValue}>
-        +
-      </ValueEditButton>
-      <div style={{ textAlign: "center" }}>{props.value}</div>
-      <ValueEditButton disabled={props.value <= (props.minValueAllowed ?? MIN_ALLOWED_VALUE)} onClick={decreaseValue}>
-        -
-      </ValueEditButton>
-    </ValueEditContainer>
-  );
-};
-
-const ValueEditContainer = styled.div`
-  display: flex;
-  flex-flow: column nowrap;
-  width: 50%;
+const Container = styled.div`
+  width: 100%;
+  background-color: #fff;
+  font-size: 24px;
+  border-radius: 10px;
+  padding: 8px;
 `;
 
-const ValueEditButton = styled.button`
-  width: 100%;
-  height: 72px;
+const Title = styled.h3`
   text-align: center;
-  font-size: 48px;
-  font-weight: bold;
+  margin: 0;
+  padding: 8px;
 `;
 
 export default NumberEditModal;

@@ -55,7 +55,7 @@ const MainScreen = () => {
     [addPower, hideSpellbookModal]
   );
 
-  const toggleScreen = useCallback(() => {
+  const toggleList = useCallback(() => {
     let newActiveList: MainScreenList = "powers";
     if (activeList === "powers") {
       newActiveList = "inventory";
@@ -95,16 +95,12 @@ const MainScreen = () => {
       <div className="nav">
         <TopNavItem className="spellbook" onClick={toggleSpellbookModal} displayName="Class Spells" />
         <TopNavItem className="talents" onClick={() => console.log("Talents Modal")} displayName="View Talents" />
-        <TopNavItem
-          className="inventory"
-          onClick={toggleScreen}
-          displayName={activeList !== "powers" ? "Powers" : "Items"}
-        />
+        <TopNavItem className="items" onClick={() => console.log("Items Modal")} displayName="Items" />
         <TopNavItem className="more" onClick={() => setActiveList("reference")} displayName="Reference" />
       </div>
       <div className="main powers">{renderActiveList()}</div>
       <Talents />
-      <Footer />
+      <Footer toggleList={toggleList} />
       {isSpellbookModalOpen ? <SpellbookCarousel onClose={closeNavModal} onSelectItem={selectSpellbookItem} /> : null}
     </>
   );
@@ -119,6 +115,7 @@ const TopNavContainer = styled.div`
 const TopNavIcon = styled.img`
   height: 48px;
   width: 48px;
+  border-radius: 4px;
 `;
 
 export default MainScreen;

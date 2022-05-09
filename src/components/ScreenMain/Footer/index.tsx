@@ -38,7 +38,6 @@ const StatSection = styled.div`
 `;
 
 const ToggleListSection = styled.div`
-  // padding: 8px 0 8px 8px;
   padding-left: 16px;
   display: flex;
   justify-content: center;

@@ -5,11 +5,13 @@ export type CharacterLevel = 1 | 2 | 3 | 4 | 5;
 export type Faction = "alliance" | "horde";
 export type HeroClass = "paladin" | "warlock" | "rogue" | "mage" | "hunter" | "druid" | "warrior" | "shaman" | "priest";
 export type DiceColour = "green" | "red" | "blue";
-export type PowerType = "active" | "instant" | "weapon";
 export type Phase = "End_Reroll" | "Start_Dice" | "Start_Action" | "Place_Tokens" | "Team_Health_Down" | "Global";
 export type Screen = "loading" | "main" | "character-select";
 export type MainScreenList = "powers" | "inventory" | "reference";
-export type SlotType = "active" | "instant" | "weapon";
+export type AttributeName = "damage" | "dice" | "attrition" | "health" | "energy" | "defense" | "travel" | "threat";
+export type AttributeAudience = "self" | "enemy" | "team";
+export type SlotPrimaryType = "active" | "instant" | "weapon" | "general" | "armor" | "racial";
+export type SlotSecondaryType = "mace" | "staff" | "cloth" | "leather";
 
 export type CardId = string;
 
@@ -30,6 +32,11 @@ export interface CharacterStats {
   };
 }
 
+export type SlotType = {
+  primary: SlotPrimaryType;
+  secondary?: SlotSecondaryType;
+};
+
 export interface AttributeImpact {
   attribute: Attribute;
   minImpact: number;
@@ -40,10 +47,6 @@ export interface IAttribute {
   name: AttributeName;
   audience?: AttributeAudience;
 }
-
-export type AttributeName = "damage" | "dice" | "attrition" | "health" | "energy" | "defense" | "travel" | "threat";
-
-export type AttributeAudience = "self" | "enemy" | "team";
 
 export type Power = {
   name: string;
@@ -70,8 +73,13 @@ export type LevelStats = {
   energy: number;
 };
 
-export type CharacterSheetSlot = {
+export type SheetSlot = {
+  slotNumber: number;
   slotTypes: SlotType[];
+  slotData?: CharacterSheetSlotData;
+};
+
+export type CharacterSheetSlotData = {
   name: string;
   iconLink: string;
   energyCost: number;

@@ -7,14 +7,25 @@ import Modal from "../Modal";
 import { StatType } from "../../types";
 import NumberEditModal from "../NumberEditModal";
 
-const renderIcon = (stat: StatType) => {
+const iconPathForStatType = (stat: StatType) => {
   switch (stat) {
     case "health":
-      return <Icon path={healthIconPath} />;
+      return healthIconPath;
     case "energy":
-      return <Icon path={manaIconPath} />;
+      return manaIconPath;
     case "gold":
-      return <Icon path={goldIconPath} />;
+      return goldIconPath;
+  }
+};
+
+const colorForStatType = (stat: StatType) => {
+  switch (stat) {
+    case "health":
+      return "red";
+    case "energy":
+      return "blue";
+    case "gold":
+      return "gold";
   }
 };
 
@@ -41,44 +52,57 @@ const EditableStat = (props: Props) => {
     [props]
   );
 
+  const iconPath = useMemo(() => iconPathForStatType(props.statName), [props.statName]);
+
   const values = useMemo(
     () => [
       {
         value: props.currentValue,
         onValueChange: onCurrentValueChange,
         ...(props.maxValue !== undefined ? { maxValueAllowed: props.maxValue } : {}),
+        iconPath,
       },
     ],
-    [onCurrentValueChange, props.currentValue, props.maxValue]
+    [iconPath, onCurrentValueChange, props.currentValue, props.maxValue]
   );
 
   return (
     <>
-      <Container onClick={handleClick}>
-        {renderIcon(props.statName)}
-        {props.currentValue}
-        {props.maxValue !== undefined ? `/${props.maxValue}` : ``}
+      <Container onClick={handleClick} color={colorForStatType(props.statName)}>
+        <Icon path={iconPath}>
+          {props.currentValue}
+          {props.maxValue !== undefined ? `/${props.maxValue}` : ``}
+        </Icon>
       </Container>
       {isShowingModal ? (
         <Modal onClose={handleModalClose}>
-          <NumberEditModal name={props.statName} values={values} />
+          <NumberEditModal name={props.statName} values={values} iconPath={iconPath} />
         </Modal>
       ) : null}
     </>
   );
 };
 
-const Container = styled.div`
-  display: flex;
-  gap: 4px;
-  align-items: center;
+const Container = styled.div<{ color: string }>`
+  font-size: 28px;
+  width: 64px;
+  height: 64px;
+  border: 2px solid ${(props) => props.color};
+  border-radius: 4px;
 `;
 
 const Icon = styled.div<{ path: string }>`
   background-image: url(${(props) => props.path});
   background-size: 100% 100%;
-  width: 24px;
-  height: 24px;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-shadow: -1px 1px 0 #000, 1px 1px 0 #000, 1px -1px 0 #000, -1px -1px 0 #000;
+  font-size: 28px;
+  filter: grayscale(50%);
 `;
 
 export default EditableStat;

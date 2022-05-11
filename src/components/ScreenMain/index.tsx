@@ -1,66 +1,47 @@
-import React, { useCallback, useContext, useEffect, useState, useMemo } from "react";
-import EditableStat from "../EditableStat";
+import { useCallback, useContext, useEffect, useState } from "react";
 import styled from "styled-components";
-import CharacterInfoHeader from "../CharacterInfoHeader";
-import { CharacterLevel, StatType, MainScreenList, CharacterSheetSlot, CardId } from "../../types";
+import { MainScreenList, SheetSlot, CardId } from "../../types";
 import useFlipFlop from "../useFlipFlop";
 import SpellbookCarousel from "../SpellbookCarousel";
 import ListPowers from "../ListPowers";
 import ListInventory from "../ListInventory";
 import ListReference from "../ListReference";
 import { GameContext } from "../GameProvider";
-import { powers, statsForLevel } from "../../data-accessor";
+import { powers, slots } from "../../data-accessor";
 import TheFace from "../../assets/samwise.png";
+import Talents from "./Talents";
+import Footer from "./Footer";
 
 const MainScreen = () => {
-  const { character, updateCharacter, addPower } = useContext(GameContext);
+  const { addPower } = useContext(GameContext);
   const [activeList, setActiveList] = useState<MainScreenList>("powers");
-  const [charSheetSlots, setCharSheetSlots] = useState<CharacterSheetSlot[]>([]);
+  const [charSheetSlots, setCharSheetSlots] = useState<SheetSlot[]>([]);
 
   const { value: isSpellbookModalOpen, toggle: toggleSpellbookModal, setOff: hideSpellbookModal } = useFlipFlop();
-  const statsForCurrentLevel = useMemo(() => statsForLevel(character.level), [character]);
 
   useEffect(() => {
     setCharSheetSlots(
       Array.from({ length: 8 }).map((_, index) => {
         const power = powers[index];
+        const slot = slots[index];
         return {
-          slotTypes: [power.type],
-          name: power.name,
-          // This needs to be changed and renamed as this will also be where pet health metadata is stored
-          energyCost: power.type === "instant" ? power.energyCost : 0,
-          iconLink: power.iconLink,
-          attributesImpacted: power.attributesImpacted,
+          ...slot,
+          slotData: slot.slotTypes.some(
+            (value) => value.primary === power.type.primary && value.secondary === power.type.secondary
+          )
+            ? {
+                slotTypes: [power.type],
+                name: power.name,
+                // This needs to be changed and renamed as this will also be where pet health metadata is stored
+                energyCost: power.type.primary === "instant" ? power.energyCost : 0,
+                iconLink: power.iconLink,
+                attributesImpacted: power.attributesImpacted,
+              }
+            : undefined,
         };
       })
     );
   }, []);
-
-  const generateStatChangeHandler = useCallback(
-    (statType: StatType) => {
-      return (newCurrentValue: number) => {
-        // TODO: I think some items make it possible to go above your max class value, we may need to support this
-        updateCharacter({
-          [statType]: newCurrentValue,
-        });
-      };
-    },
-    [updateCharacter]
-  );
-
-  // TODO: Rework the level up experience so that users don't accidentally lose their current health/energy stats
-  // Currently we update your stats immediately once you modify your level in the modal
-  const updateCharacterLevel = useCallback(
-    (newLevel: CharacterLevel) => {
-      const newStats = statsForLevel(newLevel);
-      updateCharacter({
-        level: newLevel,
-        health: newStats.health,
-        energy: newStats.energy,
-      });
-    },
-    [updateCharacter]
-  );
 
   const closeNavModal = useCallback(() => {
     hideSpellbookModal();
@@ -74,7 +55,7 @@ const MainScreen = () => {
     [addPower, hideSpellbookModal]
   );
 
-  const toggleScreen = useCallback(() => {
+  const toggleList = useCallback(() => {
     let newActiveList: MainScreenList = "powers";
     if (activeList === "powers") {
       newActiveList = "inventory";
@@ -114,53 +95,16 @@ const MainScreen = () => {
       <div className="nav">
         <TopNavItem className="spellbook" onClick={toggleSpellbookModal} displayName="Class Spells" />
         <TopNavItem className="talents" onClick={() => console.log("Talents Modal")} displayName="View Talents" />
-        <TopNavItem
-          className="inventory"
-          onClick={toggleScreen}
-          displayName={activeList !== "powers" ? "Powers" : "Items"}
-        />
+        <TopNavItem className="items" onClick={() => console.log("Items Modal")} displayName="Items" />
         <TopNavItem className="more" onClick={() => setActiveList("reference")} displayName="Reference" />
       </div>
       <div className="main powers">{renderActiveList()}</div>
-      <h3>
-        {character.faction} {character.heroClass}
-      </h3>
-      <div className="statsSection">
-        <CharacterInfoHeader
-          class={character.heroClass}
-          faction={character.faction}
-          level={character.level}
-          setLevel={updateCharacterLevel}
-        />
-        <HealthEnergyGoldSection>
-          <EditableStat
-            statName="health"
-            currentValue={character.health}
-            maxValue={statsForCurrentLevel.health}
-            onStatChange={generateStatChangeHandler("health")}
-          />
-          <EditableStat
-            statName="energy"
-            currentValue={character.energy}
-            maxValue={statsForCurrentLevel.energy}
-            onStatChange={generateStatChangeHandler("energy")}
-          />
-          <EditableStat
-            statName="gold"
-            currentValue={character.gold}
-            onStatChange={generateStatChangeHandler("gold")}
-          />
-        </HealthEnergyGoldSection>
-      </div>
+      <Talents />
+      <Footer toggleList={toggleList} />
       {isSpellbookModalOpen ? <SpellbookCarousel onClose={closeNavModal} onSelectItem={selectSpellbookItem} /> : null}
     </>
   );
 };
-
-const HealthEnergyGoldSection = styled.div`
-  display: flex;
-  gap: 8px;
-`;
 
 const TopNavContainer = styled.div`
   display: flex;
@@ -171,6 +115,7 @@ const TopNavContainer = styled.div`
 const TopNavIcon = styled.img`
   height: 48px;
   width: 48px;
+  border-radius: 4px;
 `;
 
 export default MainScreen;

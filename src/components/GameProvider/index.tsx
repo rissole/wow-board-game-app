@@ -1,6 +1,7 @@
-import React, { createContext, ReactNode, useState } from "react";
+import React, { createContext, ReactNode, useCallback, useMemo, useState } from "react";
+import { statsForLevel } from "../../data-accessor";
 
-import { CharacterLevel, Faction, HeroClass, CardId } from "../../types";
+import { CharacterLevel, Faction, HeroClass, CardId, isValidLevel } from "../../types";
 
 export interface CharacterState {
   heroClass: HeroClass;
@@ -25,6 +26,11 @@ export type GameContextType = {
   powers: PowerState[];
   addPower: (id: CardId) => void;
   removePower: (id: CardId) => void;
+  /**
+   * returns true if successfully levelled up, false otherwise
+   * (will be false if you try to level up to an invalid level, i.e. beyond max)
+   */
+  levelUp: () => boolean;
 };
 
 const DEFAULT_CHARACTER_STATE: CharacterState = {
@@ -42,6 +48,7 @@ const DEFAULT_GAME_STATE = {
   powers: [],
   addPower: () => {},
   removePower: () => {},
+  levelUp: () => false,
 };
 
 export const GameContext = createContext<GameContextType>(DEFAULT_GAME_STATE);
@@ -51,23 +58,47 @@ const GameProvider = (props: { children: ReactNode }) => {
   const [character, setCharacter] = useState<CharacterState>(DEFAULT_CHARACTER_STATE);
   const [powers, setPowers] = useState<PowerState[]>([]);
 
-  const updateCharacter = (update: Partial<CharacterState>) => {
-    setCharacter({ ...character, ...update });
-  };
-
-  const addPower = (id: CardId) => {
-    setPowers([...powers, { id, isEquipped: false }]);
-  };
-
-  const removePower = (id: CardId) => {
-    setPowers(powers.filter((power) => power.id !== id));
-  };
-
-  return (
-    <GameContext.Provider value={{ character, updateCharacter, powers, addPower, removePower }}>
-      {props.children}
-    </GameContext.Provider>
+  const updateCharacter = useCallback(
+    (update: Partial<CharacterState>) => {
+      setCharacter((currentCharacter) => ({ ...currentCharacter, ...update }));
+    },
+    [setCharacter]
   );
+
+  const addPower = useCallback(
+    (id: CardId) => {
+      setPowers((currentPowers) => [...currentPowers, { id, isEquipped: false }]);
+    },
+    [setPowers]
+  );
+
+  const removePower = useCallback(
+    (id: CardId) => {
+      setPowers((currentPowers) => currentPowers.filter((power) => power.id !== id));
+    },
+    [setPowers]
+  );
+
+  const levelUp = useCallback(() => {
+    const newLevel = character.level + 1;
+    if (isValidLevel(newLevel)) {
+      const newStats = statsForLevel(newLevel);
+      updateCharacter({
+        level: newLevel,
+        health: newStats.health,
+        energy: newStats.energy,
+      });
+      return true;
+    }
+    return false;
+  }, [character.level, updateCharacter]);
+
+  const contextValue = useMemo(
+    () => ({ character, updateCharacter, powers, addPower, removePower, levelUp }),
+    [addPower, character, levelUp, powers, removePower, updateCharacter]
+  );
+
+  return <GameContext.Provider value={contextValue}>{props.children}</GameContext.Provider>;
 };
 
 export default GameProvider;

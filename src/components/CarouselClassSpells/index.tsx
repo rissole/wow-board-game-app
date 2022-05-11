@@ -15,7 +15,8 @@ export interface Spell {
   description: string;
 }
 
-export default function SpellbookCarousel({ onClose, onSelectItem }: Props) {
+// Display available class spells
+export default function EquipClassSPells({ onClose, onSelectItem }: Props) {
   const { powers: ownedPowers } = useContext(GameContext);
 
   const unavailablePowers = ownedPowers.map((power) => power.id);
@@ -23,7 +24,7 @@ export default function SpellbookCarousel({ onClose, onSelectItem }: Props) {
     .filter((power) => !unavailablePowers.includes(power.name))
     .map((power) => ({
       id: power.name,
-      node: <CardSpell title={power.name} description={power.rawDescription} />,
+      renderNode: () => <CardSpell title={power.name} description={power.rawDescription} />,
     }));
 
   return <Carousel items={availablePowers} onClose={onClose} onSelectItem={onSelectItem} buttonText="Train" />;

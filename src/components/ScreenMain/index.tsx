@@ -2,7 +2,7 @@ import { useCallback, useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { MainScreenList, SheetSlot, CardId } from "../../types";
 import useFlipFlop from "../useFlipFlop";
-import SpellbookCarousel from "../SpellbookCarousel";
+import ClassSpellsCarousel from "../CarouselClassSpells";
 import ListPowers from "../ListPowers";
 import ListInventory from "../ListInventory";
 import ListReference from "../ListReference";
@@ -101,7 +101,7 @@ const MainScreen = () => {
       <div className="main powers">{renderActiveList()}</div>
       <Talents />
       <Footer toggleList={toggleList} />
-      {isSpellbookModalOpen ? <SpellbookCarousel onClose={closeNavModal} onSelectItem={selectSpellbookItem} /> : null}
+      {isSpellbookModalOpen ? <ClassSpellsCarousel onClose={closeNavModal} onSelectItem={selectSpellbookItem} /> : null}
     </>
   );
 };

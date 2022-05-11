@@ -1,4 +1,5 @@
-import { FullWidthScrollableImage } from ".";
+import { LazyImage } from ".";
+import TheFace from "../../assets/samwise.png";
 
 interface Props {
   renderBackButton: () => JSX.Element;
@@ -8,7 +9,7 @@ interface Props {
 const FullWidthImageWithBackButton = ({ renderBackButton, path }: Props) => {
   return (
     <>
-      <FullWidthScrollableImage path={path} />
+      <LazyImage actualSrc={path} loadingSrc={TheFace} />
       {renderBackButton()}
     </>
   );

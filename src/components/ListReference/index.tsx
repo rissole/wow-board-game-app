@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import FullWidthImageWithBackButton from "./FullWidthImageWithBackButton";
 
@@ -90,13 +90,45 @@ export const FullWidthListContainer = styled.div`
   padding: 8px;
 `;
 
-export const FullWidthScrollableImage = styled.div<{ path: string }>`
-  background-image: url(${(props) => props.path});
+const FullWidthScrollableImage = styled.div<{ loadingSrc: string; actualSrc: string; isLoading: boolean }>`
+  background-image: url(${(props) => (props.isLoading ? props.loadingSrc : props.actualSrc)});
   width: 100vw;
   height: 100%;
+  animation: ${(props) => (props.isLoading ? "loading 2s infinite" : undefined)};
   background-position: top center;
-  background-repeat: no-repeat;
-  background-size: contain;
+  background-repeat: ${(props) => (props.isLoading ? undefined : "no-repeat")};
+  background-size: ${(props) => (props.isLoading ? undefined : "contain")};
+
+  @keyframes loading {
+    0% {
+      opacity: 0.1;
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0.1;
+    }
+  }
 `;
+
+interface LazyImageProps {
+  loadingSrc: string;
+  actualSrc: string;
+}
+
+export const LazyImage = ({ loadingSrc, actualSrc }: LazyImageProps) => {
+  const [isImageLoaded, setImageLoaded] = useState(false);
+
+  useEffect(() => {
+    const img = new Image();
+
+    img.onload = () => setImageLoaded(true);
+
+    img.src = actualSrc;
+  }, [actualSrc]);
+
+  return <FullWidthScrollableImage loadingSrc={loadingSrc} actualSrc={actualSrc} isLoading={!isImageLoaded} />;
+};
 
 export default ReferenceList;

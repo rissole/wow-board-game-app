@@ -6,8 +6,7 @@ import ListBossReference from "./BossReference";
 
 // These are all ripped from our WoW Board Game Companion folder in Google Drive
 // no idea if these links are actually stable or not but ¯\_(ツ)_/¯
-const monsterReferencePath =
-  "https://lh4.googleusercontent.com/LTvypj75L7QAtAFa9YC-f3AmazCun6O_uoeTU7G8Gnrx5uWzdP10OUcTs89_c-47qvIhDFJquuh9Ypaeq8Z7=w1750-h1295-rw";
+const monsterReferencePath = "https://drive.google.com/uc?export=view&id=129JPJ3ksLFOxn_yoEv9F4pw9q4gSdFFe";
 const referenceSheetPath =
   "https://lh5.googleusercontent.com/D9ZxhdqLMOGnKYKkhGt7yGeYW8jMvJ0HvM_t4kLIbE9D3urRPszVEr2zqZ4bdwEu9s7toSRvdEN0FD1l6wuT=w1750-h1295-rw";
 const challengeActionPath =

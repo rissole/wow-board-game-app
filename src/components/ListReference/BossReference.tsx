@@ -2,12 +2,12 @@ import { useState } from "react";
 import { FloatingBackButton, FullWidthListContainer } from ".";
 import FullWidthImageWithBackButton from "./FullWidthImageWithBackButton";
 
-import kazzak4pPath from "../../assets/reference/kazzak4p.jpg";
-import kelThuzad4pPath from "../../assets/reference/kelThuzad4p.jpg";
-import nefarian4pPath from "../../assets/reference/nefarian4p.jpg";
-import kazzak6pPath from "../../assets/reference/kazzak6p.jpg";
-import kelThuzad6pPath from "../../assets/reference/kelThuzad6p.jpg";
-import nefarian6pPath from "../../assets/reference/nefarian6p.jpg";
+const kazzak4pPath = "https://lh3.google.com/u/0/d/1o-Zdpx-ZMhr8mHmT77IRJNrws49LBl74=w1317-h1304-iv2";
+const kelThuzad4pPath = "https://lh3.google.com/u/0/d/17hJkifSyWgIuwMenlbap5JmTuEr80RH0=w1317-h1304-iv2";
+const nefarian4pPath = "https://lh3.google.com/u/0/d/1EXvKQR7SB1fuZC4PGBHyiGol7PNp59aV=w1317-h1304-iv2";
+const kazzak6pPath = "https://lh3.google.com/u/0/d/1HYW776UxNLbLij57S7GypoeIZc93EH59=w1317-h1304-iv2";
+const kelThuzad6pPath = "https://lh3.google.com/u/0/d/1OusyH0fKJnU-U0qBXTqs9HZ1TmlOXXjR=w1317-h1304-iv2";
+const nefarian6pPath = "https://lh3.google.com/u/0/d/1G9Nk2II4l4zlRioLLCIb86H-NLhRt7nS=w1317-h1304-iv2";
 
 type Contents = "list" | "kazzak4p" | "kelThuzad4p" | "nefarian4p" | "kazzak6p" | "kelThuzad6p" | "nefarian6p";
 

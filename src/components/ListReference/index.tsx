@@ -2,13 +2,16 @@ import { useState } from "react";
 import styled from "styled-components";
 import FullWidthImageWithBackButton from "./FullWidthImageWithBackButton";
 
-import monsterReferencePath from "../../assets/reference/MonsterReference.jpg";
-import referenceSheetPath from "../../assets/reference/ReferenceSheet.jpg";
-import challengeActionPath from "../../assets/reference/ChallengeActionExample.png";
-import creatureCombatPath from "../../assets/reference/CreatureCombatExample.png";
-import pvpCombatPath from "../../assets/reference/PvPCombatExample.png";
-import guideToFirstGamePath from "../../assets/reference/GuideToFirstGame.png";
 import ListBossReference from "./BossReference";
+
+// These are all ripped from our WoW Board Game Companion folder in Google Drive
+// no idea if these links are actually stable or not but ¯\_(ツ)_/¯
+const monsterReferencePath = "https://lh3.google.com/u/0/d/129JPJ3ksLFOxn_yoEv9F4pw9q4gSdFFe=w2750-h5953-iv2";
+const referenceSheetPath = "https://lh3.google.com/u/0/d/1tSQ3hluEXYAAnSLwMPetfoVI4j1ZBwfh=w1317-h1304-iv2";
+const challengeActionPath = "https://lh3.google.com/u/0/d/1OZ-NfN54XPINwcnpRieJskBs2wOKBNhb=w1317-h1304-iv1";
+const creatureCombatPath = "https://lh3.google.com/u/0/d/1qb_U8dpYlfHZzuFwez3HUm-ngiK6GUxH=w1317-h1304-iv1";
+const pvpCombatPath = "https://lh3.google.com/u/0/d/1SH0lLwb11g3JQ6OCRmB5MvKvRl1EEodo=w1317-h1304-iv1";
+const guideToFirstGamePath = "https://lh3.google.com/u/0/d/1lIL4cNGS7yJCSXGIl6e22UnSxchw8_mc=w1317-h1304-iv1";
 
 type Contents =
   | "list"

@@ -6,12 +6,18 @@ import ListBossReference from "./BossReference";
 
 // These are all ripped from our WoW Board Game Companion folder in Google Drive
 // no idea if these links are actually stable or not but ¯\_(ツ)_/¯
-const monsterReferencePath = "https://lh3.google.com/u/0/d/129JPJ3ksLFOxn_yoEv9F4pw9q4gSdFFe=w2750-h5953-iv2";
-const referenceSheetPath = "https://lh3.google.com/u/0/d/1tSQ3hluEXYAAnSLwMPetfoVI4j1ZBwfh=w1317-h1304-iv2";
-const challengeActionPath = "https://lh3.google.com/u/0/d/1OZ-NfN54XPINwcnpRieJskBs2wOKBNhb=w1317-h1304-iv1";
-const creatureCombatPath = "https://lh3.google.com/u/0/d/1qb_U8dpYlfHZzuFwez3HUm-ngiK6GUxH=w1317-h1304-iv1";
-const pvpCombatPath = "https://lh3.google.com/u/0/d/1SH0lLwb11g3JQ6OCRmB5MvKvRl1EEodo=w1317-h1304-iv1";
-const guideToFirstGamePath = "https://lh3.google.com/u/0/d/1lIL4cNGS7yJCSXGIl6e22UnSxchw8_mc=w1317-h1304-iv1";
+const monsterReferencePath =
+  "https://lh4.googleusercontent.com/LTvypj75L7QAtAFa9YC-f3AmazCun6O_uoeTU7G8Gnrx5uWzdP10OUcTs89_c-47qvIhDFJquuh9Ypaeq8Z7=w1750-h1295-rw";
+const referenceSheetPath =
+  "https://lh5.googleusercontent.com/D9ZxhdqLMOGnKYKkhGt7yGeYW8jMvJ0HvM_t4kLIbE9D3urRPszVEr2zqZ4bdwEu9s7toSRvdEN0FD1l6wuT=w1750-h1295-rw";
+const challengeActionPath =
+  "https://lh3.googleusercontent.com/eX0Dr070Xl5TJ07XcmBSlIUrdQcpX2vhvIXOJwaCN7QMa9dEvhUldI9giuToknfklcb3VfvMro4OmLtyBdzV=w1750-h1295-rw";
+const creatureCombatPath =
+  "https://lh5.googleusercontent.com/7TUYEfWdJ0_tuR4RPEaa0eAxGdjkUwE9YQzu4TtUyrY-WvEN5JD0PVr53nlzbWVDhB09Cf-DCENf-4XpiVBC=w1387-h1295-rw";
+const pvpCombatPath =
+  "https://lh3.googleusercontent.com/Qw2JE69hxpgAMgqdYxegUIimjK9OOGkoJjxTQS68_67z4yYHsAjJO7YmdsuDHQSXW05PKDWYGZmned5u83iO=w1750-h1295-rw";
+const guideToFirstGamePath =
+  "https://lh5.googleusercontent.com/lxeiiO3ZbPyo7WTlKqdyJCC7zCR5gvtQ2USbvToy5ki04inGycF--McY_eidUX9SW1c9ssRIjSNzsbvEGY5l=w1750-h1295-rw";
 
 type Contents =
   | "list"

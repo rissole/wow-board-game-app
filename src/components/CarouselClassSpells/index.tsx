@@ -16,7 +16,7 @@ export interface Spell {
 }
 
 // Display available class spells
-export default function EquipClassSPells({ onClose, onSelectItem }: Props) {
+export default function EquipClassSpells({ onClose, onSelectItem }: Props) {
   const { powers: ownedPowers } = useContext(GameContext);
 
   const unavailablePowers = ownedPowers.map((power) => power.id);

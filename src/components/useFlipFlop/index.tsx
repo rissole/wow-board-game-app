@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 
-export default function useFlipFlop() {
-  const [value, setValue] = useState<boolean>(false);
+export default function useFlipFlop(defaultValue = false) {
+  const [value, setValue] = useState<boolean>(defaultValue);
 
   return useMemo(
     () => ({

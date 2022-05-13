@@ -10,6 +10,7 @@ import {
   SlotPrimaryType,
   SlotSecondaryType,
   SlotType,
+  CardId,
 } from "./types";
 import powersJson from "./powers.csv";
 import levelsJson from "./levels.csv";
@@ -39,6 +40,11 @@ export const statsForLevel = (level: CharacterLevel): LevelStats => {
   }
 
   return stat;
+};
+
+// TODO: This is really silly, this should be in a map
+export const getPowerById = (id: CardId): Power | void => {
+  return powers.find((p) => p.name === id);
 };
 
 function parseCsvToPower(csv: CsvFile): Power[] {

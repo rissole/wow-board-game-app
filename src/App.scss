@@ -15,7 +15,8 @@ $navButtonHeight: 72px;
   > div {
     width: 30vw;
     height: $navButtonHeight;
-    background-color: #ccc;
+    // COLORS.backgroundPrimary
+    background-color: #626262;
   }
 }
 
@@ -48,7 +49,10 @@ body {
   width: 100%;
   margin: 0;
   max-width: 100%;
+  // COLORS.backgroundBase
   background-color: #2f3136;
+  // COLORS.foregroundBase
+  color: #ffffff;
   overflow: hidden;
 }
 

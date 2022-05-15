@@ -15,6 +15,7 @@ import warriorIcon from "./warrior.png";
 import shamanIcon from "./shaman.png";
 import priestIcon from "./priest.png";
 import CheckMark from "./CheckMarkIcon";
+import COLORS from "../../util/colors";
 
 const CLASSES: HeroClass[] = ["paladin", "warlock", "rogue", "mage", "hunter", "druid", "warrior", "shaman", "priest"];
 
@@ -99,9 +100,7 @@ const CharacterSelectScreen = (props: Props) => {
             flexFlow: "column nowrap",
           }}
         >
-          <ConfirmSelectionButton disabled={!selectedClass || !selectedFaction} onClick={handleConfirm}>
-            ✓
-          </ConfirmSelectionButton>
+          <ConfirmSelectionButton disabled={!selectedClass || !selectedFaction} onClick={handleConfirm} />
         </div>
       </div>
     </>
@@ -159,9 +158,9 @@ const ClassCard = styled.div<{ isSelected: boolean; isDisabled: boolean; path: s
  * iOS safari styles make a real button too hard to deal with
  */
 const ConfirmSelectionButtonInner = styled.div`
-  border: solid 4px darkgreen;
+  border: solid 3px gold;
   font-size: 72px;
-  background-color: #46494f;
+  background-color: ${COLORS.background};
   height: 96px;
   width: 96px;
   border-radius: 50%;
@@ -171,15 +170,14 @@ const ConfirmSelectionButtonInner = styled.div`
   appearance: none;
 
   &[aria-disabled="true"] {
-    color: lightgrey;
+    filter: grayscale(100%);
     opacity: 10%;
-    border: solid 4px lightgrey;
   }
 `;
 
 const ConfirmSelectionButton = (props: { disabled: boolean; children?: ReactNode; onClick?: () => void }) => (
   <ConfirmSelectionButtonInner role="button" aria-disabled={props.disabled} {...props}>
-    <CheckMark color="lightgreen" size="64px" />
+    <CheckMark color="gold" size="64px" />
   </ConfirmSelectionButtonInner>
 );
 

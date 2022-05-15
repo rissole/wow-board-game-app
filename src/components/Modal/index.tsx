@@ -37,6 +37,7 @@ const Container = styled.div`
   overflow: hidden;
   justify-content: center;
   align-items: center;
+  z-index: 42069;
 `;
 
 export default Modal;

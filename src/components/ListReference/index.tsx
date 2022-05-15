@@ -3,6 +3,7 @@ import styled from "styled-components";
 import FullWidthImageWithBackButton from "./FullWidthImageWithBackButton";
 
 import ListBossReference from "./BossReference";
+import COLORS from "../../util/colors";
 
 // These are all ripped from our WoW Board Game Companion folder in Google Drive
 // no idea if these links are actually stable or not but ¯\_(ツ)_/¯
@@ -81,13 +82,15 @@ export const FloatingBackButton = styled.div`
 `;
 
 export const FullWidthListContainer = styled.div`
-  background-color: #aaa;
+  background-color: ${COLORS.background};
   width: 100vw;
   height: 55px;
-  border: 1px solid black;
+  border-bottom: 1px solid #000000;
   display: flex;
   gap: 4px;
   padding: 8px;
+  display: flex;
+  align-items: center;
 `;
 
 const FullWidthScrollableImage = styled.div<{ loadingSrc: string; actualSrc: string; isLoading: boolean }>`

@@ -18,17 +18,6 @@ const iconPathForStatType = (stat: StatType) => {
   }
 };
 
-const colorForStatType = (stat: StatType) => {
-  switch (stat) {
-    case "health":
-      return "red";
-    case "energy":
-      return "blue";
-    case "gold":
-      return "gold";
-  }
-};
-
 export interface Props {
   statName: StatType;
   currentValue: number;
@@ -68,7 +57,7 @@ const EditableStat = (props: Props) => {
 
   return (
     <>
-      <Container onClick={handleClick} color={colorForStatType(props.statName)}>
+      <Container onClick={handleClick}>
         <Icon path={iconPath}>
           {props.currentValue}
           {props.maxValue !== undefined ? `/${props.maxValue}` : ``}
@@ -83,12 +72,13 @@ const EditableStat = (props: Props) => {
   );
 };
 
-const Container = styled.div<{ color: string }>`
+const Container = styled.div`
   font-size: 28px;
   width: 64px;
   height: 64px;
-  border: 2px solid ${(props) => props.color};
+  overflow: hidden;
   border-radius: 4px;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
 `;
 
 const Icon = styled.div<{ path: string }>`
@@ -99,7 +89,6 @@ const Icon = styled.div<{ path: string }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
   text-shadow: -1px 1px 0 #000, 1px 1px 0 #000, 1px -1px 0 #000, -1px -1px 0 #000;
   font-size: 28px;
   filter: grayscale(50%);

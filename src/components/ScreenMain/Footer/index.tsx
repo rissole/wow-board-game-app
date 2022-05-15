@@ -3,7 +3,7 @@ import styled from "styled-components";
 import EditableStat from "../../EditableStat";
 import { statsForLevel } from "../../../data-accessor";
 import { GameContext } from "../../GameProvider";
-import ToggleIcon from "./backpack.png";
+import toggleInventoryIconPath from "./backpack.png";
 import FactionText from "./FactionText";
 import ClassText from "./ClassText";
 import Modal from "../../Modal";
@@ -37,20 +37,20 @@ const StatSection = styled.div`
   align-items: center;
 `;
 
-const ToggleListSection = styled.div`
+const ToggleInventoryContainer = styled.div`
   padding-left: 16px;
   display: flex;
   justify-content: center;
   align-items: center;
 `;
 
-const ToggleListButton = styled.img`
+const ToggleInventoryButton = styled.img`
   width: 64px;
   height: 64px;
   padding: 4px;
-  border-radius: 20px;
-  border: 2px solid green;
-  background-color: #000;
+  border-radius: 4px;
+  background-color: #000000;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
 `;
 
 const LevelText = styled.span`
@@ -58,10 +58,10 @@ const LevelText = styled.span`
 `;
 
 interface Props {
-  toggleList: () => void;
+  toggleListBetweenPowersAndInventory: () => void;
 }
 
-const MainFooter = ({ toggleList }: Props) => {
+const MainFooter = ({ toggleListBetweenPowersAndInventory }: Props) => {
   const { character, updateCharacter } = useContext(GameContext);
   const {
     toggle: showCharacterConfigModal,
@@ -111,9 +111,13 @@ const MainFooter = ({ toggleList }: Props) => {
             onStatChange={generateStatChangeHandler("gold")}
           />
         </StatSection>
-        <ToggleListSection>
-          <ToggleListButton role="button" src={ToggleIcon} onClick={toggleList} />
-        </ToggleListSection>
+        <ToggleInventoryContainer>
+          <ToggleInventoryButton
+            role="button"
+            src={toggleInventoryIconPath}
+            onClick={toggleListBetweenPowersAndInventory}
+          />
+        </ToggleInventoryContainer>
       </FooterContainer>
       {isShowingCharacterConfigModal ? (
         <Modal onClose={hideCharacterConfigModal}>

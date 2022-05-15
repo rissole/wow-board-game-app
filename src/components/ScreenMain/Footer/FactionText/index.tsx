@@ -6,7 +6,7 @@ interface Props {
 }
 
 const FactionColorText = styled.span`
-  color: ${(props) => props.color || "black"};
+  color: ${(props) => props.color || "#000000"};
 `;
 
 const getFactionColor = (faction: Faction) => {

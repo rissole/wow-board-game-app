@@ -1,5 +1,5 @@
-import React from "react";
 import styled from "styled-components";
+import COLORS from "../../util/colors";
 
 interface Props {
   title: string;
@@ -11,14 +11,13 @@ const SpellCarouselCard = styled.div`
   padding: 16px;
   height: 60vh;
   text-align: center;
-  background-color: #fff;
-  border: 1px solid #000;
+  background-color: ${COLORS.background};
 `;
 
 const CardSpell = ({ title, description }: Props) => {
   return (
     <SpellCarouselCard>
-      <h1>{title}</h1>
+      <h1 style={{ color: COLORS.foregroundPrimary }}>{title}</h1>
       <p>{description}</p>
     </SpellCarouselCard>
   );

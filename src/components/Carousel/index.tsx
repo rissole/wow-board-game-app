@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { useSwipeable, DEFAULT_CONFIGURATION } from "../useSwipeable";
 import Modal from "../Modal";
 import { CardId } from "../../types";
+import COLORS from "../../util/colors";
+import { BaseButton } from "../../util/styles";
 
 const OFFSET_PER_NODE = DEFAULT_CONFIGURATION.offsetPerNode;
 
@@ -24,7 +26,6 @@ export default function Carousel({ items, onClose, onSelectItem, buttonText = "S
   });
 
   const currentItemIndex = useMemo(() => Math.round(offset / OFFSET_PER_NODE), [offset]);
-  const currentItemName = items[currentItemIndex]?.id;
 
   const onTouchStart = useCallback(
     (event: React.TouchEvent) => {
@@ -84,7 +85,6 @@ export default function Carousel({ items, onClose, onSelectItem, buttonText = "S
         onMouseUp={onMouseUp}
       >
         <div>
-          <CarouselTitle>{currentItemName}</CarouselTitle>
           <CarouselCloseButton role="button" onClick={onClose} />
         </div>
         <CarouselMain>
@@ -119,9 +119,9 @@ export default function Carousel({ items, onClose, onSelectItem, buttonText = "S
         </CarouselMain>
         <CarouselFooter>
           {items.length ? (
-            <CarouselSelectButton type="button" onClick={onSelect}>
+            <CarouselButton type="button" onClick={onSelect}>
               <span>{buttonText}</span>
-            </CarouselSelectButton>
+            </CarouselButton>
           ) : (
             <CarouselButton type="button" onClick={onClose}>
               Close
@@ -146,24 +146,16 @@ const EmptyCarouselCard = styled(NodeWrapper)`
   padding: 48px 16px 16px;
   height: 60vh;
   text-align: center;
-  background-color: #fff;
-  border: 1px solid #000;
+  background-color: ${COLORS.background};
+  color: ${COLORS.foregroundBase};
   display: flex;
   justify-content: center;
 `;
 
-const CarouselButton = styled.button`
+const CarouselButton = styled(BaseButton)`
   width: 200px;
   height: 80px;
-  border: 1px solid black;
-  border-radius: 5px;
   font-size: 36px;
-  font-weight: bold;
-  background-color: rgb(190, 100, 100);
-
-  &:active {
-    background-color: rgb(150, 75, 75);
-  }
 `;
 
 const CarouselContainer = styled.div`
@@ -183,20 +175,6 @@ const CarouselFooter = styled.div`
   padding-top: 20px;
 `;
 
-const CarouselSelectButton = styled(CarouselButton)`
-  background-color: rgb(0, 190, 0);
-
-  &:active {
-    background-color: rgb(0, 150, 0);
-  }
-`;
-
-const CarouselTitle = styled.h1`
-  color: white;
-  text-shadow: 2px 2px black;
-  text-align: center;
-`;
-
 const CarouselCloseButton = styled.div`
   position: absolute;
   width: 48px;
@@ -207,7 +185,6 @@ const CarouselCloseButton = styled.div`
   &:before {
     content: "\\00d7";
     font-size: 64px;
-    color: white;
     opacity: 0.7;
   }
 `;

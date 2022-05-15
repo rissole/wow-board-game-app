@@ -6,7 +6,7 @@ interface Props {
 }
 
 const ClassColorText = styled.span`
-  color: ${(props) => props.color || "black"};
+  color: ${(props) => props.color || "#000000"};
 `;
 
 const getClassColor = (heroClass: HeroClass) => {

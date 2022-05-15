@@ -11,9 +11,9 @@ interface ContainerProps {
 }
 
 const diceColourToRenderColour = {
-  green: "#00ff00ff",
-  red: "#ff0000ff",
-  blue: "#4a86e8ff",
+  green: "#02a335",
+  red: "#a30202",
+  blue: "#4a86e8",
 };
 
 const RenderedDice = (props: Props) => {

@@ -8,9 +8,12 @@ import ListInventory from "../ListInventory";
 import ListReference from "../ListReference";
 import { GameContext } from "../GameProvider";
 import { powers, slots } from "../../data-accessor";
-import TheFace from "../../assets/samwise.png";
 import Talents from "./Talents";
 import Footer from "./Footer";
+import trainSpellIcon from "./trainSpellIcon.jpg";
+import talentsIcon from "./talentsIcon.jpg";
+import shopIcon from "./shopIcon.jpg";
+import referenceIcon from "./referenceIcon.jpg";
 
 const MainScreen = () => {
   const { addPower } = useContext(GameContext);
@@ -55,13 +58,15 @@ const MainScreen = () => {
     [addPower, hideSpellbookModal]
   );
 
-  const toggleList = useCallback(() => {
-    let newActiveList: MainScreenList = "powers";
-    if (activeList === "powers") {
-      newActiveList = "inventory";
-    }
-    setActiveList(newActiveList);
-  }, [activeList]);
+  const toggleListBetweenPowersAndInventory = useCallback(
+    () => setActiveList((activeList) => (activeList !== "inventory" ? "inventory" : "powers")),
+    []
+  );
+
+  const toggleListBetweenPowersAndReference = useCallback(
+    () => setActiveList((activeList) => (activeList !== "reference" ? "reference" : "powers")),
+    []
+  );
 
   const renderActiveList = () => {
     switch (activeList) {
@@ -76,16 +81,23 @@ const MainScreen = () => {
   };
 
   interface TopNavItemProps {
+    active?: boolean;
     className: string;
+    disabled?: boolean;
+    iconPath: string;
+    label: string;
     onClick?: () => void;
-    displayName: string;
   }
 
   const TopNavItem = (props: TopNavItemProps) => {
     return (
-      <TopNavContainer className={props.className} onClick={props.onClick}>
-        {props.displayName}
-        <TopNavIcon src={TheFace} alt="The face of samwise" />
+      <TopNavContainer
+        aria-disabled={props.disabled ?? false}
+        className={props.className}
+        onClick={props.disabled ? undefined : props.onClick}
+      >
+        <small style={{ fontWeight: props.active ? "700" : "normal" }}>{props.label}</small>
+        <TopNavIcon src={props.iconPath} alt="The face of samwise" />
       </TopNavContainer>
     );
   };
@@ -93,14 +105,35 @@ const MainScreen = () => {
   return (
     <>
       <div className="nav">
-        <TopNavItem className="spellbook" onClick={toggleSpellbookModal} displayName="Class Spells" />
-        <TopNavItem className="talents" onClick={() => console.log("Talents Modal")} displayName="View Talents" />
-        <TopNavItem className="items" onClick={() => console.log("Items Modal")} displayName="Items" />
-        <TopNavItem className="more" onClick={() => setActiveList("reference")} displayName="Reference" />
+        <TopNavItem
+          className="spellbook"
+          iconPath={trainSpellIcon}
+          onClick={toggleSpellbookModal}
+          label="Train Spells"
+        />
+        <TopNavItem
+          className="talents"
+          iconPath={talentsIcon}
+          onClick={() => console.log("Talents Modal")}
+          label="View Talents"
+        />
+        <TopNavItem
+          className="items"
+          iconPath={shopIcon}
+          onClick={() => console.log("Items Modal")}
+          label="Shop Items"
+        />
+        <TopNavItem
+          active={activeList === "reference"}
+          className="more"
+          iconPath={referenceIcon}
+          onClick={toggleListBetweenPowersAndReference}
+          label="Reference"
+        />
       </div>
       <div className="main powers">{renderActiveList()}</div>
       <Talents />
-      <Footer toggleList={toggleList} />
+      <Footer toggleListBetweenPowersAndInventory={toggleListBetweenPowersAndInventory} />
       {isSpellbookModalOpen ? <ClassSpellsCarousel onClose={closeNavModal} onSelectItem={selectSpellbookItem} /> : null}
     </>
   );
@@ -110,6 +143,12 @@ const TopNavContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 2px;
+  padding: 2px;
+
+  &[aria-disabled="true"] {
+    filter: grayscale(100%);
+  }
 `;
 
 const TopNavIcon = styled.img`

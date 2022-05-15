@@ -63,7 +63,8 @@ const MainContent = styled.div`
 `;
 
 const CostBox = styled.div`
-  background-color: white;
+  background-color: #ffffff;
+  color: #000000;
   width: 24px;
   height: 36px;
   text-align: center;
@@ -81,7 +82,7 @@ const AttributesContainer = styled.div`
 
 const NameBox = styled.span`
   max-width: 96px;
-  font-weight: 700;
+  font-weight: 600;
 `;
 
 export default EquippedCharacterSheetSlot;

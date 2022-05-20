@@ -52,7 +52,7 @@ export const getPowerById = (id: CardId): Power | void => {
   return powers.find((p) => p.name === id);
 };
 
-export const talentsForLevel = (level: CharacterLevel): Talent[] => {
+export const getTalentsForLevel = (level: CharacterLevel): Talent[] => {
   return Object.values(talents).filter((talent) => talent.requiredLevel <= level);
 };
 

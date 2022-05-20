@@ -1,4 +1,4 @@
-import { getAllTalents } from "../../data-accessor";
+import { getTalentsForLevel } from "../../data-accessor";
 import CardTalent from "../CardTalent";
 import Carousel from "../Carousel";
 import { CardId, CharacterLevel, TalentId } from "../../types";
@@ -11,8 +11,7 @@ export interface Props {
 }
 
 export default function SelectTalents(props: Props) {
-  const renderedTalents = getAllTalents()
-    .filter((talent) => talent.requiredLevel <= props.maxTalentLevel)
+  const renderedTalents = getTalentsForLevel(props.maxTalentLevel)
     .filter((talent) => !props.equippedTalents.includes(talent.name))
     .map((talent) => ({
       id: talent.name,

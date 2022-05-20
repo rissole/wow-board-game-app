@@ -9,8 +9,6 @@ import lockPath from "../../../assets/lock-icon.svg";
 import { talents } from "../../../data-accessor";
 import useFlipFlop from "../../useFlipFlop";
 import SelectTalents from "../../CarouselClassTalentsSelect";
-import Modal from "../../Modal";
-import CardTalent from "../../CardTalent";
 import BrowseTalents from "../../CarouselClassTalentsBrowse";
 
 const Container = styled.div`

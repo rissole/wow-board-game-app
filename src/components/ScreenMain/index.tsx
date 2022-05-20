@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { MainScreenList, SheetSlot, CardId } from "../../types";
 import useFlipFlop from "../useFlipFlop";
 import ClassSpellsCarousel from "../CarouselClassSpells";
+import ClassTalentsCarousel from "../CarouselClassTalentsBrowse";
 import ListPowers from "../ListPowers";
 import ListInventory from "../ListInventory";
 import ListReference from "../ListReference";
@@ -21,6 +22,7 @@ const MainScreen = () => {
   const [charSheetSlots, setCharSheetSlots] = useState<SheetSlot[]>([]);
 
   const { value: isSpellbookModalOpen, toggle: toggleSpellbookModal, setOff: hideSpellbookModal } = useFlipFlop();
+  const { value: isTalentModalOpen, toggle: toggleTalentModal, setOff: hideTalentModal } = useFlipFlop();
 
   useEffect(() => {
     setCharSheetSlots(
@@ -46,7 +48,7 @@ const MainScreen = () => {
     );
   }, []);
 
-  const closeNavModal = useCallback(() => {
+  const closeSpellbookModal = useCallback(() => {
     hideSpellbookModal();
   }, [hideSpellbookModal]);
 
@@ -57,6 +59,10 @@ const MainScreen = () => {
     },
     [addPower, hideSpellbookModal]
   );
+
+  const closeTalentModal = useCallback(() => {
+    hideTalentModal();
+  }, [hideTalentModal]);
 
   const toggleListBetweenPowersAndInventory = useCallback(
     () => setActiveList((activeList) => (activeList !== "inventory" ? "inventory" : "powers")),
@@ -111,12 +117,7 @@ const MainScreen = () => {
           onClick={toggleSpellbookModal}
           label="Train Spells"
         />
-        <TopNavItem
-          className="talents"
-          iconPath={talentsIcon}
-          onClick={() => console.log("Talents Modal")}
-          label="View Talents"
-        />
+        <TopNavItem className="talents" iconPath={talentsIcon} onClick={toggleTalentModal} label="View Talents" />
         <TopNavItem
           className="items"
           iconPath={shopIcon}
@@ -134,7 +135,10 @@ const MainScreen = () => {
       <div className="main powers">{renderActiveList()}</div>
       <Talents />
       <Footer toggleListBetweenPowersAndInventory={toggleListBetweenPowersAndInventory} />
-      {isSpellbookModalOpen ? <ClassSpellsCarousel onClose={closeNavModal} onSelectItem={selectSpellbookItem} /> : null}
+      {isSpellbookModalOpen ? (
+        <ClassSpellsCarousel onClose={closeSpellbookModal} onSelectItem={selectSpellbookItem} />
+      ) : null}
+      {isTalentModalOpen ? <ClassTalentsCarousel onClose={closeTalentModal} /> : null}
     </>
   );
 };

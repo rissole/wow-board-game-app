@@ -1,5 +1,17 @@
 import styled from "styled-components";
 import COLORS from "../../../util/colors";
+import { useCallback, useContext } from "react";
+import { GameContext, TalentState } from "../../GameProvider";
+import Icon from "../../Icon";
+import { CardId, CharacterLevel, TalentId } from "../../../types";
+import placeHolderPath from "../../../assets/samwise.png";
+import lockPath from "../../../assets/lock-icon.svg";
+import { talents } from "../../../data-accessor";
+import useFlipFlop from "../../useFlipFlop";
+import SelectTalents from "../../CarouselClassTalentsSelect";
+import Modal from "../../Modal";
+import CardTalent from "../../CardTalent";
+import BrowseTalents from "../../CarouselClassTalentsBrowse";
 
 const Container = styled.div`
   width: 100%;
@@ -8,8 +20,82 @@ const Container = styled.div`
   height: 80px;
 `;
 
+const TalentDisplay = styled.div`
+  padding-top: 4px;
+  display: flex;
+  justify-content: space-evenly;
+`;
+
+interface IconProps {
+  talentLevel: CharacterLevel;
+  currentLevel: CharacterLevel;
+  talents: TalentState;
+  addTalent: (level: CharacterLevel, id: TalentId) => void;
+}
+
+function getIconPath(
+  talentId: TalentId | undefined,
+  talentLevel: CharacterLevel,
+  currentLevel: CharacterLevel
+): string {
+  if (talentId) {
+    return talents[talentId].iconLink;
+  } else if (talentLevel <= currentLevel) {
+    return placeHolderPath;
+  } else {
+    return lockPath;
+  }
+}
+
+const TalentIcon = (props: IconProps) => {
+  const { toggle: showTalentSelect, setOff: hideTalentSelect, value: isShowingTalentSelect } = useFlipFlop();
+  const { toggle: showTalentView, setOff: hideTalentView, value: isShowingTalentView } = useFlipFlop();
+
+  const onSelectTalent = useCallback(
+    (talentSelected: CardId) => {
+      props.addTalent(props.talentLevel, talentSelected);
+      hideTalentSelect();
+    },
+    [props, hideTalentSelect]
+  );
+
+  const equippedTalent = props.talents[props.talentLevel];
+  const talentUnlocked = props.currentLevel >= props.talentLevel;
+  return (
+    <div>
+      <Icon
+        path={getIconPath(equippedTalent, props.talentLevel, props.currentLevel)}
+        height={40}
+        width={40}
+        onClick={!equippedTalent && talentUnlocked ? showTalentSelect : equippedTalent ? showTalentView : () => {}}
+      />
+      {props.talentLevel}
+      {isShowingTalentSelect ? (
+        <SelectTalents
+          onClose={hideTalentSelect}
+          onSelectItem={onSelectTalent}
+          maxTalentLevel={props.talentLevel}
+          equippedTalents={Object.values(props.talents)}
+        />
+      ) : null}
+      {isShowingTalentView ? <BrowseTalents onClose={hideTalentView} talentsToShow={[equippedTalent]} /> : null}
+    </div>
+  );
+};
+
 const Talents = () => {
-  return <Container>Talents</Container>;
+  const { talents, character, addTalent } = useContext(GameContext);
+  return (
+    <Container>
+      <div>Talents</div>
+      <TalentDisplay>
+        <TalentIcon talentLevel={2} currentLevel={character.level} talents={talents} addTalent={addTalent} />
+        <TalentIcon talentLevel={3} currentLevel={character.level} talents={talents} addTalent={addTalent} />
+        <TalentIcon talentLevel={4} currentLevel={character.level} talents={talents} addTalent={addTalent} />
+        <TalentIcon talentLevel={5} currentLevel={character.level} talents={talents} addTalent={addTalent} />
+      </TalentDisplay>
+    </Container>
+  );
 };
 
 export default Talents;

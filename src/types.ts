@@ -14,6 +14,7 @@ export type SlotPrimaryType = "active" | "instant" | "weapon" | "general" | "arm
 export type SlotSecondaryType = "mace" | "staff" | "cloth" | "leather";
 
 export type CardId = string;
+export type TalentId = string;
 
 export const isValidLevel = (level: number): level is CharacterLevel =>
   level === 1 || level === 2 || level === 3 || level === 4 || level === 5;
@@ -84,4 +85,12 @@ export type CharacterSheetSlotData = {
   iconLink: string;
   energyCost: number;
   attributesImpacted: AttributeImpact[];
+};
+
+export type Talent = {
+  name: TalentId;
+  class: HeroClass;
+  requiredLevel: CharacterLevel;
+  rawDescription: string;
+  iconLink: string;
 };

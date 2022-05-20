@@ -1,6 +1,6 @@
-Class,Level,Health,Energy
-Druid,1,2,4
-Druid,2,3,6
-Druid,3,4,9
-Druid,4,6,11
-Druid,5,8,12
+"Class","Level","Health","Energy"
+"Druid","1","2","4"
+"Druid","2","3","6"
+"Druid","3","4","9"
+"Druid","4","6","11"
+"Druid","5","8","12"

@@ -11,11 +11,16 @@ import {
   SlotSecondaryType,
   SlotType,
   CardId,
+  Talent,
+  TalentId,
 } from "./types";
 import powersJson from "./powers.csv";
 import levelsJson from "./levels.csv";
 import slotsJson from "./slots.csv";
+import talentsJson from "./talents.csv";
 import { parseAttribute } from "./attributes";
+
+type CsvFile = ReadonlyArray<ReadonlyArray<string | number | null>>;
 
 const RACIAL_SLOT: SheetSlot = {
   slotNumber: 0,
@@ -25,12 +30,12 @@ const RACIAL_SLOT: SheetSlot = {
     },
   ],
 };
-type CsvFile = ReadonlyArray<ReadonlyArray<string | number | null>>;
 export const powers: Power[] = parseCsvToPower(powersJson.slice(1));
 export const levelStats: LevelStats[] = parseCsvToLevels(levelsJson.slice(1));
 
 export const slots: SheetSlot[] = parseCsvToSlots(slotsJson.slice(1));
 
+export const talents: Record<TalentId, Talent> = parseCsvToTalents(talentsJson.slice(1));
 // TODO: Needs to take a hero class when we fill in the CSV data
 export const statsForLevel = (level: CharacterLevel): LevelStats => {
   const stat = levelStats.find((stat) => stat.level === level);
@@ -45,6 +50,14 @@ export const statsForLevel = (level: CharacterLevel): LevelStats => {
 // TODO: This is really silly, this should be in a map
 export const getPowerById = (id: CardId): Power | void => {
   return powers.find((p) => p.name === id);
+};
+
+export const talentsForLevel = (level: CharacterLevel): Talent[] => {
+  return Object.values(talents).filter((talent) => talent.requiredLevel <= level);
+};
+
+export const getAllTalents = (): Talent[] => {
+  return Object.values(talents);
 };
 
 function parseCsvToPower(csv: CsvFile): Power[] {
@@ -119,4 +132,20 @@ function parseCsvToSlots(csv: CsvFile): SheetSlot[] {
     },
     [RACIAL_SLOT]
   );
+}
+
+//csv headers: name, class, level, rawDescription, iconLink
+function parseCsvToTalents(csv: CsvFile): Record<TalentId, Talent> {
+  return csv.reduce((talents, row) => {
+    const talent = {
+      name: row[0] as TalentId,
+      class: row[1] as HeroClass,
+      requiredLevel: row[2] as CharacterLevel,
+      rawDescription: row[3] as string,
+      iconLink: row[4] as string,
+    };
+
+    talents[talent.name] = talent;
+    return talents;
+  }, {} as Record<TalentId, Talent>);
 }

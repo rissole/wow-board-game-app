@@ -15,7 +15,7 @@ export interface CarouselItem {
 
 interface Props {
   onClose: () => void;
-  onSelectItem: (item: CardId) => void;
+  onSelectItem: ((item: CardId) => void) | undefined;
   items: CarouselItem[];
   buttonText?: string;
 }
@@ -71,7 +71,9 @@ export default function Carousel({ items, onClose, onSelectItem, buttonText = "S
 
   const onSelect = useCallback(() => {
     const currentItem = items[currentItemIndex];
-    onSelectItem(currentItem.id);
+    if (onSelectItem) {
+      onSelectItem(currentItem.id);
+    }
   }, [currentItemIndex, items, onSelectItem]);
 
   return (
@@ -118,7 +120,7 @@ export default function Carousel({ items, onClose, onSelectItem, buttonText = "S
           )}
         </CarouselMain>
         <CarouselFooter>
-          {items.length ? (
+          {items.length && onSelectItem ? (
             <CarouselButton type="button" onClick={onSelect}>
               <span>{buttonText}</span>
             </CarouselButton>

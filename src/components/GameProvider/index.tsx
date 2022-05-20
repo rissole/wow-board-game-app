@@ -1,7 +1,7 @@
 import React, { createContext, ReactNode, useCallback, useMemo, useState } from "react";
 import { statsForLevel } from "../../data-accessor";
 
-import { CharacterLevel, Faction, HeroClass, CardId, isValidLevel } from "../../types";
+import { CharacterLevel, Faction, HeroClass, CardId, isValidLevel, TalentId } from "../../types";
 
 export interface CharacterState {
   heroClass: HeroClass;
@@ -17,6 +17,10 @@ export interface PowerState {
   isEquipped: boolean;
 }
 
+export type TalentState = {
+  [level: string]: TalentId;
+};
+
 export type GameContextType = {
   // Character information
   character: CharacterState;
@@ -31,6 +35,8 @@ export type GameContextType = {
    * (will be false if you try to level up to an invalid level, i.e. beyond max)
    */
   levelUp: () => boolean;
+  talents: TalentState;
+  addTalent: (level: CharacterLevel, talent: TalentId) => void;
 };
 
 const DEFAULT_CHARACTER_STATE: CharacterState = {
@@ -49,6 +55,8 @@ const DEFAULT_GAME_STATE = {
   addPower: () => {},
   removePower: () => {},
   levelUp: () => false,
+  talents: {} as TalentState,
+  addTalent: () => {},
 };
 
 export const GameContext = createContext<GameContextType>(DEFAULT_GAME_STATE);
@@ -57,6 +65,7 @@ GameContext.displayName = "GameContext";
 const GameProvider = (props: { children: ReactNode }) => {
   const [character, setCharacter] = useState<CharacterState>(DEFAULT_CHARACTER_STATE);
   const [powers, setPowers] = useState<PowerState[]>([]);
+  const [talents, setTalents] = useState<TalentState>({} as TalentState);
 
   const updateCharacter = useCallback(
     (update: Partial<CharacterState>) => {
@@ -93,9 +102,16 @@ const GameProvider = (props: { children: ReactNode }) => {
     return false;
   }, [character.level, updateCharacter]);
 
+  const addTalent = useCallback(
+    (level: CharacterLevel, talent: TalentId) => {
+      setTalents((currentTalents) => ({ ...currentTalents, [level]: talent }));
+    },
+    [setTalents]
+  );
+
   const contextValue = useMemo(
-    () => ({ character, updateCharacter, powers, addPower, removePower, levelUp }),
-    [addPower, character, levelUp, powers, removePower, updateCharacter]
+    () => ({ character, updateCharacter, powers, addPower, removePower, levelUp, talents, addTalent }),
+    [addPower, character, levelUp, powers, removePower, updateCharacter, talents, addTalent]
   );
 
   return <GameContext.Provider value={contextValue}>{props.children}</GameContext.Provider>;

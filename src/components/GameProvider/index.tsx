@@ -105,8 +105,8 @@ const GameProvider = (props: { children: ReactNode }) => {
       if (update.faction !== undefined && update.heroClass !== undefined) {
         let slotMetadataForClass = HERO_CLASS_CARD_SLOT_METADATA[update.heroClass];
         if (slotMetadataForClass === undefined) {
-          console.warn(`No slot metadata for ${update.heroClass}, falling back to Druid`);
-          slotMetadataForClass = HERO_CLASS_CARD_SLOT_METADATA["Druid"]!;
+          console.warn(`No slot metadata for ${update.heroClass}, falling back to druid`);
+          slotMetadataForClass = HERO_CLASS_CARD_SLOT_METADATA["druid"]!;
         }
         const initialCardSlotState = slotMetadataForClass.reduce<CardSlotState>((accum, metadata, slotNumber) => {
           accum[slotNumber] = { metadata, equipped: [] };

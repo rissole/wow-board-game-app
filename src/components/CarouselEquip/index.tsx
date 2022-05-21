@@ -3,7 +3,8 @@ import Carousel, { CarouselItem } from "../Carousel";
 import CardSpell from "../CardSpell";
 import { UniqueCardName } from "../../types";
 import { GameContext } from "../GameProvider";
-import { getPowerByName } from "../../data-accessor";
+import { ALL_POWERS } from "../../data-accessor";
+import { getEquippableCards } from "../../util/data";
 
 export interface Props {
   onClose: () => void;
@@ -16,19 +17,14 @@ export interface Spell {
 }
 
 export default function EquipCarousel({ onClose, onSelectItem }: Props) {
-  const { purchasedCards } = useContext(GameContext);
+  const { purchasedCards, cardSlots } = useContext(GameContext);
 
-  const items: CarouselItem[] = purchasedCards.flatMap((p) => {
-    const power = getPowerByName(p);
-    return power
-      ? [
-          {
-            name: power.name,
-            renderNode: () => <CardSpell title={power.name} description={power.rawDescription} />,
-          },
-        ]
-      : [];
+  const equippableCards: CarouselItem[] = getEquippableCards(ALL_POWERS, purchasedCards, cardSlots).map((p) => {
+    return {
+      name: p.name,
+      renderNode: () => <CardSpell title={p.name} description={p.rawDescription} />,
+    };
   });
 
-  return <Carousel items={items} onClose={onClose} onSelectItem={onSelectItem} buttonText="Train" />;
+  return <Carousel items={equippableCards} onClose={onClose} onSelectItem={onSelectItem} buttonText="Train" />;
 }

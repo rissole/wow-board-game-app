@@ -1,4 +1,4 @@
-import { IAttribute, AttributeAudience, AttributeName, DiceColour } from "./types";
+import { IAttribute, AttributeAudience, AttributeName, DiceColor } from "./types";
 
 export type Attribute =
   | DiceAttribute
@@ -19,7 +19,7 @@ export const parseAttribute = (rawAttributeName: string): Attribute => {
     case "damage":
       return new DamageAttribute(attrArr[1] as AttributeAudience);
     case "dice":
-      return new DiceAttribute(attrArr[1] as AttributeAudience, attrArr[2] as DiceColour);
+      return new DiceAttribute(attrArr[1] as AttributeAudience, attrArr[2] as DiceColor);
     case "attrition":
       return new AttritionAttribute(attrArr[1] as AttributeAudience);
     case "health":
@@ -39,7 +39,7 @@ export const parseAttribute = (rawAttributeName: string): Attribute => {
 
 export class DiceAttribute implements IAttribute {
   readonly name = "dice";
-  constructor(readonly audience: AttributeAudience, readonly diceColour: DiceColour) {}
+  constructor(readonly audience: AttributeAudience, readonly diceColor: DiceColor) {}
 }
 
 export class DamageAttribute implements IAttribute {

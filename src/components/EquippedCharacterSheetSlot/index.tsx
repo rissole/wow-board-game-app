@@ -51,7 +51,7 @@ const AttributesImpactedView = (props: AttributeProps) => {
         .map((attr, index) => {
           if (attr.attribute.name === "dice") {
             const diceAttr = attr.attribute;
-            return <RenderedDice diceColour={diceAttr.diceColour} numOfDice={attr.maxImpact} key={index} />;
+            return <RenderedDice diceColor={diceAttr.diceColor} numOfDice={attr.maxImpact} key={index} />;
           }
           return undefined;
         })}

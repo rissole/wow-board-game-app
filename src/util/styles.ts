@@ -23,6 +23,7 @@ export const ActionButton = styled.button<{ buttonStyle?: "danger" | "default" }
     borderRadius: "5px",
     fontSize: "18px",
     fontWeight: "bold",
+    color: `${COLORS.foregroundBase}`,
     backgroundColor: `rgb(${rgbMap[buttonStyle]})`,
     "&:active": { filter: "brightness(0.7)" },
     [`&[disabled], &[aria-disabled="true"]`]: { opacity: "10%", filter: "grayscale(100%)" },

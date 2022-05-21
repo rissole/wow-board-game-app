@@ -1,16 +1,16 @@
-import { DiceColour } from "../../types";
+import { DiceColor } from "../../types";
 import styled from "styled-components";
 
 interface Props {
-  diceColour: DiceColour;
+  diceColor: DiceColor;
   numOfDice: number;
 }
 
 interface ContainerProps {
-  diceColour: DiceColour;
+  diceColor: DiceColor;
 }
 
-const diceColourToRenderColour = {
+const diceColorToRenderColor = {
   green: "#02a335",
   red: "#a30202",
   blue: "#4a86e8",
@@ -18,7 +18,7 @@ const diceColourToRenderColour = {
 
 const RenderedDice = (props: Props) => {
   return (
-    <Container diceColour={props.diceColour}>
+    <Container diceColor={props.diceColor}>
       <div style={{ padding: "8px 0" }}>{props.numOfDice}</div>
     </Container>
   );
@@ -27,7 +27,7 @@ const RenderedDice = (props: Props) => {
 const Container = styled.div<ContainerProps>`
   height: 0;
   width: 36px;
-  border-bottom: 32px solid ${(props) => diceColourToRenderColour[props.diceColour]};
+  border-bottom: 32px solid ${(props) => diceColorToRenderColor[props.diceColor]};
   border-left: 12px solid transparent;
   border-right: 12px solid transparent;
   text-align: center;

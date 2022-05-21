@@ -67,7 +67,7 @@ const CharacterSelectScreen = (props: Props) => {
         <FactionGrid>
           <FactionCard
             isSelected={selectedFaction === "alliance"}
-            borderColour="#05528f"
+            borderColor={COLORS.alliance}
             path={allianceCircle}
             onClick={() => {
               if (selectedClass === "shaman") {
@@ -78,7 +78,7 @@ const CharacterSelectScreen = (props: Props) => {
           />
           <FactionCard
             isSelected={selectedFaction === "horde"}
-            borderColour="#7d151b"
+            borderColor={COLORS.horde}
             path={hordeCircle}
             onClick={() => {
               if (selectedClass === "paladin") {
@@ -116,13 +116,13 @@ const FactionGrid = styled.div`
   height: 25vh;
 `;
 
-const FactionCard = styled.div<{ isSelected: boolean; borderColour: string; path: string }>`
+const FactionCard = styled.div<{ isSelected: boolean; borderColor: string; path: string }>`
   display: flex;
   background-image: url(${(props) => props.path});
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  border: ${(props) => (props.isSelected ? `solid 4px ${props.borderColour}` : "solid 4px transparent")};
+  border: ${(props) => (props.isSelected ? `solid 4px ${props.borderColor}` : "solid 4px transparent")};
   cursor: pointer;
   border-radius: 8px;
 `;

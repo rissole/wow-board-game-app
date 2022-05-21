@@ -10,6 +10,9 @@ const COLORS = {
   foregroundBase: "#ffffff",
   // foreground for primary attention items
   foregroundPrimary: "#ffee33",
+
+  alliance: "#0363fc",
+  horde: "#fc0f03",
 };
 
 export default COLORS;

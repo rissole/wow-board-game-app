@@ -1,7 +1,7 @@
 import {
   AttributeImpact,
   CharacterLevel,
-  DiceColour,
+  DiceColor,
   HeroClass,
   LevelStats,
   Phase,
@@ -75,7 +75,7 @@ function parseCsvToPower(csv: CsvFile): Power[] {
       dependantOn: row[9] === null ? undefined : (row[9] as string).split(", "),
       attributesImpacted: parseAttributesImpacted(row[10] as string),
       effect: row[11] as string,
-      spotColour: row[12] === null ? undefined : (row[12] as string).split(", ").map((item) => item as DiceColour),
+      spotColor: row[12] === null ? undefined : (row[12] as string).split(", ").map((item) => item as DiceColor),
       spotAmount: row[13] === null ? undefined : (row[13] as string),
       maxSpotAmount: row[14] === null ? undefined : (row[14] as number),
     };

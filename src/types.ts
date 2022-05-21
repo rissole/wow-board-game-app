@@ -4,7 +4,7 @@ export type StatType = "health" | "energy" | "gold";
 export type CharacterLevel = 1 | 2 | 3 | 4 | 5;
 export type Faction = "alliance" | "horde";
 export type HeroClass = "paladin" | "warlock" | "rogue" | "mage" | "hunter" | "druid" | "warrior" | "shaman" | "priest";
-export type DiceColour = "green" | "red" | "blue";
+export type DiceColor = "green" | "red" | "blue";
 export type Phase = "End_Reroll" | "Start_Dice" | "Start_Action" | "Place_Tokens" | "Team_Health_Down" | "Global";
 export type Screen = "loading" | "main" | "character-select";
 export type MainScreenList = "powers" | "inventory" | "reference";
@@ -76,7 +76,7 @@ export type Power = {
   dependantOn?: string[];
   attributesImpacted: AttributeImpact[];
   effect: string;
-  spotColour?: DiceColour[];
+  spotColor?: DiceColor[];
   spotAmount?: string;
   maxSpotAmount?: number;
 };

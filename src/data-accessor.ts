@@ -31,10 +31,12 @@ const RACIAL_SLOT: CardSlotMetadata = {
     },
   ],
 };
-export const ALL_POWERS: Power[] = parseCsvToPower(powersJson.slice(1));
-export const LEVEL_STATS: LevelStats[] = parseCsvToLevels(levelsJson.slice(1));
+export const ALL_POWERS: ReadonlyArray<Power> = parseCsvToPower(powersJson.slice(1));
+export const LEVEL_STATS: ReadonlyArray<LevelStats> = parseCsvToLevels(levelsJson.slice(1));
 
-export const HERO_CLASS_CARD_SLOT_METADATA = parseCsvToSlots(slotsJson.slice(1));
+export const HERO_CLASS_CARD_SLOT_METADATA: { [k in HeroClass]?: ReadonlyArray<CardSlotMetadata> } = parseCsvToSlots(
+  slotsJson.slice(1)
+);
 
 export const ALL_TALENTS: Record<UniqueTalentName, Talent> = parseCsvToTalents(talentsJson.slice(1));
 // TODO: Needs to take a hero class when we fill in the CSV data
@@ -93,7 +95,7 @@ function parseAttributesImpacted(rawAttributesEntry: string): AttributeImpact[] 
   });
 }
 
-function parseCsvToLevels(csv: CsvFile): LevelStats[] {
+function parseCsvToLevels(csv: CsvFile): ReadonlyArray<LevelStats> {
   return csv.map((row) => {
     return {
       class: (row[0] as string).toLowerCase() as HeroClass,

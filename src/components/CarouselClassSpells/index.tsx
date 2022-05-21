@@ -17,9 +17,9 @@ export interface Spell {
 
 // Display available class spells
 export default function EquipClassSpells({ onClose, onSelectItem }: Props) {
-  const { purchasedCards: ownedPowers } = useContext(GameContext);
+  const { purchasedCards } = useContext(GameContext);
 
-  const availablePowers: CarouselItem[] = ALL_POWERS.filter((power) => !ownedPowers.includes(power.name)).map(
+  const availablePowers: CarouselItem[] = ALL_POWERS.filter((power) => !purchasedCards.includes(power.name)).map(
     (power) => ({
       name: power.name,
       renderNode: () => <CardSpell title={power.name} description={power.rawDescription} />,

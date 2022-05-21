@@ -10,6 +10,7 @@ import {
   UniqueTalentName,
   CardSlot,
   SlotNumber,
+  isValidSlotNumber,
 } from "../../types";
 
 export interface CharacterState {
@@ -21,23 +22,29 @@ export interface CharacterState {
   gold: number;
 }
 
-type UpdateCharacterArgs = Partial<
-  Omit<CharacterState, "heroClass" | "faction"> & { faction: Faction; heroClass: HeroClass }
->;
+type UpdateCharacterArgs =
+  | Partial<Omit<CharacterState, "faction" | "heroClass">>
+  | Pick<CharacterState, "faction" | "heroClass">;
 
 export type CardSlotState = {
   /**
    * a slot can have multiple card IDs in it (e.g. helmets, armor)
    */
-  [slotNumber: number]: CardSlot;
+  [slotNumber in SlotNumber]?: CardSlot;
 };
 
 export type TalentState = {
-  [level: string]: UniqueTalentName;
+  [level in CharacterLevel]?: UniqueTalentName;
 };
 
 export type GameContextType = {
   character: CharacterState;
+  /**
+   * Update the character state to the provided values.
+   * Note: if `update` contains only `faction` and `heroClass` it is assumed that
+   * the character is being initialised. `health` and `energy` values will be set
+   * to their level 1 values, level will be set to 1, and gold will be set to 0.
+   */
   updateCharacter: (update: UpdateCharacterArgs) => void;
 
   /**
@@ -77,7 +84,7 @@ const DEFAULT_CHARACTER_STATE: CharacterState = {
   gold: 0,
 };
 
-const DEFAULT_GAME_STATE = {
+const DEFAULT_GAME_STATE: GameContextType = {
   character: DEFAULT_CHARACTER_STATE,
   updateCharacter: () => {},
   purchasedCards: [],
@@ -101,26 +108,33 @@ const GameProvider = (props: { children: ReactNode }) => {
 
   const updateCharacter = useCallback(
     (update: UpdateCharacterArgs) => {
-      // assuming if we are setting faction and hero class we need to initialise the slots.
-      if (update.faction !== undefined && update.heroClass !== undefined) {
+      // assuming if we are setting faction and hero class we need to initialise card slots.
+      const updateToApply: Partial<CharacterState> = { ...update };
+      if ("faction" in update && "heroClass" in update) {
         let slotMetadataForClass = HERO_CLASS_CARD_SLOT_METADATA[update.heroClass];
         if (slotMetadataForClass === undefined) {
           console.warn(`No slot metadata for ${update.heroClass}, falling back to druid`);
+          // assuming we always have druid
           slotMetadataForClass = HERO_CLASS_CARD_SLOT_METADATA["druid"]!;
         }
         const initialCardSlotState = slotMetadataForClass.reduce<CardSlotState>((accum, metadata, slotNumber) => {
+          if (!isValidSlotNumber(slotNumber)) {
+            throw new Error(`Found invalid slot number ${slotNumber} when trying to initialise card slots`);
+          }
           accum[slotNumber] = { metadata, equipped: [] };
           return accum;
         }, {});
-
         setCardSlots(initialCardSlotState);
 
+        // initialise starting health and energy to their max values at level 1
         const statsForLevelOne = statsForLevel(1, update.heroClass);
-        update.health = statsForLevelOne.health;
-        update.energy = statsForLevelOne.energy;
+        updateToApply.health = statsForLevelOne.health;
+        updateToApply.energy = statsForLevelOne.energy;
+        updateToApply.level = 1;
+        updateToApply.gold = 0;
       }
       setCharacter((currentCharacter) => {
-        return { ...currentCharacter, ...update };
+        return { ...currentCharacter, ...updateToApply };
       });
     },
     [setCharacter]
@@ -144,7 +158,7 @@ const GameProvider = (props: { children: ReactNode }) => {
     (slotNumber: SlotNumber, name: UniqueCardName, appendCardInsteadOfOverwrite: boolean = false) => {
       const slot = cardSlots[slotNumber];
       if (slot === undefined) {
-        throw new Error("Unexpected ninitialized slot");
+        throw new Error("Unexpected uninitialized slot");
       }
       const previousEquippedCards = [...slot.equipped];
       setCardSlots({

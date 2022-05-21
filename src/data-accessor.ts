@@ -13,6 +13,7 @@ import {
   Talent,
   UniqueTalentName,
   CardSlotMetadata,
+  isValidSlotNumber,
 } from "./types";
 import powersJson from "./powers.csv";
 import levelsJson from "./levels.csv";
@@ -125,8 +126,12 @@ function parseCsvToSlots(csv: CsvFile): { [heroClass: string]: CardSlotMetadata[
       });
     }
 
+    const slotNumber = row[1] as number;
+    if (!isValidSlotNumber(slotNumber)) {
+      throw new Error(`${slotNumber} is not a valid slot number`);
+    }
     slots.push({
-      slotNumber: row[1] as number,
+      slotNumber,
       slotTypes,
     });
   });

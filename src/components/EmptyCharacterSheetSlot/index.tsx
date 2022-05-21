@@ -25,13 +25,13 @@ const EmptyCharacterSheetSlot = (props: Props) => {
     [toggleModal]
   );
 
-  const hasEquippableItem = purchasedCards.length > 0;
+  const canEquipSomething = purchasedCards.length > 0;
 
   return (
     <>
       <CharacterSheetSlot
         style={{ justifyContent: "space-between" }}
-        onClick={hasEquippableItem ? toggleModal : undefined}
+        onClick={canEquipSomething ? toggleModal : undefined}
       >
         <SlotTypeIcons slotTypes={props.cardSlotMetadata.slotTypes} isEquippedSlot={false} />
         <AddIcon>+</AddIcon>

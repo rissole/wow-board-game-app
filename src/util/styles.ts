@@ -12,5 +12,19 @@ export const BaseButton = styled.button({
   alignItems: "center",
   justifyContent: "center",
   appearance: "none",
-  "&[disabled], &[aria-disabled]": { opacity: "10%", filter: "grayscale(100%)" },
+  [`&[disabled], &[aria-disabled="true"]`]: { opacity: "10%", filter: "grayscale(100%)" },
+});
+
+export const ActionButton = styled.button<{ buttonStyle?: "danger" | "default" }>(({ buttonStyle = "default" }) => {
+  const rgbMap: { [k in typeof buttonStyle]: string } = { default: "0, 150, 0", danger: "196, 0, 0" };
+  return {
+    padding: "12px",
+    border: "1px solid black",
+    borderRadius: "5px",
+    fontSize: "18px",
+    fontWeight: "bold",
+    backgroundColor: `rgb(${rgbMap[buttonStyle]})`,
+    "&:active": { filter: "brightness(0.7)" },
+    [`&[disabled], &[aria-disabled="true"]`]: { opacity: "10%", filter: "grayscale(100%)" },
+  };
 });

@@ -97,7 +97,7 @@ export type CardSlot = {
  * metadata about a slot for a card on the character sheet
  */
 export type CardSlotMetadata = {
-  slotNumber: number;
+  slotNumber: SlotNumber;
   slotTypes: SlotType[];
 };
 

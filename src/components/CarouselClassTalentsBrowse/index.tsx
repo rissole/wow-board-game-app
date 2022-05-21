@@ -1,18 +1,18 @@
 import { getAllTalents } from "../../data-accessor";
 import CardTalent from "../CardTalent";
-import Carousel from "../Carousel";
-import { TalentId } from "../../types";
+import Carousel, { CarouselItem } from "../Carousel";
+import { UniqueTalentName } from "../../types";
 
 export interface Props {
   onClose: () => void;
-  talentsToShow?: TalentId[];
+  talentsToShow?: UniqueTalentName[];
 }
 
 export default function BrowseTalents(props: Props) {
-  const renderedTalents = getAllTalents()
+  const renderedTalents: CarouselItem[] = getAllTalents()
     .filter((talent) => (props.talentsToShow ? props.talentsToShow.includes(talent.name) : true))
     .map((talent) => ({
-      id: talent.name,
+      name: talent.name,
       renderNode: () => <CardTalent title={talent.name} description={talent.rawDescription} />,
     }));
 

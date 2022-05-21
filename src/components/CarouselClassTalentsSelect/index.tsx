@@ -1,20 +1,20 @@
 import { getTalentsForLevel } from "../../data-accessor";
 import CardTalent from "../CardTalent";
-import Carousel from "../Carousel";
-import { CardId, CharacterLevel, TalentId } from "../../types";
+import Carousel, { CarouselItem } from "../Carousel";
+import { UniqueCardName, CharacterLevel, UniqueTalentName } from "../../types";
 
 export interface Props {
   onClose: () => void;
-  onSelectItem: (id: CardId) => void;
+  onSelectItem: (id: UniqueCardName) => void;
   maxTalentLevel: CharacterLevel;
-  equippedTalents: TalentId[];
+  equippedTalents: UniqueTalentName[];
 }
 
 export default function SelectTalents(props: Props) {
-  const renderedTalents = getTalentsForLevel(props.maxTalentLevel)
+  const renderedTalents: CarouselItem[] = getTalentsForLevel(props.maxTalentLevel)
     .filter((talent) => !props.equippedTalents.includes(talent.name))
     .map((talent) => ({
-      id: talent.name,
+      name: talent.name,
       renderNode: () => <CardTalent title={talent.name} description={talent.rawDescription} />,
     }));
 

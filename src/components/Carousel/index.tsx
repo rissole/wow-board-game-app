@@ -2,20 +2,20 @@ import React, { ReactNode, useCallback, useMemo } from "react";
 import styled from "styled-components";
 import { useSwipeable, DEFAULT_CONFIGURATION } from "../useSwipeable";
 import Modal from "../Modal";
-import { CardId } from "../../types";
+import { UniqueCardName } from "../../types";
 import COLORS from "../../util/colors";
 import { BaseButton } from "../../util/styles";
 
 const OFFSET_PER_NODE = DEFAULT_CONFIGURATION.offsetPerNode;
 
 export interface CarouselItem {
-  id: CardId;
+  name: UniqueCardName;
   renderNode: () => ReactNode;
 }
 
 interface Props {
   onClose: () => void;
-  onSelectItem: ((item: CardId) => void) | undefined;
+  onSelectItem: ((item: UniqueCardName) => void) | undefined;
   items: CarouselItem[];
   buttonText?: string;
 }
@@ -29,14 +29,14 @@ export default function Carousel({ items, onClose, onSelectItem, buttonText = "S
 
   const onTouchStart = useCallback(
     (event: React.TouchEvent) => {
-      handleSwipeStart(event.targetTouches[0].clientX);
+      handleSwipeStart(event.targetTouches[0]!.clientX);
     },
     [handleSwipeStart]
   );
 
   const onTouchMove = useCallback(
     (event: React.TouchEvent) => {
-      handleSwipe(event.targetTouches[0].clientX);
+      handleSwipe(event.targetTouches[0]!.clientX);
     },
     [handleSwipe]
   );
@@ -71,8 +71,8 @@ export default function Carousel({ items, onClose, onSelectItem, buttonText = "S
 
   const onSelect = useCallback(() => {
     const currentItem = items[currentItemIndex];
-    if (onSelectItem) {
-      onSelectItem(currentItem.id);
+    if (onSelectItem && currentItem !== undefined) {
+      onSelectItem(currentItem.name);
     }
   }, [currentItemIndex, items, onSelectItem]);
 

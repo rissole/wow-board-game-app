@@ -1,12 +1,13 @@
 import styled from "styled-components";
-import { AttributeImpact, SheetSlot } from "../../types";
+import { AttributeImpact, CardSlot } from "../../types";
 import Icon from "../Icon";
 import RenderedDice from "../RenderedDice";
 import SlotTypeIcons from "../SlotTypeIcons";
 import CharacterSheetSlot from "../BaseCharacterSheetSlot";
+import { getPowerByName } from "../../data-accessor";
 
 export interface Props {
-  slot: SheetSlot;
+  slot: CardSlot;
 }
 
 interface AttributeProps {
@@ -14,19 +15,27 @@ interface AttributeProps {
 }
 
 const EquippedCharacterSheetSlot = (props: Props) => {
-  const slotData = props.slot.slotData;
-  if (!slotData) {
-    throw new Error("Should be data in slot");
+  if (props.slot.equipped[0] === undefined) {
+    throw new Error(
+      `Nothing equipped in this slot you're trying to look at (slotNumber: ${props.slot.metadata.slotNumber})`
+    );
+  }
+  /**
+   * TODO support multiple cards in a slot
+   */
+  const equippedCardData = getPowerByName(props.slot.equipped[0]);
+  if (equippedCardData === undefined) {
+    throw new Error(`Couldn't find data for card ${props.slot.equipped[0]} in slot ${props.slot.metadata.slotNumber}`);
   }
   return (
     <CharacterSheetSlot>
       <Container>
-        <SlotTypeIcons slotTypes={props.slot.slotTypes} isEquippedSlot={true} />
+        <SlotTypeIcons slotTypes={props.slot.metadata.slotTypes} isEquippedSlot={true} />
         <MainContent>
-          <Icon path={slotData.iconLink} height={36} width={36} />
-          <CostBox>{slotData.energyCost}</CostBox>
-          <NameBox>{slotData.name}</NameBox>
-          <AttributesImpactedView attributesImpacted={slotData.attributesImpacted} />
+          <Icon path={equippedCardData.iconLink} height={36} width={36} />
+          <CostBox>{equippedCardData.energyCost}</CostBox>
+          <NameBox>{equippedCardData.name}</NameBox>
+          <AttributesImpactedView attributesImpacted={equippedCardData.attributesImpacted} />
         </MainContent>
       </Container>
     </CharacterSheetSlot>

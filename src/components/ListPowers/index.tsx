@@ -1,21 +1,19 @@
-import React from "react";
-import { SheetSlot } from "../../types";
+import React, { useContext } from "react";
 
 import EquippedCharacterSheetSlot from "../EquippedCharacterSheetSlot";
 import EmptyCharacterSheetSlot from "../EmptyCharacterSheetSlot";
+import { GameContext } from "../GameProvider";
 
-interface Props {
-  charSheetSlots: SheetSlot[];
-}
-
-const PowersList = ({ charSheetSlots }: Props) => {
+const PowersList = () => {
+  const { cardSlots } = useContext(GameContext);
   return (
     <>
-      {charSheetSlots.map((charSheetSlot, i) => {
-        if (charSheetSlot.slotData) {
-          return <EquippedCharacterSheetSlot slot={charSheetSlot} key={i} />;
+      {Object.values(cardSlots).map((cardSlot, i) => {
+        const equippedCards = cardSlot.equipped;
+        if (equippedCards.length > 0) {
+          return <EquippedCharacterSheetSlot slot={cardSlot} key={i} />;
         }
-        return <EmptyCharacterSheetSlot slot={charSheetSlot} key={i} />;
+        return <EmptyCharacterSheetSlot cardSlotMetadata={cardSlot.metadata} key={i} />;
       })}
     </>
   );

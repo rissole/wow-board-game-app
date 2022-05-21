@@ -68,7 +68,7 @@ const MainFooter = ({ toggleListBetweenPowersAndInventory }: Props) => {
     setOff: hideCharacterConfigModal,
     value: isShowingCharacterConfigModal,
   } = useFlipFlop();
-  const statsForCurrentLevel = useMemo(() => statsForLevel(character.level), [character]);
+  const statsForCurrentLevel = useMemo(() => statsForLevel(character.level, character.heroClass), [character]);
 
   const generateStatChangeHandler = useCallback(
     (statType: StatType) => {

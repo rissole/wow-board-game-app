@@ -26,5 +26,5 @@ export default function EquipCarousel({ onClose, onSelectItem }: Props) {
     };
   });
 
-  return <Carousel items={equippableCards} onClose={onClose} onSelectItem={onSelectItem} buttonText="Train" />;
+  return <Carousel items={equippableCards} onClose={onClose} onSelectItem={onSelectItem} buttonText="Equip" />;
 }

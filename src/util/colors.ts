@@ -6,6 +6,11 @@ const COLORS = {
   // background used for items on top of background e.g. buttons
   backgroundPrimary: "#626262",
 
+  backgroundTypeActive: "#002e5f",
+  backgroundTypeInstant: "#1b2e58",
+  backgroundTypeWeapon: "#44005f",
+  backgroundTypeArmor: "#36312f",
+
   // base foreground (text color)
   foregroundBase: "#ffffff",
   // foreground for primary attention items

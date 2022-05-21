@@ -73,6 +73,10 @@ export type GameContextType = {
     name: UniqueCardName,
     appendCardInsteadOfOverwrite?: boolean
   ) => UniqueCardName[];
+  /**
+   * Removes card from the specified slot.
+   */
+  unequipCardFromSlot: (slotNumber: SlotNumber, name: UniqueCardName) => void;
 };
 
 const DEFAULT_CHARACTER_STATE: CharacterState = {
@@ -95,6 +99,7 @@ const DEFAULT_GAME_STATE: GameContextType = {
   addTalent: () => {},
   cardSlots: {},
   equipCardToSlot: () => [],
+  unequipCardFromSlot: () => {},
 };
 
 export const GameContext = createContext<GameContextType>(DEFAULT_GAME_STATE);
@@ -173,6 +178,25 @@ const GameProvider = (props: { children: ReactNode }) => {
     [setCardSlots, cardSlots]
   );
 
+  const unequipCardFromSlot = useCallback(
+    (slotNumber: SlotNumber, name: UniqueCardName) => {
+      const slot = cardSlots[slotNumber];
+      if (slot === undefined) {
+        throw new Error("Unexpected uninitialized slot");
+      }
+      const previousEquippedCards = [...slot.equipped];
+      setCardSlots({
+        ...cardSlots,
+        [slotNumber]: {
+          ...slot,
+          equipped: slot.equipped.filter((c) => c !== name),
+        },
+      });
+      return previousEquippedCards;
+    },
+    [cardSlots]
+  );
+
   const levelUp = useCallback(() => {
     const newLevel = character.level + 1;
     if (isValidLevel(newLevel)) {
@@ -206,6 +230,7 @@ const GameProvider = (props: { children: ReactNode }) => {
       addTalent,
       cardSlots,
       equipCardToSlot,
+      unequipCardFromSlot,
     }),
     [
       character,
@@ -218,6 +243,7 @@ const GameProvider = (props: { children: ReactNode }) => {
       addTalent,
       cardSlots,
       equipCardToSlot,
+      unequipCardFromSlot,
     ]
   );
 

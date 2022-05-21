@@ -9,35 +9,21 @@ const ClassColorText = styled.span`
   color: ${(props) => props.color || "#000000"};
 `;
 
-const getClassColor = (heroClass: HeroClass) => {
-  switch (heroClass) {
-    case "paladin":
-      return "pink";
-    case "warlock":
-      return "purple";
-    case "rogue":
-      return "gold";
-    case "mage":
-      return "cyan";
-    case "hunter":
-      return "green";
-    case "druid":
-      return "orange";
-    case "warrior":
-      return "brown";
-    case "shaman":
-      return "blue";
-    case "priest":
-      return "#bbb";
-    default:
-      return "black";
-  }
+const CLASS_TO_COLOR: { [key in HeroClass]: string } = {
+  paladin: "pink",
+  warlock: "purple",
+  rogue: "gold",
+  mage: "cyan",
+  hunter: "green",
+  druid: "orange",
+  warrior: "brown",
+  shaman: "blue",
+  priest: "#bbb",
 };
 
 const ClassText = ({ heroClass }: Props) => {
   const text = heroClass.substring(0, 1).toUpperCase().concat(heroClass.substring(1));
-
-  return <ClassColorText color={getClassColor(heroClass)}>{text}</ClassColorText>;
+  return <ClassColorText color={CLASS_TO_COLOR[heroClass]}>{text}</ClassColorText>;
 };
 
 export default ClassText;

@@ -1,10 +1,11 @@
 import styled from "styled-components";
-import { AttributeImpact, CardSlot } from "../../types";
+import { AttributeImpact, CardSlot, Power } from "../../types";
 import Icon from "../Icon";
 import RenderedDice from "../RenderedDice";
 import SlotTypeIcons from "../SlotTypeIcons";
 import CharacterSheetSlot from "../BaseCharacterSheetSlot";
 import { getPowerByName } from "../../data-accessor";
+import COLORS from "../../util/colors";
 
 export interface Props {
   slot: CardSlot;
@@ -13,6 +14,23 @@ export interface Props {
 interface AttributeProps {
   attributesImpacted: AttributeImpact[];
 }
+
+const getBackgroundColor = (power: Power) => {
+  switch (power.type.primary) {
+    case "active":
+      return COLORS.backgroundTypeActive;
+    case "instant":
+      return COLORS.backgroundTypeInstant;
+    case "weapon":
+      return COLORS.backgroundTypeWeapon;
+    case "armor":
+      return COLORS.backgroundTypeArmor;
+    case "general":
+    case "racial":
+    default:
+      return COLORS.background;
+  }
+};
 
 const EquippedCharacterSheetSlot = (props: Props) => {
   if (props.slot.equipped[0] === undefined) {
@@ -27,8 +45,9 @@ const EquippedCharacterSheetSlot = (props: Props) => {
   if (equippedCardData === undefined) {
     throw new Error(`Couldn't find data for card ${props.slot.equipped[0]} in slot ${props.slot.metadata.slotNumber}`);
   }
+
   return (
-    <CharacterSheetSlot>
+    <CharacterSheetSlot backgroundColor={getBackgroundColor(equippedCardData)}>
       <Container>
         <SlotTypeIcons slotTypes={props.slot.metadata.slotTypes} isEquippedSlot={true} />
         <MainContent>

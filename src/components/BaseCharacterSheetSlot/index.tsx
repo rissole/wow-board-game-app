@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import COLORS from "../../util/colors";
 
-const CharacterSheetSlot = styled.div`
-  background-color: ${COLORS.background};
+const CharacterSheetSlot = styled.div<{ readonly backgroundColor?: string }>`
+  background-color: ${(props) => props.backgroundColor || COLORS.background};
   width: 100vw;
   height: 55px;
   border-bottom: 1px solid #000000;

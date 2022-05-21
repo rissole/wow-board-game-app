@@ -5,35 +5,35 @@ import CharacterSheetSlot from "../BaseCharacterSheetSlot";
 import useFlipFlop from "../useFlipFlop";
 import EquipCarousel from "../CarouselEquip";
 import { GameContext } from "../GameProvider";
-import { getPowerById } from "../../data-accessor";
-import { CardId, SheetSlot } from "../../types";
+import { getPowerByName } from "../../data-accessor";
+import { CardSlotMetadata, UniqueCardName } from "../../types";
 
 interface Props {
-  slot: SheetSlot;
+  cardSlotMetadata: CardSlotMetadata;
 }
 
 const EmptyCharacterSheetSlot = (props: Props) => {
-  const { powers } = useContext(GameContext);
+  const { purchasedCards } = useContext(GameContext);
   const { value: isModalOpen, toggle: toggleModal } = useFlipFlop(false);
 
   const handleSelectItem = useCallback(
-    (id: CardId) => {
-      const power = getPowerById(id);
-      console.log(power);
+    (name: UniqueCardName) => {
+      const power = getPowerByName(name);
+      console.log("selected", power);
       toggleModal();
     },
     [toggleModal]
   );
 
-  const hasEquippableItem = !!powers.length;
+  const canEquipSomething = purchasedCards.length > 0;
 
   return (
     <>
       <CharacterSheetSlot
         style={{ justifyContent: "space-between" }}
-        onClick={hasEquippableItem ? toggleModal : undefined}
+        onClick={canEquipSomething ? toggleModal : undefined}
       >
-        <SlotTypeIcons slotTypes={props.slot.slotTypes} isEquippedSlot={false} />
+        <SlotTypeIcons slotTypes={props.cardSlotMetadata.slotTypes} isEquippedSlot={false} />
         <AddIcon>+</AddIcon>
       </CharacterSheetSlot>
       {isModalOpen && <EquipCarousel onClose={toggleModal} onSelectItem={handleSelectItem} />}

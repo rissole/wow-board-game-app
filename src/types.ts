@@ -12,12 +12,26 @@ export type AttributeName = "damage" | "dice" | "attrition" | "health" | "energy
 export type AttributeAudience = "self" | "enemy" | "team";
 export type SlotPrimaryType = "active" | "instant" | "weapon" | "general" | "armor" | "racial";
 export type SlotSecondaryType = "mace" | "staff" | "cloth" | "leather";
+export type SlotNumber = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7;
 
-export type CardId = string;
-export type TalentId = string;
+/**
+ * the uniquely identifying name of this card
+ */
+export type UniqueCardName = string;
+/**
+ * the uniquely identifying name of this talent
+ */
+export type UniqueTalentName = string;
 
-export const isValidLevel = (level: number): level is CharacterLevel =>
-  level === 1 || level === 2 || level === 3 || level === 4 || level === 5;
+export const isValidLevel = (n: number): n is CharacterLevel =>
+  Array.from({ length: 5 })
+    .map((_, index) => index + 1)
+    .includes(n);
+
+export const isValidSlotNumber = (n: number): n is SlotNumber =>
+  Array.from({ length: 8 })
+    .map((_, index) => index)
+    .includes(n);
 
 export interface CharacterStats {
   health: {
@@ -74,10 +88,17 @@ export type LevelStats = {
   energy: number;
 };
 
-export type SheetSlot = {
-  slotNumber: number;
+export type CardSlot = {
+  metadata: CardSlotMetadata;
+  equipped: UniqueCardName[];
+};
+
+/**
+ * metadata about a slot for a card on the character sheet
+ */
+export type CardSlotMetadata = {
+  slotNumber: SlotNumber;
   slotTypes: SlotType[];
-  slotData?: CharacterSheetSlotData;
 };
 
 export type CharacterSheetSlotData = {
@@ -88,7 +109,7 @@ export type CharacterSheetSlotData = {
 };
 
 export type Talent = {
-  name: TalentId;
+  name: UniqueTalentName;
   class: HeroClass;
   requiredLevel: CharacterLevel;
   rawDescription: string;

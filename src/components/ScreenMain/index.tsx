@@ -1,6 +1,6 @@
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import styled from "styled-components";
-import { MainScreenList, SheetSlot, CardId } from "../../types";
+import { MainScreenList, UniqueCardName } from "../../types";
 import useFlipFlop from "../useFlipFlop";
 import ClassSpellsCarousel from "../CarouselClassSpells";
 import ClassTalentsCarousel from "../CarouselClassTalentsBrowse";
@@ -8,7 +8,6 @@ import ListPowers from "../ListPowers";
 import ListInventory from "../ListInventory";
 import ListReference from "../ListReference";
 import { GameContext } from "../GameProvider";
-import { powers, slots } from "../../data-accessor";
 import Talents from "./Talents";
 import Footer from "./Footer";
 import trainSpellIcon from "./trainSpellIcon.jpg";
@@ -17,47 +16,22 @@ import shopIcon from "./shopIcon.jpg";
 import referenceIcon from "./referenceIcon.jpg";
 
 const MainScreen = () => {
-  const { addPower } = useContext(GameContext);
+  const { addPurchasedCard } = useContext(GameContext);
   const [activeList, setActiveList] = useState<MainScreenList>("powers");
-  const [charSheetSlots, setCharSheetSlots] = useState<SheetSlot[]>([]);
 
   const { value: isSpellbookModalOpen, toggle: toggleSpellbookModal, setOff: hideSpellbookModal } = useFlipFlop();
   const { value: isTalentModalOpen, toggle: toggleTalentModal, setOff: hideTalentModal } = useFlipFlop();
-
-  useEffect(() => {
-    setCharSheetSlots(
-      Array.from({ length: 8 }).map((_, index) => {
-        const power = powers[index];
-        const slot = slots[index];
-        return {
-          ...slot,
-          slotData: slot.slotTypes.some(
-            (value) => value.primary === power.type.primary && value.secondary === power.type.secondary
-          )
-            ? {
-                slotTypes: [power.type],
-                name: power.name,
-                // This needs to be changed and renamed as this will also be where pet health metadata is stored
-                energyCost: power.type.primary === "instant" ? power.energyCost : 0,
-                iconLink: power.iconLink,
-                attributesImpacted: power.attributesImpacted,
-              }
-            : undefined,
-        };
-      })
-    );
-  }, []);
 
   const closeSpellbookModal = useCallback(() => {
     hideSpellbookModal();
   }, [hideSpellbookModal]);
 
   const selectSpellbookItem = useCallback(
-    (id: CardId) => {
-      addPower(id);
+    (name: UniqueCardName) => {
+      addPurchasedCard(name);
       hideSpellbookModal();
     },
-    [addPower, hideSpellbookModal]
+    [addPurchasedCard, hideSpellbookModal]
   );
 
   const closeTalentModal = useCallback(() => {
@@ -82,7 +56,7 @@ const MainScreen = () => {
         return <ListInventory />;
       case "powers":
       default:
-        return <ListPowers charSheetSlots={charSheetSlots} />;
+        return <ListPowers />;
     }
   };
 

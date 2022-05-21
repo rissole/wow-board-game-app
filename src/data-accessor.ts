@@ -1,7 +1,6 @@
 import {
   AttributeImpact,
   CharacterLevel,
-  SheetSlot,
   DiceColour,
   HeroClass,
   LevelStats,
@@ -10,9 +9,11 @@ import {
   SlotPrimaryType,
   SlotSecondaryType,
   SlotType,
-  CardId,
+  UniqueCardName,
   Talent,
-  TalentId,
+  UniqueTalentName,
+  CardSlotMetadata,
+  isValidSlotNumber,
 } from "./types";
 import powersJson from "./powers.csv";
 import levelsJson from "./levels.csv";
@@ -22,7 +23,7 @@ import { parseAttribute } from "./attributes";
 
 type CsvFile = ReadonlyArray<ReadonlyArray<string | number | null>>;
 
-const RACIAL_SLOT: SheetSlot = {
+const RACIAL_SLOT: CardSlotMetadata = {
   slotNumber: 0,
   slotTypes: [
     {
@@ -30,35 +31,34 @@ const RACIAL_SLOT: SheetSlot = {
     },
   ],
 };
-export const powers: Power[] = parseCsvToPower(powersJson.slice(1));
-export const levelStats: LevelStats[] = parseCsvToLevels(levelsJson.slice(1));
+export const ALL_POWERS: Power[] = parseCsvToPower(powersJson.slice(1));
+export const LEVEL_STATS: LevelStats[] = parseCsvToLevels(levelsJson.slice(1));
 
-export const slots: SheetSlot[] = parseCsvToSlots(slotsJson.slice(1));
+export const HERO_CLASS_CARD_SLOT_METADATA = parseCsvToSlots(slotsJson.slice(1));
 
-export const talents: Record<TalentId, Talent> = parseCsvToTalents(talentsJson.slice(1));
+export const ALL_TALENTS: Record<UniqueTalentName, Talent> = parseCsvToTalents(talentsJson.slice(1));
 // TODO: Needs to take a hero class when we fill in the CSV data
-export const statsForLevel = (level: CharacterLevel): LevelStats => {
-  const stat = levelStats.find((stat) => stat.level === level);
+export const statsForLevel = (level: CharacterLevel, heroClass: HeroClass): LevelStats => {
+  let stat = LEVEL_STATS.find((stat) => stat.level === level && stat.class === heroClass);
 
   if (stat === undefined) {
-    throw new Error("Could not find level");
+    console.warn(`Could not find stats for Level ${level} / ${heroClass}, falling back to druid`);
+    stat = LEVEL_STATS.find((stat) => stat.level === level && stat.class === "druid");
+    if (stat === undefined) {
+      throw new Error("Could not find stats for class/level");
+    }
   }
 
   return stat;
 };
 
 // TODO: This is really silly, this should be in a map
-export const getPowerById = (id: CardId): Power | void => {
-  return powers.find((p) => p.name === id);
-};
+export const getPowerByName = (name: UniqueCardName) => ALL_POWERS.find((p) => p.name === name);
 
-export const getTalentsForLevel = (level: CharacterLevel): Talent[] => {
-  return Object.values(talents).filter((talent) => talent.requiredLevel <= level);
-};
+export const getTalentsForLevel = (level: CharacterLevel) =>
+  Object.values(ALL_TALENTS).filter((talent) => talent.requiredLevel <= level);
 
-export const getAllTalents = (): Talent[] => {
-  return Object.values(talents);
-};
+export const getAllTalents = () => Object.values(ALL_TALENTS);
 
 function parseCsvToPower(csv: CsvFile): Power[] {
   return csv.map((row) => {
@@ -86,9 +86,9 @@ function parseAttributesImpacted(rawAttributesEntry: string): AttributeImpact[] 
   return rawAttributesEntry.split(", ").map((rawAttribute) => {
     const attrArr = rawAttribute.split(" ");
     return {
-      attribute: parseAttribute(attrArr[0]),
-      minImpact: parseInt(attrArr[1], 10),
-      maxImpact: parseInt(attrArr[attrArr.length - 1], 10),
+      attribute: parseAttribute(attrArr[0]!),
+      minImpact: parseInt(attrArr[1]!, 10),
+      maxImpact: parseInt(attrArr[attrArr.length - 1]!, 10),
     };
   });
 }
@@ -96,7 +96,7 @@ function parseAttributesImpacted(rawAttributesEntry: string): AttributeImpact[] 
 function parseCsvToLevels(csv: CsvFile): LevelStats[] {
   return csv.map((row) => {
     return {
-      class: row[0] as HeroClass,
+      class: (row[0] as string).toLowerCase() as HeroClass,
       level: row[1] as CharacterLevel,
       health: row[2] as number,
       energy: row[3] as number,
@@ -105,40 +105,44 @@ function parseCsvToLevels(csv: CsvFile): LevelStats[] {
 }
 
 // csv headers: className, slotNumber, primarytype1, secondarytype1, primarytype2, secondarytype2
-function parseCsvToSlots(csv: CsvFile): SheetSlot[] {
-  return csv.reduce(
-    (slots, row) => {
-      //row[0] is class name
-      // TODO: do something with default in row6
+function parseCsvToSlots(csv: CsvFile): { [heroClass: string]: CardSlotMetadata[] } {
+  const result: { [heroClass: string]: CardSlotMetadata[] } = {};
+  csv.forEach((row) => {
+    const heroClassString = (row[0] as string).toLowerCase();
+    result[heroClassString] = result[heroClassString] ?? [RACIAL_SLOT];
+    const slots = result[heroClassString]!;
+    // TODO: do something with default in row6
 
-      const slotTypes: SlotType[] = [
-        {
-          primary: row[2] as SlotPrimaryType,
-          secondary: row[3] ? (row[3] as SlotSecondaryType) : undefined,
-        },
-      ];
-      if (row[4]) {
-        slotTypes.push({
-          primary: row[4] as SlotPrimaryType,
-          secondary: row[5] ? (row[5] as SlotSecondaryType) : undefined,
-        });
-      }
-
-      slots.push({
-        slotNumber: row[1] as number,
-        slotTypes,
+    const slotTypes: SlotType[] = [
+      {
+        primary: row[2] as SlotPrimaryType,
+        secondary: row[3] ? (row[3] as SlotSecondaryType) : undefined,
+      },
+    ];
+    if (row[4]) {
+      slotTypes.push({
+        primary: row[4] as SlotPrimaryType,
+        secondary: row[5] ? (row[5] as SlotSecondaryType) : undefined,
       });
-      return slots;
-    },
-    [RACIAL_SLOT]
-  );
+    }
+
+    const slotNumber = row[1] as number;
+    if (!isValidSlotNumber(slotNumber)) {
+      throw new Error(`${slotNumber} is not a valid slot number`);
+    }
+    slots.push({
+      slotNumber,
+      slotTypes,
+    });
+  });
+  return result;
 }
 
 //csv headers: name, class, level, rawDescription, iconLink
-function parseCsvToTalents(csv: CsvFile): Record<TalentId, Talent> {
-  return csv.reduce((talents, row) => {
+function parseCsvToTalents(csv: CsvFile): Record<UniqueTalentName, Talent> {
+  return csv.reduce<Record<UniqueTalentName, Talent>>((talents, row) => {
     const talent = {
-      name: row[0] as TalentId,
+      name: row[0] as UniqueTalentName,
       class: row[1] as HeroClass,
       requiredLevel: row[2] as CharacterLevel,
       rawDescription: row[3] as string,
@@ -147,5 +151,5 @@ function parseCsvToTalents(csv: CsvFile): Record<TalentId, Talent> {
 
     talents[talent.name] = talent;
     return talents;
-  }, {} as Record<TalentId, Talent>);
+  }, {});
 }

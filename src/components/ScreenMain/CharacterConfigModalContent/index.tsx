@@ -1,5 +1,7 @@
 import { useContext } from "react";
 import styled from "styled-components";
+import { isValidLevel } from "../../../types";
+import { ActionButton } from "../../../util/styles";
 import { GameContext } from "../../GameProvider";
 import ModalContent from "../../Modal/ModalContent";
 import ClassText from "../Footer/ClassText";
@@ -11,6 +13,7 @@ export interface Props {
 
 const CharacterConfigModalContent = (props: Props) => {
   const { character, levelUp } = useContext(GameContext);
+  const levelUpDisabled = !isValidLevel(character.level + 1);
   return (
     <ModalContent>
       <ModalMain>
@@ -28,15 +31,20 @@ const CharacterConfigModalContent = (props: Props) => {
         <ModalFooter>
           <ButtonsContainer>
             <ActionButton
-              role="button"
-              onClick={() => {
-                levelUp();
-                props.onClose?.();
-              }}
+              type="button"
+              aria-disabled={levelUpDisabled}
+              onClick={
+                levelUpDisabled
+                  ? undefined
+                  : () => {
+                      levelUp();
+                      props.onClose?.();
+                    }
+              }
             >
               Level up
             </ActionButton>
-            <ActionButton role="button" type="danger" onClick={() => {}}>
+            <ActionButton type="button" buttonStyle="danger" onClick={() => {}}>
               Delete
             </ActionButton>
           </ButtonsContainer>
@@ -80,18 +88,3 @@ const ButtonsContainer = styled.div`
   padding: 8px;
   gap: 8px;
 `;
-
-const ActionButton = styled.div<{ type?: "danger" | "default" }>(({ type = "default" }) => {
-  const rgbMap: { [k in typeof type]: string } = { default: "0, 150, 0", danger: "196, 0, 0" };
-  return `
-  padding: 12px;
-  border: 1px solid black;
-  border-radius: 5px;
-  font-size: 18px;
-  font-weight: bold;
-  background-color: rgb(${rgbMap[type]});
-
-  &:active {
-    filter: brightness(0.7);
-  }`;
-});

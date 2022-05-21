@@ -1,13 +1,13 @@
 import { useContext } from "react";
-import Carousel from "../Carousel";
+import Carousel, { CarouselItem } from "../Carousel";
 import CardSpell from "../CardSpell";
-import { CardId } from "../../types";
+import { UniqueCardName } from "../../types";
 import { GameContext } from "../GameProvider";
-import { getPowerById } from "../../data-accessor";
+import { getPowerByName } from "../../data-accessor";
 
 export interface Props {
   onClose: () => void;
-  onSelectItem: (id: CardId) => void;
+  onSelectItem: (id: UniqueCardName) => void;
 }
 export interface Spell {
   icon: string;
@@ -16,14 +16,14 @@ export interface Spell {
 }
 
 export default function EquipCarousel({ onClose, onSelectItem }: Props) {
-  const { powers } = useContext(GameContext);
+  const { purchasedCards } = useContext(GameContext);
 
-  const items = powers.flatMap((p) => {
-    const power = getPowerById(p.id);
+  const items: CarouselItem[] = purchasedCards.flatMap((p) => {
+    const power = getPowerByName(p);
     return power
       ? [
           {
-            id: power.name,
+            name: power.name,
             renderNode: () => <CardSpell title={power.name} description={power.rawDescription} />,
           },
         ]

@@ -3,10 +3,10 @@ import COLORS from "../../../util/colors";
 import { useCallback, useContext } from "react";
 import { GameContext, TalentState } from "../../GameProvider";
 import Icon from "../../Icon";
-import { CardId, CharacterLevel, TalentId } from "../../../types";
-import placeHolderPath from "../../../assets/samwise.png";
+import { UniqueCardName, CharacterLevel, UniqueTalentName } from "../../../types";
+import samwisePath from "../../../assets/samwise.png";
 import lockPath from "../../../assets/lock-icon.svg";
-import { talents } from "../../../data-accessor";
+import { ALL_TALENTS } from "../../../data-accessor";
 import useFlipFlop from "../../useFlipFlop";
 import SelectTalents from "../../CarouselClassTalentsSelect";
 import BrowseTalents from "../../CarouselClassTalentsBrowse";
@@ -28,18 +28,18 @@ interface IconProps {
   talentLevel: CharacterLevel;
   currentLevel: CharacterLevel;
   talents: TalentState;
-  addTalent: (level: CharacterLevel, id: TalentId) => void;
+  addTalent: (level: CharacterLevel, name: UniqueTalentName) => void;
 }
 
 function getIconPath(
-  talentId: TalentId | undefined,
+  talentName: UniqueTalentName | undefined,
   talentLevel: CharacterLevel,
   currentLevel: CharacterLevel
 ): string {
-  if (talentId) {
-    return talents[talentId].iconLink;
+  if (talentName !== undefined) {
+    return ALL_TALENTS[talentName]?.iconLink ?? samwisePath;
   } else if (talentLevel <= currentLevel) {
-    return placeHolderPath;
+    return samwisePath;
   } else {
     return lockPath;
   }
@@ -50,7 +50,7 @@ const TalentIcon = (props: IconProps) => {
   const { toggle: showTalentView, setOff: hideTalentView, value: isShowingTalentView } = useFlipFlop();
 
   const onSelectTalent = useCallback(
-    (talentSelected: CardId) => {
+    (talentSelected: UniqueCardName) => {
       props.addTalent(props.talentLevel, talentSelected);
       hideTalentSelect();
     },
@@ -65,7 +65,13 @@ const TalentIcon = (props: IconProps) => {
         path={getIconPath(equippedTalent, props.talentLevel, props.currentLevel)}
         height={40}
         width={40}
-        onClick={!equippedTalent && talentUnlocked ? showTalentSelect : equippedTalent ? showTalentView : () => {}}
+        onClick={
+          equippedTalent === undefined && talentUnlocked
+            ? showTalentSelect
+            : equippedTalent !== undefined
+            ? showTalentView
+            : undefined
+        }
       />
       {props.talentLevel}
       {isShowingTalentSelect ? (
@@ -76,7 +82,9 @@ const TalentIcon = (props: IconProps) => {
           equippedTalents={Object.values(props.talents)}
         />
       ) : null}
-      {isShowingTalentView ? <BrowseTalents onClose={hideTalentView} talentsToShow={[equippedTalent]} /> : null}
+      {isShowingTalentView && equippedTalent !== undefined ? (
+        <BrowseTalents onClose={hideTalentView} talentsToShow={[equippedTalent]} />
+      ) : null}
     </div>
   );
 };

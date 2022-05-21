@@ -73,7 +73,8 @@
     "test": "node scripts/test.js",
     "lint": "eslint . --ext .ts,.tsx",
     "lint-fix": "eslint . --ext .ts,.tsx --fix",
-    "deploy": "firebase deploy"
+    "deploy": "firebase deploy",
+    "download-data": "scripts/download-data.sh"
   },
   "browserslist": {
     "production": [

@@ -7,7 +7,7 @@ const COLORS = {
   backgroundPrimary: "#626262",
 
   backgroundTypeActive: "#002e5f",
-  backgroundTypeInstant: "#1b2e58",
+  backgroundTypeInstant: "#28581b",
   backgroundTypeWeapon: "#44005f",
   backgroundTypeArmor: "#36312f",
 

@@ -7,7 +7,6 @@ const CharacterSheetSlot = styled.div<{ readonly backgroundColor?: string }>`
   height: 55px;
   border-bottom: 1px solid #000000;
   gap: 4px;
-  padding: 8px;
   display: flex;
 `;
 

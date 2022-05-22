@@ -1,38 +1,20 @@
 import Icon from "../Icon";
 import styled from "styled-components";
-import { SlotPrimaryType, SlotType } from "../../types";
-import armorPath from "../EquippedCharacterSheetSlot/armor_icon.jpg";
-import generalPath from "../EquippedCharacterSheetSlot/general_icon.jpeg";
-import placeholderPath from "../../assets/samwise.png";
-import activeSpellPath from "../EquippedCharacterSheetSlot/active_spell_icon.jpg";
-import instantSpellPath from "../EquippedCharacterSheetSlot/instant_spell_icon.jpg";
-import weaponPath from "../EquippedCharacterSheetSlot/weapon_icon.jpg";
+import { SlotType } from "../../types";
+import { SLOT_TYPE_TO_ICON_PATH } from "./util";
 
 interface Props {
   slotTypes: SlotType[];
   isEquippedSlot: boolean;
 }
 
-interface ContainerProps {
-  isEquippedSlot: boolean;
-}
-
-const slotTypeToIcon: Record<SlotPrimaryType, string> = {
-  armor: armorPath,
-  general: generalPath,
-  racial: placeholderPath,
-  active: activeSpellPath,
-  instant: instantSpellPath,
-  weapon: weaponPath,
-};
-
 const SlotTypeIcons = (props: Props) => {
   return (
-    <SlotTypeIconsContainer isEquippedSlot={props.isEquippedSlot}>
+    <SlotTypeIconsContainer>
       {props.slotTypes.map((slotType, index) => {
         return (
           <Icon
-            path={slotTypeToIcon[slotType.primary]}
+            path={SLOT_TYPE_TO_ICON_PATH[slotType.primary]}
             height={props.isEquippedSlot ? 18 : 32}
             width={props.isEquippedSlot ? 18 : 32}
             key={index}
@@ -43,10 +25,12 @@ const SlotTypeIcons = (props: Props) => {
   );
 };
 
-const SlotTypeIconsContainer = styled.div<ContainerProps>`
+const SlotTypeIconsContainer = styled.div`
   display: flex;
-  ${(props) => (props.isEquippedSlot ? "flex-flow: column;" : "")}
+  flex-flow: column;
   gap: 4px;
+  align-items: flex-start;
+  padding: 8px 0 8px 8px;
 `;
 
 export default SlotTypeIcons;

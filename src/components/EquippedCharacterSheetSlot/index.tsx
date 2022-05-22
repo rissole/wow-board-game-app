@@ -1,7 +1,7 @@
 import { useCallback, useContext, useMemo } from "react";
 import styled from "styled-components";
 import useFlipFlop from "../useFlipFlop";
-import { AttributeImpact, CardSlot, UniqueCardName, SlotPrimaryType } from "../../types";
+import { AttributeImpact, CardSlot, UniqueCardName } from "../../types";
 import Icon from "../Icon";
 import UnequipCarousel from "../CarouselUnequip";
 import { GameContext } from "../GameProvider";
@@ -9,7 +9,7 @@ import RenderedDice from "../RenderedDice";
 import SlotTypeIcons from "../SlotTypeIcons";
 import CharacterSheetSlot from "../BaseCharacterSheetSlot";
 import { getPowerByName } from "../../data-accessor";
-import COLORS from "../../util/colors";
+import { SLOT_TYPE_TO_COLOR } from "../SlotTypeIcons/util";
 
 export interface Props {
   slot: CardSlot;
@@ -18,15 +18,6 @@ export interface Props {
 interface AttributeProps {
   attributesImpacted: AttributeImpact[];
 }
-
-const POWER_TYPE_TO_COLOR: { [key in SlotPrimaryType]: string } = {
-  active: COLORS.backgroundTypeActive,
-  instant: COLORS.backgroundTypeInstant,
-  weapon: COLORS.backgroundTypeWeapon,
-  armor: COLORS.backgroundTypeArmor,
-  general: COLORS.background,
-  racial: COLORS.background,
-};
 
 const EquippedCharacterSheetSlot = (props: Props) => {
   const { unequipCardFromSlot } = useContext(GameContext);
@@ -66,7 +57,7 @@ const EquippedCharacterSheetSlot = (props: Props) => {
 
   return (
     <>
-      <CharacterSheetSlot backgroundColor={POWER_TYPE_TO_COLOR[equippedCardData.type.primary]} onClick={toggleModal}>
+      <CharacterSheetSlot backgroundColor={SLOT_TYPE_TO_COLOR[equippedCardData.type.primary]} onClick={toggleModal}>
         <Container>
           <SlotTypeIcons slotTypes={props.slot.metadata.slotTypes} isEquippedSlot={true} />
           <MainContent>
@@ -107,7 +98,7 @@ const Container = styled.div`
 
 const MainContent = styled.div`
   display: flex;
-  gap: 12px;
+  gap: 8px;
   align-items: center;
   padding: 8px;
   flex-grow: 0;

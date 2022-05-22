@@ -1,13 +1,14 @@
-import { useCallback, useContext, useState } from "react";
+import { useCallback, useContext, useMemo, useState } from "react";
 import CharacterSheetSlot from "../BaseCharacterSheetSlot";
 import useFlipFlop from "../useFlipFlop";
-import EquipCarousel from "../CarouselEquip";
 import { GameContext } from "../GameProvider";
 import { CardSlotMetadata, UniqueCardName } from "../../types";
 import { ALL_POWERS } from "../../data-accessor";
 import { getEquippableCards } from "../../util/data";
 import Toast from "../Toast";
 import { SLOT_TYPE_TO_ICON_PATH } from "../SlotTypeIcons/util";
+import Carousel from "../Carousel";
+import CardSpell from "../CardSpell";
 
 interface Props {
   cardSlotMetadata: CardSlotMetadata;
@@ -26,7 +27,17 @@ const EmptyCharacterSheetSlot = (props: Props) => {
     [closeModal, equipCardToSlot, props.cardSlotMetadata.slotNumber]
   );
 
-  const canEquipSomething = getEquippableCards(ALL_POWERS, purchasedCards, cardSlots).length > 0;
+  const carouselItems = useMemo(
+    () =>
+      getEquippableCards(ALL_POWERS, purchasedCards, cardSlots, props.cardSlotMetadata.slotTypes).map((p) => {
+        return {
+          name: p.name,
+          renderNode: () => <CardSpell title={p.name} description={p.rawDescription} />,
+        };
+      }),
+    [cardSlots, props.cardSlotMetadata.slotTypes, purchasedCards]
+  );
+
   const showNothingToEquipToast = () =>
     setToastText(
       <span>
@@ -39,11 +50,13 @@ const EmptyCharacterSheetSlot = (props: Props) => {
     <>
       <CharacterSheetSlot
         style={{ justifyContent: "space-between" }}
-        onClick={canEquipSomething ? toggleModal : showNothingToEquipToast}
+        onClick={carouselItems.length > 0 ? toggleModal : showNothingToEquipToast}
       >
         <EmptySlotTypeIcons slotTypes={props.cardSlotMetadata.slotTypes} />
       </CharacterSheetSlot>
-      {isModalOpen && <EquipCarousel onClose={closeModal} onSelectItem={handleSelectItem} />}
+      {isModalOpen && (
+        <Carousel items={carouselItems} onClose={closeModal} onSelectItem={handleSelectItem} buttonText="Equip" />
+      )}
       <Toast durationMilliseconds={2500} text={toastText} />
     </>
   );

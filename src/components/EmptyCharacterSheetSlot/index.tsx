@@ -1,6 +1,4 @@
 import { useCallback, useContext, useState } from "react";
-import styled from "styled-components";
-import SlotTypeIcons from "../SlotTypeIcons";
 import CharacterSheetSlot from "../BaseCharacterSheetSlot";
 import useFlipFlop from "../useFlipFlop";
 import EquipCarousel from "../CarouselEquip";
@@ -9,6 +7,7 @@ import { CardSlotMetadata, UniqueCardName } from "../../types";
 import { ALL_POWERS } from "../../data-accessor";
 import { getEquippableCards } from "../../util/data";
 import Toast from "../Toast";
+import { SLOT_TYPE_TO_ICON_PATH } from "../SlotTypeIcons/util";
 
 interface Props {
   cardSlotMetadata: CardSlotMetadata;
@@ -42,8 +41,7 @@ const EmptyCharacterSheetSlot = (props: Props) => {
         style={{ justifyContent: "space-between" }}
         onClick={canEquipSomething ? toggleModal : showNothingToEquipToast}
       >
-        <SlotTypeIcons slotTypes={props.cardSlotMetadata.slotTypes} isEquippedSlot={false} />
-        <AddIcon>+</AddIcon>
+        <EmptySlotTypeIcons slotTypes={props.cardSlotMetadata.slotTypes} />
       </CharacterSheetSlot>
       {isModalOpen && <EquipCarousel onClose={closeModal} onSelectItem={handleSelectItem} />}
       <Toast durationMilliseconds={2500} text={toastText} />
@@ -51,12 +49,47 @@ const EmptyCharacterSheetSlot = (props: Props) => {
   );
 };
 
-const AddIcon = styled.div`
-  font-size: 48px;
-  line-height: 28px;
-  font-weight: bold;
-  text-align: center;
-  color: #d51b1b;
-`;
+// could be cleaner and better leverage styled components, but as of the
+// time of writing the design is still up in the air, so not investing in that
+// cleanup until we have a bit more clarity
+const EmptySlotTypeIcons = ({ slotTypes }: { slotTypes: CardSlotMetadata["slotTypes"] }) => {
+  return (
+    <div
+      style={{
+        width: "100%",
+        display: "flex",
+        flexFlow: "row nowrap",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "8px",
+        paddingTop: "10px",
+        gap: "0px",
+      }}
+    >
+      {slotTypes.map((slotType, i) => {
+        return (
+          <div
+            key={i}
+            style={{
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <img
+              alt=""
+              src={SLOT_TYPE_TO_ICON_PATH[slotType.primary]}
+              style={{
+                height: "42px",
+                width: "42px",
+                opacity: "70%",
+                borderRadius: "2px",
+              }}
+            />
+          </div>
+        );
+      })}
+    </div>
+  );
+};
 
 export default EmptyCharacterSheetSlot;

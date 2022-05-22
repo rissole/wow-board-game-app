@@ -28,45 +28,21 @@ export default function Carousel({ items, onClose, onSelectItem, buttonText = "S
   const currentItemIndex = useMemo(() => Math.round(offset / OFFSET_PER_NODE), [offset]);
 
   const onTouchStart = useCallback(
-    (event: React.TouchEvent) => {
-      handleSwipeStart(event.targetTouches[0]!.clientX);
+    (event: React.TouchEvent | React.MouseEvent) => {
+      // don't allow swiping for a single item
+      if (items.length <= 1) {
+        return;
+      }
+      handleSwipeStart("targetTouches" in event ? event.targetTouches[0]!.clientX : event.clientX);
     },
-    [handleSwipeStart]
+    [handleSwipeStart, items.length]
   );
 
   const onTouchMove = useCallback(
-    (event: React.TouchEvent) => {
-      handleSwipe(event.targetTouches[0]!.clientX);
+    (event: React.TouchEvent | React.MouseEvent) => {
+      handleSwipe("targetTouches" in event ? event.targetTouches[0]!.clientX : event.clientX);
     },
     [handleSwipe]
-  );
-
-  const onTouchEnd = useCallback(
-    (event: React.TouchEvent) => {
-      handleSwipeEnd();
-    },
-    [handleSwipeEnd]
-  );
-
-  const onMouseDown = useCallback(
-    (event: React.MouseEvent) => {
-      handleSwipeStart(event.clientX);
-    },
-    [handleSwipeStart]
-  );
-
-  const onMouseMove = useCallback(
-    (event: React.MouseEvent) => {
-      handleSwipe(event.clientX);
-    },
-    [handleSwipe]
-  );
-
-  const onMouseUp = useCallback(
-    (event: React.MouseEvent) => {
-      handleSwipeEnd();
-    },
-    [handleSwipeEnd]
   );
 
   const onSelect = useCallback(() => {
@@ -81,10 +57,10 @@ export default function Carousel({ items, onClose, onSelectItem, buttonText = "S
       <CarouselContainer
         onTouchStart={onTouchStart}
         onTouchMove={onTouchMove}
-        onTouchEnd={onTouchEnd}
-        onMouseDown={onMouseDown}
-        onMouseMove={onMouseMove}
-        onMouseUp={onMouseUp}
+        onTouchEnd={handleSwipeEnd}
+        onMouseDown={onTouchStart}
+        onMouseMove={onTouchMove}
+        onMouseUp={handleSwipeEnd}
       >
         <div>
           <CarouselCloseButton role="button" onClick={onClose} />

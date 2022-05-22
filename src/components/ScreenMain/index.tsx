@@ -123,6 +123,7 @@ const TopNavContainer = styled.div`
   align-items: center;
   gap: 2px;
   padding: 2px;
+  border-bottom: 1px solid #000000;
 
   &[aria-disabled="true"] {
     filter: grayscale(100%);

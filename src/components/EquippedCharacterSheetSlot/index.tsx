@@ -1,23 +1,19 @@
 import { useCallback, useContext, useMemo } from "react";
 import styled from "styled-components";
 import useFlipFlop from "../useFlipFlop";
-import { AttributeImpact, CardSlot, UniqueCardName } from "../../types";
+import { CardSlot, UniqueCardName } from "../../types";
 import Icon from "../Icon";
 import UnequipCarousel from "../CarouselUnequip";
 import { GameContext } from "../GameProvider";
-import RenderedDice from "../RenderedDice";
 import SlotTypeIcons from "../SlotTypeIcons";
 import CharacterSheetSlot from "../BaseCharacterSheetSlot";
 import { getPowerByName } from "../../data-accessor";
 import { SLOT_TYPE_TO_COLOR } from "../SlotTypeIcons/util";
 import CostBox from "../CostBox";
+import AttributesImpactedView from "../AttributesImpacted";
 
 export interface Props {
   slot: CardSlot;
-}
-
-interface AttributeProps {
-  attributesImpacted: AttributeImpact[];
 }
 
 const EquippedCharacterSheetSlot = (props: Props) => {
@@ -76,23 +72,6 @@ const EquippedCharacterSheetSlot = (props: Props) => {
   );
 };
 
-const AttributesImpactedView = (props: AttributeProps) => {
-  return (
-    <AttributesContainer>
-      {props.attributesImpacted
-        .filter((attr) => attr.attribute.name === "dice")
-        .sort()
-        .map((attr, index) => {
-          if (attr.attribute.name === "dice") {
-            const diceAttr = attr.attribute;
-            return <RenderedDice diceColor={diceAttr.diceColor} numOfDice={attr.maxImpact} key={index} />;
-          }
-          return undefined;
-        })}
-    </AttributesContainer>
-  );
-};
-
 const Container = styled.div`
   display: flex;
 `;
@@ -103,12 +82,6 @@ const MainContent = styled.div`
   align-items: center;
   padding: 8px;
   flex-grow: 0;
-`;
-
-const AttributesContainer = styled.div`
-  display: flex;
-  align-content: center;
-  gap: 4px;
 `;
 
 const NameBox = styled.span`

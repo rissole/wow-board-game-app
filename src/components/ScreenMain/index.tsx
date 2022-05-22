@@ -108,7 +108,10 @@ const MainScreen = () => {
       </div>
       <div className="main powers">{renderActiveList()}</div>
       <Talents />
-      <Footer toggleListBetweenPowersAndInventory={toggleListBetweenPowersAndInventory} />
+      <Footer
+        isInventoryOpen={activeList === "inventory"}
+        toggleListBetweenPowersAndInventory={toggleListBetweenPowersAndInventory}
+      />
       {isSpellbookModalOpen ? (
         <ClassSpellsCarousel onClose={closeSpellbookModal} onSelectItem={selectSpellbookItem} />
       ) : null}

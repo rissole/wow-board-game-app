@@ -3,7 +3,8 @@ import styled from "styled-components";
 import EditableStat from "../../EditableStat";
 import { statsForLevel } from "../../../data-accessor";
 import { GameContext } from "../../GameProvider";
-import toggleInventoryIconPath from "./backpack.png";
+import switchToInventoryIconPath from "./backpack.png";
+import switchBackToPowersIconPath from "./backpackBack.png";
 import FactionText from "./FactionText";
 import ClassText from "./ClassText";
 import Modal from "../../Modal";
@@ -59,9 +60,10 @@ const LevelText = styled.span`
 
 interface Props {
   toggleListBetweenPowersAndInventory: () => void;
+  isInventoryOpen: boolean;
 }
 
-const MainFooter = ({ toggleListBetweenPowersAndInventory }: Props) => {
+const MainFooter = ({ toggleListBetweenPowersAndInventory, isInventoryOpen }: Props) => {
   const { character, updateCharacter } = useContext(GameContext);
   const {
     toggle: showCharacterConfigModal,
@@ -114,7 +116,7 @@ const MainFooter = ({ toggleListBetweenPowersAndInventory }: Props) => {
         <ToggleInventoryContainer>
           <ToggleInventoryButton
             role="button"
-            src={toggleInventoryIconPath}
+            src={isInventoryOpen ? switchBackToPowersIconPath : switchToInventoryIconPath}
             onClick={toggleListBetweenPowersAndInventory}
           />
         </ToggleInventoryContainer>

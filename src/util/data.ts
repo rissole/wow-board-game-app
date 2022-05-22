@@ -19,6 +19,6 @@ export function canFitInSlot(cardSlotType: SlotType, destinationSlotType: SlotTy
   return (
     cardSlotType.primary === destinationSlotType.primary &&
     // TODO: do proper secondary compatibility check here i.e. cloth armor can go in leather slot
-    cardSlotType.secondary === destinationSlotType.secondary
+    (cardSlotType.secondary === undefined || cardSlotType.secondary === destinationSlotType.secondary)
   );
 }

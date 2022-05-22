@@ -63,8 +63,7 @@ const EmptySlotTypeIcons = ({ slotTypes }: { slotTypes: CardSlotMetadata["slotTy
         gap: "0px",
       }}
     >
-      {Array.from({ length: 2 }).map((_, i) => {
-        const slotType = slotTypes[i];
+      {slotTypes.map((slotType, i) => {
         return (
           <div
             key={i}
@@ -73,28 +72,16 @@ const EmptySlotTypeIcons = ({ slotTypes }: { slotTypes: CardSlotMetadata["slotTy
               alignItems: "center",
             }}
           >
-            {slotType !== undefined ? (
-              <img
-                alt=""
-                src={SLOT_TYPE_TO_ICON_PATH[slotType.primary]}
-                style={{
-                  height: "42px",
-                  width: "42px",
-                  opacity: "70%",
-                  borderRadius: "2px",
-                }}
-              />
-            ) : (
-              <div
-                style={{
-                  width: "42px",
-                  height: "42px",
-                  backgroundColor: "#000000",
-                  opacity: "20%",
-                  borderRadius: "2px",
-                }}
-              />
-            )}
+            <img
+              alt=""
+              src={SLOT_TYPE_TO_ICON_PATH[slotType.primary]}
+              style={{
+                height: "42px",
+                width: "42px",
+                opacity: "70%",
+                borderRadius: "2px",
+              }}
+            />
           </div>
         );
       })}

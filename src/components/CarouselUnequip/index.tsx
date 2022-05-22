@@ -1,5 +1,5 @@
 import Carousel, { CarouselItem } from "../Carousel";
-import CardSpell from "../CardSpell";
+import PowerCarouselCard from "../PowerCarouselCard";
 import { UniqueCardName, Power } from "../../types";
 import { getPowerByName } from "../../data-accessor";
 
@@ -16,7 +16,7 @@ export default function UnequipCarousel({ cards, onClose, onSelectItem }: Props)
     .map((p) => {
       return {
         name: p.name,
-        renderNode: () => <CardSpell title={p.name} description={p.rawDescription} />,
+        renderNode: () => <PowerCarouselCard power={p} hiddenLabels={["goldCost"]} />,
       };
     });
 

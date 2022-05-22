@@ -49,6 +49,9 @@ const EmptyCharacterSheetSlot = (props: Props) => {
   );
 };
 
+// could be cleaner and better leverage styled components, but as of the
+// time of writing the design is still up in the air, so not investing in that
+// cleanup until we have a bit more clarity
 const EmptySlotTypeIcons = ({ slotTypes }: { slotTypes: CardSlotMetadata["slotTypes"] }) => {
   return (
     <div

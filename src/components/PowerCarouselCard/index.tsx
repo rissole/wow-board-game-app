@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import styled from "styled-components";
 import { Power } from "../../types";
 import COLORS from "../../util/colors";
@@ -5,6 +6,7 @@ import CostBox from "../CostBox";
 import Icon from "../Icon";
 import { SLOT_TYPE_TO_ICON_PATH } from "../SlotTypeIcons/util";
 import goldCoinPath from "./goldCoin.png";
+import { rawDescriptionToReact } from "./rawDescriptionToReact";
 
 interface Props {
   power: Power;
@@ -12,6 +14,8 @@ interface Props {
 }
 
 const PowerCarouselCard = ({ power, hiddenLabels }: Props) => {
+  const memoizedDescription = useMemo(() => rawDescriptionToReact(power.rawDescription), [power.rawDescription]);
+
   return (
     <PowerCarouselCardInner>
       <h1 style={{ color: COLORS.foregroundPrimary }}>{power.name}</h1>
@@ -30,9 +34,7 @@ const PowerCarouselCard = ({ power, hiddenLabels }: Props) => {
           </div>
         ) : null}
       </BasicInfoContainer>
-      <DescriptionContainer>
-        <p>{power.rawDescription}</p>
-      </DescriptionContainer>
+      <DescriptionContainer>{memoizedDescription}</DescriptionContainer>
       <SlotTypeIconsContainer>
         <Icon path={SLOT_TYPE_TO_ICON_PATH[power.type.primary]} width={36} />
       </SlotTypeIconsContainer>

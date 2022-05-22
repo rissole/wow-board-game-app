@@ -5,21 +5,13 @@ import { SLOT_TYPE_TO_ICON_PATH } from "./util";
 
 interface Props {
   slotTypes: SlotType[];
-  isEquippedSlot: boolean;
 }
 
 const SlotTypeIcons = (props: Props) => {
   return (
     <SlotTypeIconsContainer>
       {props.slotTypes.map((slotType, index) => {
-        return (
-          <Icon
-            path={SLOT_TYPE_TO_ICON_PATH[slotType.primary]}
-            height={props.isEquippedSlot ? 18 : 32}
-            width={props.isEquippedSlot ? 18 : 32}
-            key={index}
-          />
-        );
+        return <Icon path={SLOT_TYPE_TO_ICON_PATH[slotType.primary]} height={18} width={18} key={index} />;
       })}
     </SlotTypeIconsContainer>
   );

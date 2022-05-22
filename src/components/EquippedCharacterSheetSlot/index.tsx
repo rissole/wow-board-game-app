@@ -10,6 +10,7 @@ import SlotTypeIcons from "../SlotTypeIcons";
 import CharacterSheetSlot from "../BaseCharacterSheetSlot";
 import { getPowerByName } from "../../data-accessor";
 import { SLOT_TYPE_TO_COLOR } from "../SlotTypeIcons/util";
+import CostBox from "../CostBox";
 
 export interface Props {
   slot: CardSlot;
@@ -59,10 +60,10 @@ const EquippedCharacterSheetSlot = (props: Props) => {
     <>
       <CharacterSheetSlot backgroundColor={SLOT_TYPE_TO_COLOR[equippedCardData.type.primary]} onClick={toggleModal}>
         <Container>
-          <SlotTypeIcons slotTypes={props.slot.metadata.slotTypes} isEquippedSlot={true} />
+          <SlotTypeIcons slotTypes={props.slot.metadata.slotTypes} />
           <MainContent>
             <Icon path={equippedCardData.iconLink} height={36} width={36} />
-            <CostBox>{equippedCardData.energyCost}</CostBox>
+            <CostBox cost={equippedCardData.energyCost} />
             <NameBox>{equippedCardData.name}</NameBox>
             <AttributesImpactedView attributesImpacted={equippedCardData.attributesImpacted} />
           </MainContent>
@@ -102,18 +103,6 @@ const MainContent = styled.div`
   align-items: center;
   padding: 8px;
   flex-grow: 0;
-`;
-
-const CostBox = styled.div`
-  background-color: #ffffff;
-  color: #000000;
-  width: 24px;
-  height: 36px;
-  text-align: center;
-  padding: 6px 0;
-  border-radius: 4px;
-  border: 1px solid black;
-  font-size: 18px;
 `;
 
 const AttributesContainer = styled.div`

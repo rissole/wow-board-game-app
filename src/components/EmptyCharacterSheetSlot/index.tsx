@@ -8,7 +8,7 @@ import { getEquippableCards } from "../../util/data";
 import Toast from "../Toast";
 import { SLOT_TYPE_TO_ICON_PATH } from "../SlotTypeIcons/util";
 import Carousel from "../Carousel";
-import CardSpell from "../CardSpell";
+import PowerCarouselCard from "../PowerCarouselCard";
 
 interface Props {
   cardSlotMetadata: CardSlotMetadata;
@@ -32,7 +32,7 @@ const EmptyCharacterSheetSlot = (props: Props) => {
       getEquippableCards(ALL_POWERS, purchasedCards, cardSlots, props.cardSlotMetadata.slotTypes).map((p) => {
         return {
           name: p.name,
-          renderNode: () => <CardSpell title={p.name} description={p.rawDescription} />,
+          renderNode: () => <PowerCarouselCard power={p} />,
         };
       }),
     [cardSlots, props.cardSlotMetadata.slotTypes, purchasedCards]
@@ -42,7 +42,7 @@ const EmptyCharacterSheetSlot = (props: Props) => {
     setToastText(
       <span>
         <p>Nothing to equip!</p>
-        <p>Try learning a spell or buying an item.</p>
+        <p>Try learning a spell or buying an item for this slot.</p>
       </span>
     );
 

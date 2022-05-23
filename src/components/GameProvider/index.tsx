@@ -1,5 +1,5 @@
 import React, { createContext, ReactNode, useCallback, useMemo, useState } from "react";
-import { HERO_CLASS_CARD_SLOT_METADATA, statsForLevel } from "../../data-accessor";
+import { getPowerByName, HERO_CLASS_CARD_SLOT_METADATA, statsForLevel } from "../../data-accessor";
 
 import {
   CharacterLevel,
@@ -147,7 +147,11 @@ const GameProvider = (props: { children: ReactNode }) => {
 
   const addPurchasedCard = useCallback(
     (name: UniqueCardName) => {
+      const power = getPowerByName(name);
       setPurchasedCards((currentPurchasedCards) => [...currentPurchasedCards, name]);
+      setCharacter((currentCharacter) => {
+        return { ...currentCharacter, gold: currentCharacter.gold - power.goldCost };
+      });
     },
     [setPurchasedCards]
   );
@@ -164,6 +168,12 @@ const GameProvider = (props: { children: ReactNode }) => {
       const slot = cardSlots[slotNumber];
       if (slot === undefined) {
         throw new Error("Unexpected uninitialized slot");
+      }
+      const power = getPowerByName(name);
+      if (power.type.primary === "active") {
+        setCharacter((currentCharacter) => {
+          return { ...currentCharacter, energy: currentCharacter.energy - power.energyCost };
+        });
       }
       const previousEquippedCards = [...slot.equipped];
       setCardSlots({

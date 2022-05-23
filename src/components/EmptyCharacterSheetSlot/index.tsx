@@ -76,7 +76,7 @@ const EmptySlotTypeIcons = ({ slotTypes }: { slotTypes: CardSlotMetadata["slotTy
         justifyContent: "center",
         padding: "8px",
         paddingTop: "10px",
-        gap: "0px",
+        gap: "2px",
       }}
     >
       {slotTypes.map((slotType, i) => {
@@ -86,6 +86,7 @@ const EmptySlotTypeIcons = ({ slotTypes }: { slotTypes: CardSlotMetadata["slotTy
             style={{
               display: "flex",
               alignItems: "center",
+              gap: "8px",
             }}
           >
             <img
@@ -95,7 +96,8 @@ const EmptySlotTypeIcons = ({ slotTypes }: { slotTypes: CardSlotMetadata["slotTy
                 height: "42px",
                 width: "42px",
                 opacity: "70%",
-                borderRadius: "2px",
+                borderRadius: "8px",
+                border: "1px solid black",
               }}
             />
           </div>

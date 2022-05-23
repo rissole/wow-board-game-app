@@ -7,18 +7,6 @@ $navButtonHeight: 72px;
   flex-flow: column nowrap;
   flex: 1;
 }
-.nav {
-  display: flex;
-  justify-content: space-between;
-  text-align: center;
-  width: 100%;
-  > div {
-    width: 30vw;
-    height: $navButtonHeight;
-    // COLORS.backgroundPrimary
-    background-color: #626262;
-  }
-}
 
 .statsSection {
   display: flex;
@@ -28,18 +16,6 @@ $navButtonHeight: 72px;
   padding: 8px;
   gap: 8px;
   align-self: flex-end;
-}
-
-.main {
-  width: 100%;
-  display: flex;
-  flex-flow: row wrap;
-  flex: 1 0 auto;
-  align-content: stretch;
-
-  &.powers {
-    align-content: start;
-  }
 }
 
 html,

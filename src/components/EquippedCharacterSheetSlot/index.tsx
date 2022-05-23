@@ -6,7 +6,7 @@ import Icon from "../Icon";
 import UnequipCarousel from "../CarouselUnequip";
 import { GameContext } from "../GameProvider";
 import SlotTypeIcons from "../SlotTypeIcons";
-import CharacterSheetSlot from "../BaseCharacterSheetSlot";
+import BaseCharacterSheetSlot from "../BaseCharacterSheetSlot";
 import { getPowerByName } from "../../data-accessor";
 import { SLOT_TYPE_TO_COLOR } from "../SlotTypeIcons/util";
 import CostBox from "../CostBox";
@@ -71,6 +71,10 @@ const EquippedCharacterSheetSlot = (props: Props) => {
     </>
   );
 };
+
+const CharacterSheetSlot = styled(BaseCharacterSheetSlot)`
+  box-shadow: inset 0.1em 0.1em 0.1em 0 rgba(255, 255, 255, 0.5), inset -0.1em -0.1em 0.1em 0 rgba(0, 0, 0, 0.5);
+`;
 
 const Container = styled.div`
   display: flex;

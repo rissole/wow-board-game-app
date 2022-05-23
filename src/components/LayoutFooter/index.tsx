@@ -1,22 +1,26 @@
 import { useCallback, useContext, useMemo } from "react";
 import styled from "styled-components";
-import EditableStat from "../../EditableStat";
-import { statsForLevel } from "../../../data-accessor";
-import { GameContext } from "../../GameProvider";
+import EditableStat from "../EditableStat";
+import { statsForLevel } from "../../data-accessor";
+import { GameContext } from "../GameProvider";
 import switchToInventoryIconPath from "./backpack.png";
 import switchBackToPowersIconPath from "./backpackBack.png";
 import FactionText from "./FactionText";
 import ClassText from "./ClassText";
-import Modal from "../../Modal";
-import useFlipFlop from "../../useFlipFlop";
-import { StatType } from "../../../types";
-import CharacterConfigModalContent from "../CharacterConfigModalContent";
+import Modal from "../Modal";
+import useFlipFlop from "../useFlipFlop";
+import { StatType } from "../../types";
+import CharacterConfigModalContent from "./CharacterConfigModalContent";
+import LAYOUT from "../../util/layout";
 
 const FooterContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 2fr 1fr;
   width: 100%;
   padding: 4px;
+  height: ${LAYOUT.footerHeight}px;
+  position: fixed;
+  bottom: 0;
 `;
 
 const CharacterSection = styled.div`
@@ -27,7 +31,8 @@ const CharacterSection = styled.div`
   gap: 16px;
   align-items: center;
   font-size: 20px;
-  color: white;
+  color: #ffffff;
+  white-space: nowrap;
 `;
 
 const StatSection = styled.div`
@@ -39,7 +44,7 @@ const StatSection = styled.div`
 `;
 
 const ToggleInventoryContainer = styled.div`
-  padding-left: 16px;
+  padding: 8px;
   display: flex;
   justify-content: center;
   align-items: center;

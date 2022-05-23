@@ -1,10 +1,11 @@
-import React, { ReactNode, useCallback, useMemo } from "react";
+import React, { ReactNode, useCallback, useMemo, useState } from "react";
 import styled from "styled-components";
 import { useSwipeable, DEFAULT_CONFIGURATION } from "../useSwipeable";
 import Modal from "../Modal";
 import { UniqueCardName } from "../../types";
 import COLORS from "../../util/colors";
 import { BaseButton } from "../../util/styles";
+import Toast from "../Toast";
 
 const OFFSET_PER_NODE = DEFAULT_CONFIGURATION.offsetPerNode;
 
@@ -13,14 +14,28 @@ export interface CarouselItem {
   renderNode: () => ReactNode;
 }
 
+export interface ValidatedSelectedItem {
+  canSelect: boolean;
+  errorMessage?: String;
+}
+
 interface Props {
   onClose: () => void;
   onSelectItem: ((item: UniqueCardName) => void) | undefined;
   items: CarouselItem[];
   buttonText?: string;
+  isAbleToSelect?: (item: UniqueCardName) => ValidatedSelectedItem;
 }
 
-export default function Carousel({ items, onClose, onSelectItem, buttonText = "Select" }: Props) {
+export default function Carousel({
+  items,
+  onClose,
+  onSelectItem,
+  buttonText = "Select",
+  isAbleToSelect = () => ({
+    canSelect: true,
+  }),
+}: Props) {
   const { offset, handleSwipeStart, handleSwipe, handleSwipeEnd } = useSwipeable(items.length, {
     offsetPerNode: OFFSET_PER_NODE,
   });
@@ -48,9 +63,20 @@ export default function Carousel({ items, onClose, onSelectItem, buttonText = "S
   const onSelect = useCallback(() => {
     const currentItem = items[currentItemIndex];
     if (onSelectItem && currentItem !== undefined) {
-      onSelectItem(currentItem.name);
+      const validatedSelection = isAbleToSelect(currentItem.name);
+      if (validatedSelection.canSelect) {
+        onSelectItem(currentItem.name);
+      } else {
+        setToastText(
+          <span>
+            <p>{validatedSelection.errorMessage}</p>
+          </span>
+        );
+      }
     }
-  }, [currentItemIndex, items, onSelectItem]);
+  }, [currentItemIndex, items, onSelectItem, isAbleToSelect]);
+
+  const [toastText, setToastText] = useState<React.ReactNode>();
 
   return (
     <Modal>
@@ -109,6 +135,7 @@ export default function Carousel({ items, onClose, onSelectItem, buttonText = "S
 
         <div>{/* TODO: Show the name of the current card */}</div>
       </CarouselContainer>
+      {toastText ? <Toast durationMilliseconds={1500} text={toastText} /> : null}
     </Modal>
   );
 }

@@ -14,9 +14,11 @@ import trainSpellIcon from "./trainSpellIcon.jpg";
 import talentsIcon from "./talentsIcon.jpg";
 import shopIcon from "./shopIcon.jpg";
 import referenceIcon from "./referenceIcon.jpg";
+import { ValidatedSelectedItem } from "../Carousel";
+import { getPowerByName } from "../../data-accessor";
 
 const MainScreen = () => {
-  const { addPurchasedCard } = useContext(GameContext);
+  const { addPurchasedCard, character } = useContext(GameContext);
   const [activeList, setActiveList] = useState<MainScreenList>("powers");
 
   const { value: isSpellbookModalOpen, toggle: toggleSpellbookModal, setOff: hideSpellbookModal } = useFlipFlop();
@@ -32,6 +34,17 @@ const MainScreen = () => {
       hideSpellbookModal();
     },
     [addPurchasedCard, hideSpellbookModal]
+  );
+
+  const canTrainSpellbookItem = useCallback(
+    (name: UniqueCardName): ValidatedSelectedItem => {
+      const power = getPowerByName(name);
+      return {
+        canSelect: power !== undefined && !(character.gold < power.goldCost),
+        errorMessage: "Not enough gold to train spell!",
+      };
+    },
+    [character.gold]
   );
 
   const closeTalentModal = useCallback(() => {
@@ -113,7 +126,11 @@ const MainScreen = () => {
         toggleListBetweenPowersAndInventory={toggleListBetweenPowersAndInventory}
       />
       {isSpellbookModalOpen ? (
-        <ClassSpellsCarousel onClose={closeSpellbookModal} onSelectItem={selectSpellbookItem} />
+        <ClassSpellsCarousel
+          onClose={closeSpellbookModal}
+          onSelectItem={selectSpellbookItem}
+          canTrainSpell={canTrainSpellbookItem}
+        />
       ) : null}
       {isTalentModalOpen ? <ClassTalentsCarousel onClose={closeTalentModal} /> : null}
     </>

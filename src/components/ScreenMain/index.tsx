@@ -5,8 +5,8 @@ import ListPowers from "../ListPowers";
 import ListInventory from "../ListInventory";
 import ListReference from "../ListReference";
 import LayoutHeader from "../LayoutHeader";
+import Footer from "../LayoutFooter";
 import Talents from "./Talents";
-import Footer from "./Footer";
 import LAYOUT from "../../util/layout";
 
 const MainScreen = () => {
@@ -36,7 +36,6 @@ const MainScreen = () => {
         {renderActiveList()}
         <Talents />
       </MainContainer>
-
       <Footer
         isInventoryOpen={activeList === "inventory"}
         toggleListBetweenPowersAndInventory={toggleListBetweenPowersAndInventory}
@@ -49,5 +48,6 @@ export default MainScreen;
 
 const MainContainer = styled.div`
   margin-top: ${LAYOUT.navHeight}px;
+  margin-bottom: ${LAYOUT.footerHeight}px;
   overflow-y: scroll;
 `;

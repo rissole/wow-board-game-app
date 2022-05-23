@@ -4,7 +4,7 @@ const LAYOUT = {
   // Height of talents section in px
   talentsHeight: 80,
   // Height of footer in px
-  footerHeight: 94,
+  footerHeight: 92.5,
 };
 
 export default LAYOUT;

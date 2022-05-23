@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { HeroClass } from "../../../types";
+import COLORS from "../../../util/colors";
 
 interface Props {
   heroClass: HeroClass;
@@ -25,6 +26,6 @@ const ClassText = ({ heroClass }: Props) => {
 export default ClassText;
 
 const TextContainer = styled.span<{ color: string }>`
-  color: ${(props) => props.color || "#000000"};
+  color: ${(props) => props.color || COLORS.foregroundBase};
   font-size: 18px;
 `;

@@ -53,7 +53,7 @@ const MainContainer = styled.div`
   flex: 1 1 auto;
   margin-top: ${LAYOUT.navHeight}px;
   margin-bottom: ${LAYOUT.footerHeight}px;
-  overflow-y: scroll;
+  overflow-y: auto;
 `;
 
 const ListContainer = styled.div`

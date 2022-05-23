@@ -16,5 +16,5 @@ export default function BrowseTalents(props: Props) {
       renderNode: () => <CardTalent title={talent.name} description={talent.rawDescription} />,
     }));
 
-  return <Carousel onClose={props.onClose} onSelectItem={undefined} items={renderedTalents} />;
+  return <Carousel onClose={props.onClose} items={renderedTalents} />;
 }

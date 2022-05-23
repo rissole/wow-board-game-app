@@ -5,7 +5,7 @@ import { UniqueCardName, CharacterLevel, UniqueTalentName } from "../../types";
 
 export interface Props {
   onClose: () => void;
-  onSelectItem: (id: UniqueCardName) => void;
+  onSelect: (id: UniqueCardName) => void;
   maxTalentLevel: CharacterLevel;
   equippedTalents: UniqueTalentName[];
 }
@@ -18,5 +18,5 @@ export default function SelectTalents(props: Props) {
       renderNode: () => <CardTalent title={talent.name} description={talent.rawDescription} />,
     }));
 
-  return <Carousel onClose={props.onClose} onSelectItem={props.onSelectItem} items={renderedTalents} />;
+  return <Carousel onClose={props.onClose} onSelect={props.onSelect} items={renderedTalents} />;
 }

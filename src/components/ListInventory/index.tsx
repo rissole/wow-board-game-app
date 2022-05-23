@@ -70,12 +70,7 @@ const InventoryList = () => {
         );
       })}
       {selectedCardForModal !== null && (
-        <Carousel
-          onSelectItem={hideCardDetail}
-          onClose={hideCardDetail}
-          buttonText="Close"
-          items={[selectedCardForModal]}
-        />
+        <Carousel onClose={hideCardDetail} buttonContent="Close" items={[selectedCardForModal]} />
       )}
     </>
   );

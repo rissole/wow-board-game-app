@@ -77,7 +77,7 @@ const TalentIcon = (props: IconProps) => {
       {isShowingTalentSelect ? (
         <SelectTalents
           onClose={hideTalentSelect}
-          onSelectItem={onSelectTalent}
+          onSelect={onSelectTalent}
           maxTalentLevel={props.talentLevel}
           equippedTalents={Object.values(props.talents)}
         />

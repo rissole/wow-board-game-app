@@ -53,7 +53,7 @@ const Header = ({ activeList, setActiveList }: Props) => {
         />
       </NavContainer>
       {isSpellbookModalOpen ? (
-        <ClassSpellsCarousel onClose={hideSpellbookModal} onSelectItem={selectSpellbookItem} />
+        <ClassSpellsCarousel onClose={hideSpellbookModal} onSelect={selectSpellbookItem} />
       ) : null}
       {isTalentModalOpen ? <ClassTalentsCarousel onClose={hideTalentModal} /> : null}
     </>

@@ -55,7 +55,7 @@ const EmptyCharacterSheetSlot = (props: Props) => {
         <EmptySlotTypeIcons slotTypes={props.cardSlotMetadata.slotTypes} />
       </CharacterSheetSlot>
       {isModalOpen && (
-        <Carousel items={carouselItems} onClose={closeModal} onSelectItem={handleSelectItem} buttonText="Equip" />
+        <Carousel items={carouselItems} onClose={closeModal} onSelect={handleSelectItem} buttonContent="Equip" />
       )}
       <Toast durationMilliseconds={2500} text={toastText} />
     </>

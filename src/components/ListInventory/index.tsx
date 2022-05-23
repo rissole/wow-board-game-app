@@ -11,6 +11,7 @@ import { getPowerByName } from "../../data-accessor";
 import { Power } from "../../types";
 import Carousel, { CarouselItem } from "../Carousel";
 import PowerCarouselCard from "../PowerCarouselCard";
+import COLORS from "../../util/colors";
 
 const InventoryList = () => {
   const { purchasedCards, cardSlots } = useContext(GameContext);
@@ -43,6 +44,10 @@ const InventoryList = () => {
     setSelectedCardForModal(null);
   }, []);
 
+  if (inventoryCardsData.length < 1) {
+    return <NoItemsMessage>アイテムがありません。</NoItemsMessage>;
+  }
+
   return (
     <>
       {inventoryCardsData.map((cardData, i) => {
@@ -64,7 +69,7 @@ const InventoryList = () => {
           </BaseCharacterSheetSlot>
         );
       })}
-      {!!selectedCardForModal && (
+      {selectedCardForModal !== null && (
         <Carousel
           onSelectItem={hideCardDetail}
           onClose={hideCardDetail}
@@ -93,4 +98,10 @@ const MainContent = styled.div`
   align-items: center;
   padding: 8px;
   flex-grow: 0;
+`;
+
+const NoItemsMessage = styled.p`
+  text-align: center;
+  color: ${COLORS.foregroundPrimary};
+  font-size: 24px;
 `;

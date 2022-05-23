@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import { MouseEventHandler, ReactNode, useCallback } from "react";
+import React, { MouseEventHandler, ReactNode, useCallback } from "react";
+import { createPortal } from "react-dom";
 
 const MODAL_ID = "currentModal";
 
@@ -18,10 +19,11 @@ const Modal = ({ children, onClose }: Props) => {
     [onClose]
   );
 
-  return (
+  return createPortal(
     <Container id={MODAL_ID} onClick={onClick}>
       {children}
-    </Container>
+    </Container>,
+    document.querySelector(".app") || document.body
   );
 };
 

@@ -4,8 +4,8 @@ import { isValidLevel } from "../../../types";
 import { ActionButton } from "../../../util/styles";
 import { GameContext } from "../../GameProvider";
 import ModalContent from "../../Modal/ModalContent";
-import ClassText from "../Footer/ClassText";
-import FactionText from "../Footer/FactionText";
+import ClassText from "../ClassText";
+import FactionText from "../FactionText";
 
 export interface Props {
   onClose?: () => void;

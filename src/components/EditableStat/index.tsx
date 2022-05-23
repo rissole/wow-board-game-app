@@ -73,9 +73,8 @@ const EditableStat = (props: Props) => {
 };
 
 const Container = styled.div`
-  font-size: 28px;
-  width: 64px;
-  height: 64px;
+  width: 56px;
+  height: 56px;
   overflow: hidden;
   border-radius: 4px;
   box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
@@ -90,7 +89,7 @@ const Icon = styled.div<{ path: string }>`
   align-items: center;
   justify-content: center;
   text-shadow: -1px 1px 0 #000, 1px 1px 0 #000, 1px -1px 0 #000, -1px -1px 0 #000;
-  font-size: 28px;
+  font-size: 24px;
   filter: grayscale(50%);
 `;
 

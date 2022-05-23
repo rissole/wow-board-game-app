@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import COLORS from "../../../util/colors";
 import LAYOUT from "../../../util/layout";
 
 interface TopNavItemProps {

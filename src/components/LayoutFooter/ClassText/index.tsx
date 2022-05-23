@@ -5,10 +5,6 @@ interface Props {
   heroClass: HeroClass;
 }
 
-const ClassColorText = styled.span`
-  color: ${(props) => props.color || "#000000"};
-`;
-
 const CLASS_TO_COLOR: { [key in HeroClass]: string } = {
   paladin: "pink",
   warlock: "purple",
@@ -23,12 +19,12 @@ const CLASS_TO_COLOR: { [key in HeroClass]: string } = {
 
 const ClassText = ({ heroClass }: Props) => {
   const text = heroClass.substring(0, 1).toUpperCase().concat(heroClass.substring(1));
-  return <ClassColorText color={CLASS_TO_COLOR[heroClass]}>{text}</ClassColorText>;
+  return <TextContainer color={CLASS_TO_COLOR[heroClass]}>{text}</TextContainer>;
 };
 
 export default ClassText;
 
 const TextContainer = styled.span<{ color: string }>`
-  color: ${(props) => props.color};
+  color: ${(props) => props.color || "#000000"};
   font-size: 18px;
 `;

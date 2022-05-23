@@ -14,6 +14,6 @@ const FactionText = ({ faction }: Props) => {
 export default FactionText;
 
 const TextContainer = styled.span<{ color: string }>`
-  color: ${(props) => props.color};
+  color: ${(props) => props.color || "#000000"};
   font-size: 18px;
 `;

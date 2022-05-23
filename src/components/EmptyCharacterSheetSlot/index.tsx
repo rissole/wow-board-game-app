@@ -96,7 +96,7 @@ const EmptySlotTypeIcons = ({ slotTypes }: { slotTypes: CardSlotMetadata["slotTy
                 height: "42px",
                 width: "42px",
                 opacity: "70%",
-                borderRadius: "20px",
+                borderRadius: "4px",
                 boxShadow: "2px 2px 2px 1px rgba(0, 0, 0, 0.2)",
               }}
             />

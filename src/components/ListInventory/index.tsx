@@ -45,7 +45,7 @@ const InventoryList = () => {
   }, []);
 
   if (inventoryCardsData.length < 1) {
-    return <NoItemsMessage>アイテムはありません。</NoItemsMessage>;
+    return <NoItemsMessage>アイテムがありません。</NoItemsMessage>;
   }
 
   return (

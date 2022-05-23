@@ -1,14 +1,14 @@
 import { ReactNode } from "react";
 import BaseCarousel, { CarouselItem, CarouselAction } from "../BaseCarousel";
 
-interface CarouselSingleProps {
+interface CarouselSingleButtonProps {
   items: CarouselItem[];
   buttonContent?: ReactNode;
   onSelect?: CarouselAction;
   onClose: () => void;
 }
 
-const CarouselSingle = ({ items, buttonContent = "Train", onSelect, onClose }: CarouselSingleProps) => {
+const CarouselSingleButton = ({ items, buttonContent = "Train", onSelect, onClose }: CarouselSingleButtonProps) => {
   const actions = [
     {
       buttonContent,
@@ -18,4 +18,4 @@ const CarouselSingle = ({ items, buttonContent = "Train", onSelect, onClose }: C
   return <BaseCarousel items={items} actions={actions} onClose={onClose} />;
 };
 
-export default CarouselSingle;
+export default CarouselSingleButton;

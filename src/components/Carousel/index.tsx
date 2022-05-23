@@ -1,6 +1,6 @@
 import BaseCarousel, { CarouselButton, CarouselItem, CarouselAction } from "./BaseCarousel";
-import CarouselSingle from "./CarouselSingle";
+import CarouselSingleButton from "./CarouselSingleButton";
 
 export { BaseCarousel, CarouselButton };
 export type { CarouselAction, CarouselItem };
-export default CarouselSingle;
+export default CarouselSingleButton;

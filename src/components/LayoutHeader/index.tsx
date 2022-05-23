@@ -59,7 +59,7 @@ const Header = ({ activeList, setActiveList }: Props) => {
           className="more"
           iconPath={referenceIcon}
           onClick={toggleListBetweenPowersAndReference}
-          label="Reference"
+          label="Info"
         />
       </NavContainer>
       {isSpellbookModalOpen ? (

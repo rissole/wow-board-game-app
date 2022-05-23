@@ -64,7 +64,7 @@ const InventoryList = () => {
           </BaseCharacterSheetSlot>
         );
       })}
-      {!!selectedCardForModal && (
+      {selectedCardForModal !== null && (
         <Carousel
           onSelectItem={hideCardDetail}
           onClose={hideCardDetail}

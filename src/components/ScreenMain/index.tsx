@@ -32,8 +32,8 @@ const MainScreen = () => {
   return (
     <>
       <LayoutHeader activeList={activeList} setActiveList={setActiveList} />
-      <MainContainer className="main powers">
-        {renderActiveList()}
+      <MainContainer>
+        <ListContainer>{renderActiveList()}</ListContainer>
         <Talents />
       </MainContainer>
       <Footer
@@ -47,7 +47,19 @@ const MainScreen = () => {
 export default MainScreen;
 
 const MainContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  flex: 1 1 auto;
   margin-top: ${LAYOUT.navHeight}px;
   margin-bottom: ${LAYOUT.footerHeight}px;
   overflow-y: scroll;
+`;
+
+const ListContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  flex: 1;
+  align-content: start;
 `;

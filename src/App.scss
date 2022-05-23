@@ -18,18 +18,6 @@ $navButtonHeight: 72px;
   align-self: flex-end;
 }
 
-.main {
-  width: 100%;
-  display: flex;
-  flex-flow: row wrap;
-  flex: 1 1 auto;
-  align-content: stretch;
-
-  &.powers {
-    align-content: start;
-  }
-}
-
 html,
 #root,
 body {

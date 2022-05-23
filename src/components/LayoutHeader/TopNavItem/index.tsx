@@ -13,13 +13,13 @@ interface TopNavItemProps {
 const TopNavItem = (props: TopNavItemProps) => {
   return (
     <TopNavContainer
+      role="link"
       aria-disabled={props.disabled ?? false}
       className={props.className}
       onClick={props.disabled ? undefined : props.onClick}
     >
-      <TopNavIcon role="link" path={props.iconPath}>
-        <small style={{ fontWeight: props.active ? "700" : "normal" }}>{props.label}</small>
-      </TopNavIcon>
+      <span>{props.label}</span>
+      <TopNavIcon src={props.iconPath}></TopNavIcon>
     </TopNavContainer>
   );
 };
@@ -34,19 +34,17 @@ const TopNavContainer = styled.div`
   padding: 2px;
   border-bottom: 1px solid #000000;
   width: 30vw;
-  height: ${LAYOUT.navHeight};
+  height: ${LAYOUT.navHeight}px;
   &[aria-disabled="true"] {
     filter: grayscale(100%);
   }
+  white-space: nowrap;
+  font-size: 12px;
+  font-weight: bold;
 `;
 
-const TopNavIcon = styled.div<{ path: string }>`
+const TopNavIcon = styled.img`
   height: 48px;
   width: 48px;
-  background-image: url(${(props) => props.path});
-  background-size: 100% 100%;
   border-radius: 4px;
-  text-shadow: -1px 1px 0 #000, 1px 1px 0 #000, 1px -1px 0 #000, -1px -1px 0 #000;
-  font-size: 18px;
-  filter: grayscale(50%);
 `;

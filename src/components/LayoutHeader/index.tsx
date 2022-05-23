@@ -41,19 +41,9 @@ const Header = ({ activeList, setActiveList }: Props) => {
   return (
     <>
       <NavContainer className="nav">
-        <TopNavItem
-          className="spellbook"
-          iconPath={trainSpellIcon}
-          onClick={toggleSpellbookModal}
-          label="Train Spells"
-        />
-        <TopNavItem className="talents" iconPath={talentsIcon} onClick={toggleTalentModal} label="View Talents" />
-        <TopNavItem
-          className="items"
-          iconPath={shopIcon}
-          onClick={() => console.log("Items Modal")}
-          label="Shop Items"
-        />
+        <TopNavItem className="spellbook" iconPath={trainSpellIcon} onClick={toggleSpellbookModal} label="Spells" />
+        <TopNavItem className="talents" iconPath={talentsIcon} onClick={toggleTalentModal} label="Talents" />
+        <TopNavItem className="items" iconPath={shopIcon} onClick={() => console.log("Items Modal")} label="Items" />
         <TopNavItem
           active={activeList === "reference"}
           className="more"

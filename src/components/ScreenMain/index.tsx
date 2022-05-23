@@ -34,7 +34,7 @@ const MainScreen = () => {
       <LayoutHeader activeList={activeList} setActiveList={setActiveList} />
       <MainContainer>
         <ListContainer>{renderActiveList()}</ListContainer>
-        <Talents />
+        {activeList === "powers" && <Talents />}
       </MainContainer>
       <Footer
         isInventoryOpen={activeList === "inventory"}

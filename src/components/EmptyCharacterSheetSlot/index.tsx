@@ -31,7 +31,7 @@ const EmptyCharacterSheetSlot = (props: Props) => {
     (name: UniqueCardName): ValidatedSelectedItem => {
       const power = getPowerByName(name);
       return {
-        canSelect: power !== undefined && !(power.type.primary === "active" && character.energy < power.energyCost),
+        canSelect: !(power.type.primary === "active" && character.energy < power.energyCost),
         errorMessage: "Not enough energy to equip!",
       };
     },

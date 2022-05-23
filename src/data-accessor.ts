@@ -55,7 +55,15 @@ export const statsForLevel = (level: CharacterLevel, heroClass: HeroClass): Leve
 };
 
 // TODO: This is really silly, this should be in a map
-export const getPowerByName = (name: UniqueCardName) => ALL_POWERS.find((p) => p.name === name);
+export const getPowerByName = (name: UniqueCardName): Power => {
+  const maybePower = ALL_POWERS.find((p) => p.name === name);
+
+  if (maybePower) {
+    return maybePower;
+  }
+
+  throw new Error("Unable to find power data");
+};
 
 export const getTalentsForLevel = (level: CharacterLevel) =>
   Object.values(ALL_TALENTS).filter((talent) => talent.requiredLevel <= level);

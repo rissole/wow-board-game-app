@@ -40,7 +40,7 @@ const MainScreen = () => {
     (name: UniqueCardName): ValidatedSelectedItem => {
       const power = getPowerByName(name);
       return {
-        canSelect: power !== undefined && !(character.gold < power.goldCost),
+        canSelect: character.gold >= power.goldCost,
         errorMessage: "Not enough gold to train spell!",
       };
     },

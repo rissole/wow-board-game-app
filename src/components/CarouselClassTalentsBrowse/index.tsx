@@ -13,7 +13,7 @@ export default function BrowseTalents(props: Props) {
     .filter((talent) => (props.talentsToShow ? props.talentsToShow.includes(talent.name) : true))
     .map((talent) => ({
       name: talent.name,
-      renderNode: () => <CardTalent title={talent.name} description={talent.rawDescription} />,
+      renderNode: () => <CardTalent talent={talent} key={talent.name} />,
     }));
 
   return <Carousel onClose={props.onClose} onSelectItem={undefined} items={renderedTalents} />;

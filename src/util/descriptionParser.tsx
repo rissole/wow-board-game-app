@@ -33,7 +33,7 @@ export function rawDescriptionToReact(rawDescription: string): ReactNode[] {
           nodes.push(createElement("p"));
           currentConstructingNodeIndex += 1;
         } else {
-          throw new Error(`Unrecognized closing element ${rawDescription[i + 2]}`);
+          throw new Error(`Unrecognized closing element ${rawDescription[i + 2]}, ${rawDescription}`);
         }
 
         i += 3;

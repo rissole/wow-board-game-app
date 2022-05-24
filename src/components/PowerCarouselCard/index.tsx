@@ -6,7 +6,7 @@ import CostBox from "../CostBox";
 import Icon from "../Icon";
 import { SLOT_TYPE_TO_ICON_PATH } from "../SlotTypeIcons/util";
 import goldCoinPath from "./goldCoin.png";
-import { rawDescriptionToReact } from "./rawDescriptionToReact";
+import { rawDescriptionToReact } from "../../util/descriptionParser";
 
 interface Props {
   power: Power;

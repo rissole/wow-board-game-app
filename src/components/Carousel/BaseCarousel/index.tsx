@@ -4,7 +4,7 @@ import { useSwipeable, DEFAULT_CONFIGURATION } from "../../useSwipeable";
 import Modal from "../../Modal";
 import { UniqueCardName } from "../../../types";
 import COLORS from "../../../util/colors";
-import { BaseButton } from "../../../util/styles";
+import Button, { ButtonType, ButtonStyle } from "../../Button";
 
 const OFFSET_PER_NODE = DEFAULT_CONFIGURATION.offsetPerNode;
 
@@ -18,7 +18,9 @@ export type CarouselAction = (item: UniqueCardName) => void;
 interface CarouselButtonAction {
   buttonContent: ReactNode;
   buttonAction?: CarouselAction; // If omitted, will default to onClose action
-  ButtonComponent?: React.ComponentType;
+  buttonType?: ButtonType;
+  buttonStyle?: ButtonStyle;
+  shouldConfirm?: boolean;
 }
 
 interface Props {
@@ -111,10 +113,15 @@ export default function Carousel({ items, onClose, actions }: Props) {
         </CarouselMain>
         <CarouselFooter>
           {items.length &&
-            actions.map(({ buttonContent, buttonAction, ButtonComponent = CarouselButton }) => (
-              <ButtonComponent onClick={() => onButtonClick(buttonAction)}>
-                <span>{buttonContent}</span>
-              </ButtonComponent>
+            actions.map(({ buttonContent, buttonAction, buttonType = "carousel", buttonStyle, shouldConfirm }) => (
+              <Button
+                onClick={() => onButtonClick(buttonAction)}
+                buttonType={buttonType}
+                buttonStyle={buttonStyle}
+                shouldConfirm={shouldConfirm}
+              >
+                {buttonContent}
+              </Button>
             ))}
         </CarouselFooter>
 
@@ -139,12 +146,6 @@ const EmptyCarouselCard = styled(NodeWrapper)`
   color: ${COLORS.foregroundBase};
   display: flex;
   justify-content: center;
-`;
-
-export const CarouselButton = styled(BaseButton)`
-  min-width: 128px;
-  height: 80px;
-  font-size: 30px;
 `;
 
 const CarouselContainer = styled.div`

@@ -113,8 +113,9 @@ export default function Carousel({ items, onClose, actions }: Props) {
         </CarouselMain>
         <CarouselFooter>
           {items.length &&
-            actions.map(({ buttonContent, buttonAction, buttonType = "carousel", buttonStyle, shouldConfirm }) => (
+            actions.map(({ buttonContent, buttonAction, buttonType = "carousel", buttonStyle, shouldConfirm }, key) => (
               <Button
+                key={key}
                 onClick={() => onButtonClick(buttonAction)}
                 buttonType={buttonType}
                 buttonStyle={buttonStyle}

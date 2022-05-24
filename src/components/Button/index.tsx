@@ -75,14 +75,14 @@ const Button = ({
     }
 
     if (!shouldConfirm) {
-      onClick && onClick();
+      onClick?.();
       return;
     }
 
     if (!isConfirming) {
       setIsConfirming(true);
     } else {
-      onClick && onClick();
+      onClick?.();
       setIsConfirming(false);
     }
   }, [isDisabled, shouldConfirm, isConfirming, onClick]);

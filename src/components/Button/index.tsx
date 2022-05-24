@@ -91,6 +91,7 @@ const Button = ({
   return (
     <ButtonComponent
       aria-disabled={isDisabled}
+      disabled={isDisabled}
       type="button"
       onClick={handleClick}
       buttonStyle={buttonStyle}

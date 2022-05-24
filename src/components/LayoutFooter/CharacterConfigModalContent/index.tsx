@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import styled from "styled-components";
 import { isValidLevel } from "../../../types";
-import { ActionButton } from "../../../util/styles";
+import Button from "../../Button";
 import { GameContext } from "../../GameProvider";
 import ModalContent from "../../Modal/ModalContent";
 import ClassText from "../ClassText";
@@ -30,9 +30,9 @@ const CharacterConfigModalContent = (props: Props) => {
         </div>
         <ModalFooter>
           <ButtonsContainer>
-            <ActionButton
-              type="button"
-              aria-disabled={levelUpDisabled}
+            <Button
+              buttonType="action"
+              isDisabled={levelUpDisabled}
               onClick={
                 levelUpDisabled
                   ? undefined
@@ -41,12 +41,13 @@ const CharacterConfigModalContent = (props: Props) => {
                       props.onClose?.();
                     }
               }
+              shouldConfirm
             >
               Level up
-            </ActionButton>
-            <ActionButton type="button" buttonStyle="danger" onClick={() => {}}>
+            </Button>
+            <Button buttonType="action" buttonStyle="danger" shouldConfirm>
               Delete
-            </ActionButton>
+            </Button>
           </ButtonsContainer>
         </ModalFooter>
       </ModalMain>

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { BaseButton } from "../../../util/styles";
+import Button from "../../Button";
 
 const MIN_ALLOWED_VALUE = 0;
 const MAX_ALLOWED_VALUE = 99;
@@ -23,21 +23,17 @@ const ValueEdit = (props: ValueProps) => {
 
   return (
     <ValueEditContainer>
-      <ValueEditButton
-        disabled={props.value >= (props.maxValueAllowed ?? MAX_ALLOWED_VALUE)}
-        onClick={increaseValue}
-        type="button"
-      >
+      <Button isDisabled={props.value >= (props.maxValueAllowed ?? MAX_ALLOWED_VALUE)} onClick={increaseValue}>
         +
-      </ValueEditButton>
+      </Button>
       <Icon path={props.iconPath}>
         {props.value}
         {props.maxValueAllowed !== undefined ? `/${props.maxValueAllowed}` : ``}
       </Icon>
 
-      <ValueEditButton disabled={props.value <= (props.minValueAllowed ?? MIN_ALLOWED_VALUE)} onClick={decreaseValue}>
+      <Button isDisabled={props.value <= (props.minValueAllowed ?? MIN_ALLOWED_VALUE)} onClick={decreaseValue}>
         -
-      </ValueEditButton>
+      </Button>
     </ValueEditContainer>
   );
 };
@@ -49,8 +45,6 @@ const ValueEditContainer = styled.div`
   font-size: 64px;
   align-items: center;
 `;
-
-const ValueEditButton = styled(BaseButton)``;
 
 const Icon = styled.div<{ path: string }>`
   background-image: url(${(props) => props.path});

@@ -1,5 +1,6 @@
 import { useCallback, useContext, useMemo, useState } from "react";
-import CharacterSheetSlot from "../BaseCharacterSheetSlot";
+import styled from "styled-components";
+import BaseCharacterSheetSlot from "../BaseCharacterSheetSlot";
 import useFlipFlop from "../useFlipFlop";
 import { GameContext } from "../GameProvider";
 import { CardSlotMetadata, UniqueCardName } from "../../types";
@@ -61,6 +62,10 @@ const EmptyCharacterSheetSlot = (props: Props) => {
     </>
   );
 };
+
+const CharacterSheetSlot = styled(BaseCharacterSheetSlot)`
+  box-shadow: inset 0.1em 0.1em 0.1em 0 rgba(0, 0, 0, 0.2), inset -0.1em -0.1em 0.1em 0 rgba(255, 255, 255, 0.2);
+`;
 
 // could be cleaner and better leverage styled components, but as of the
 // time of writing the design is still up in the air, so not investing in that

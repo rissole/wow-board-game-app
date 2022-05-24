@@ -71,7 +71,7 @@ const EquippedCharacterSheetSlot = (props: Props) => {
 };
 
 const CharacterSheetSlot = styled(BaseCharacterSheetSlot)`
-  box-shadow: inset 0.1em 0.1em 0.1em 0 rgba(255, 255, 255, 0.5), inset -0.1em -0.1em 0.1em 0 rgba(0, 0, 0, 0.5);
+  box-shadow: inset 0.1em 0.1em 0.1em 0 rgba(255, 255, 255, 0.2), inset -0.1em -0.1em 0.1em 0 rgba(0, 0, 0, 0.2);
 `;
 
 const Container = styled.div`

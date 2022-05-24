@@ -15,7 +15,7 @@ export default function SelectTalents(props: Props) {
     .filter((talent) => !props.equippedTalents.includes(talent.name))
     .map((talent) => ({
       name: talent.name,
-      renderNode: () => <CardTalent title={talent.name} description={talent.rawDescription} />,
+      renderNode: () => <CardTalent talent={talent} key={talent.name} />,
     }));
 
   return <Carousel onClose={props.onClose} onSelect={props.onSelect} items={renderedTalents} />;

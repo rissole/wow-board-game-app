@@ -61,3 +61,39 @@ export function rawDescriptionToReact(rawDescription: string): ReactNode[] {
   }
   return nodes;
 }
+
+export function rawDescriptionToReactRecursive(rawDescription: string): {
+  nodes: ReactNode[];
+  stringLeft: string;
+} {
+  const nodes: ReactNode[] = [];
+  let stringLeftToProcess: string = rawDescription;
+  let processedString: string = stringLeftToProcess.slice(0, Math.min(4, stringLeftToProcess.length - 1));
+
+  for (let i = processedString.length; i < stringLeftToProcess.length; i++) {
+    const lastString = processedString.slice(processedString.length - 4);
+    if (lastString.startsWith("<") && (lastString.endsWith(">") || lastString[2] === ">")) {
+      if (lastString === "</p>") {
+        nodes.push(processedString.slice(0, processedString.length - 4));
+        nodes.push(createElement("p"));
+        processedString = stringLeftToProcess.slice(i, Math.min(i + 4, stringLeftToProcess.length - i));
+        i = Math.min(i + 3, stringLeftToProcess.length - i);
+      } else if (lastString[1] === "/") {
+        nodes.push(processedString.slice(0, processedString.length - 4));
+        return { nodes, stringLeft: stringLeftToProcess.substring(i) };
+      } else {
+        nodes.push(processedString.slice(0, processedString.length - 4));
+        const nestedNodes = rawDescriptionToReactRecursive(stringLeftToProcess.slice(i - 1));
+        nodes.push(createElement(lastString.slice(1, 2), {}, nestedNodes.nodes));
+        stringLeftToProcess = nestedNodes.stringLeft;
+        processedString = stringLeftToProcess.slice(0, Math.min(4, stringLeftToProcess.length - i));
+        i = processedString.length - 1;
+      }
+    } else {
+      processedString += stringLeftToProcess[i];
+    }
+  }
+
+  nodes.push(processedString);
+  return { nodes, stringLeft: "" };
+}

@@ -3,14 +3,17 @@ import COLORS from "../../util/colors";
 import { Talent } from "../../types";
 import Icon from "../Icon";
 import { useMemo } from "react";
-import { rawDescriptionToReact } from "../../util/descriptionParser";
+import { rawDescriptionToReactRecursive } from "../../util/descriptionParser";
 
 interface Props {
   talent: Talent;
 }
 
 const CardTalent = ({ talent }: Props) => {
-  const memoizedDescription = useMemo(() => rawDescriptionToReact(talent.rawDescription), [talent.rawDescription]);
+  const memoizedDescription = useMemo(
+    () => rawDescriptionToReactRecursive(talent.rawDescription).nodes,
+    [talent.rawDescription]
+  );
   return (
     <TalentCarouselCard>
       <h1 style={{ color: COLORS.foregroundPrimary }}>{talent.name}</h1>

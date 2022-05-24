@@ -23,16 +23,16 @@ interface Props {
 }
 
 const Header = ({ activeList, setActiveList }: Props) => {
-  const { addPurchasedCard, character } = useContext(GameContext);
+  const { purchaseCard, character } = useContext(GameContext);
   const { value: isSpellbookModalOpen, toggle: toggleSpellbookModal, setOff: hideSpellbookModal } = useFlipFlop();
   const { value: isTalentModalOpen, toggle: toggleTalentModal, setOff: hideTalentModal } = useFlipFlop();
 
   const selectSpellbookItem = useCallback(
     (name: UniqueCardName) => {
-      addPurchasedCard(name);
+      purchaseCard(name);
       hideSpellbookModal();
     },
-    [addPurchasedCard, hideSpellbookModal]
+    [purchaseCard, hideSpellbookModal]
   );
 
   const canTrainSpellbookItem = useCallback(

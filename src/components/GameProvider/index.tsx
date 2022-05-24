@@ -52,7 +52,17 @@ export type GameContextType = {
    * to be placed in a card slot on the character sheet
    */
   purchasedCards: UniqueCardName[];
-  addPurchasedCard: (name: UniqueCardName) => void;
+
+  /**
+   * Validates the character has enough gold to purchase card then adds card to
+   * purchased list and deducts gold amount from character.
+   */
+  purchaseCard: (name: UniqueCardName) => boolean;
+
+  /**
+   * Adds card to purchased card list without validating or deducting gold cost.
+   */
+  takeCardWithoutValidation: (name: UniqueCardName) => void;
   removePurchasedCard: (name: UniqueCardName) => void;
   /**
    * returns true if successfully levelled up, false otherwise
@@ -92,7 +102,8 @@ const DEFAULT_GAME_STATE: GameContextType = {
   character: DEFAULT_CHARACTER_STATE,
   updateCharacter: () => {},
   purchasedCards: [],
-  addPurchasedCard: () => {},
+  purchaseCard: () => false,
+  takeCardWithoutValidation: () => {},
   removePurchasedCard: () => {},
   levelUp: () => false,
   talents: {},
@@ -145,13 +156,24 @@ const GameProvider = (props: { children: ReactNode }) => {
     [setCharacter]
   );
 
-  const addPurchasedCard = useCallback(
+  const purchaseCard = useCallback(
     (name: UniqueCardName) => {
       const power = getPowerByName(name);
+      if (character.gold < power.goldCost) {
+        return false;
+      }
       setPurchasedCards((currentPurchasedCards) => [...currentPurchasedCards, name]);
       setCharacter((currentCharacter) => {
         return { ...currentCharacter, gold: currentCharacter.gold - power.goldCost };
       });
+      return true;
+    },
+    [setPurchasedCards, character.gold, setCharacter]
+  );
+
+  const takeCardWithoutValidation = useCallback(
+    (name: UniqueCardName) => {
+      setPurchasedCards((currentPurchasedCards) => [...currentPurchasedCards, name]);
     },
     [setPurchasedCards]
   );
@@ -233,7 +255,8 @@ const GameProvider = (props: { children: ReactNode }) => {
       character,
       updateCharacter,
       purchasedCards,
-      addPurchasedCard,
+      purchaseCard,
+      takeCardWithoutValidation,
       removePurchasedCard,
       levelUp,
       talents,
@@ -246,7 +269,8 @@ const GameProvider = (props: { children: ReactNode }) => {
       character,
       updateCharacter,
       purchasedCards,
-      addPurchasedCard,
+      purchaseCard,
+      takeCardWithoutValidation,
       removePurchasedCard,
       levelUp,
       talents,

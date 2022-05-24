@@ -1,6 +1,6 @@
 import React, { ReactNode, useCallback, useMemo, useState } from "react";
 import styled from "styled-components";
-import { useSwipeable, DEFAULT_CONFIGURATION } from "../useSwipeable";
+import { DEFAULT_CONFIGURATION, useSwipeable } from "../useSwipeable";
 import Modal from "../Modal";
 import { UniqueCardName } from "../../types";
 import COLORS from "../../util/colors";
@@ -16,7 +16,7 @@ export interface CarouselItem {
 
 export interface ValidatedSelectedItem {
   canSelect: boolean;
-  errorMessage?: String;
+  errorMessage?: string;
 }
 
 interface Props {
@@ -60,6 +60,8 @@ export default function Carousel({
     [handleSwipe]
   );
 
+  const [toastText, setToastText] = useState<React.ReactNode>();
+
   const onSelect = useCallback(() => {
     const currentItem = items[currentItemIndex];
     if (onSelectItem && currentItem !== undefined) {
@@ -74,9 +76,7 @@ export default function Carousel({
         );
       }
     }
-  }, [currentItemIndex, items, onSelectItem, isAbleToSelect]);
-
-  const [toastText, setToastText] = useState<React.ReactNode>();
+  }, [currentItemIndex, items, onSelectItem]);
 
   return (
     <Modal>

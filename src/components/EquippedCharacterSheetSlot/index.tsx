@@ -3,7 +3,7 @@ import styled from "styled-components";
 import useFlipFlop from "../useFlipFlop";
 import { CardSlot, UniqueCardName } from "../../types";
 import Icon from "../Icon";
-import UnequipCarousel from "../CarouselUnequip";
+import UnequipCarousel from "../CarouselUnequipPower";
 import { GameContext } from "../GameProvider";
 import SlotTypeIcons from "../SlotTypeIcons";
 import BaseCharacterSheetSlot from "../BaseCharacterSheetSlot";
@@ -65,9 +65,7 @@ const EquippedCharacterSheetSlot = (props: Props) => {
           </MainContent>
         </Container>
       </CharacterSheetSlot>
-      {isModalOpen && (
-        <UnequipCarousel cards={props.slot.equipped} onClose={closeModal} onSelectItem={handleSelectItem} />
-      )}
+      {isModalOpen && <UnequipCarousel cards={props.slot.equipped} onClose={closeModal} onSelect={handleSelectItem} />}
     </>
   );
 };

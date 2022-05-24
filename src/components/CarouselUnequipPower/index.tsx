@@ -6,10 +6,10 @@ import { getPowerByName } from "../../data-accessor";
 export interface Props {
   cards: UniqueCardName[];
   onClose: () => void;
-  onSelectItem: (id: UniqueCardName) => void;
+  onSelect: (id: UniqueCardName) => void;
 }
 
-export default function UnequipCarousel({ cards, onClose, onSelectItem }: Props) {
+export default function UnequipCarousel({ cards, onClose, onSelect }: Props) {
   const unequippableCards: CarouselItem[] = cards
     .map(getPowerByName)
     .filter((p): p is Power => !!p) // i can't believe typescript can't do this properly
@@ -20,5 +20,5 @@ export default function UnequipCarousel({ cards, onClose, onSelectItem }: Props)
       };
     });
 
-  return <Carousel items={unequippableCards} onClose={onClose} onSelectItem={onSelectItem} buttonText="Remove" />;
+  return <Carousel items={unequippableCards} onClose={onClose} onSelect={onSelect} buttonContent="Remove" />;
 }

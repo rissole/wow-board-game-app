@@ -1,13 +1,12 @@
 import { useContext } from "react";
-import Carousel, { CarouselItem } from "../Carousel";
+import Carousel, { CarouselAction, CarouselItem } from "../Carousel";
 import PowerCarouselCard from "../PowerCarouselCard";
 import { ALL_POWERS } from "../../data-accessor";
-import { UniqueCardName } from "../../types";
 import { GameContext } from "../GameProvider";
 
 export interface Props {
   onClose: () => void;
-  onSelectItem: (id: UniqueCardName) => void;
+  onSelect: CarouselAction;
 }
 export interface Spell {
   icon: string;
@@ -16,7 +15,7 @@ export interface Spell {
 }
 
 // Display available class spells
-export default function EquipClassSpells({ onClose, onSelectItem }: Props) {
+export default function EquipClassSpells({ onClose, onSelect }: Props) {
   const { purchasedCards } = useContext(GameContext);
 
   const availablePowers: CarouselItem[] = ALL_POWERS.filter((power) => !purchasedCards.includes(power.name)).map(
@@ -26,5 +25,5 @@ export default function EquipClassSpells({ onClose, onSelectItem }: Props) {
     })
   );
 
-  return <Carousel items={availablePowers} onClose={onClose} onSelectItem={onSelectItem} buttonText="Train" />;
+  return <Carousel items={availablePowers} onClose={onClose} onSelect={onSelect} buttonContent="Train" />;
 }

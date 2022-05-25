@@ -1,5 +1,6 @@
-import React, { createContext, ReactNode, useCallback, useMemo, useState } from "react";
+import { createContext, ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { HERO_CLASS_CARD_SLOT_METADATA, statsForLevel } from "../../data-accessor";
+import { saveToLocalStorage, loadFromLocalStorage, clearLocalStorage } from "./utils";
 
 import {
   CharacterLevel,
@@ -11,6 +12,7 @@ import {
   CardSlot,
   SlotNumber,
   isValidSlotNumber,
+  Screen,
 } from "../../types";
 
 export interface CharacterState {
@@ -77,7 +79,13 @@ export type GameContextType = {
    * Removes card from the specified slot.
    */
   unequipCardFromSlot: (slotNumber: SlotNumber, name: UniqueCardName) => void;
+  loadSaveState: () => boolean;
+  screen: Screen;
+  changeScreen: (changeScreen: Screen) => void;
+  resetGame: () => void;
 };
+
+export type GameState = Pick<GameContextType, "character" | "purchasedCards" | "talents" | "cardSlots">;
 
 const DEFAULT_CHARACTER_STATE: CharacterState = {
   heroClass: "druid",
@@ -100,6 +108,10 @@ const DEFAULT_GAME_STATE: GameContextType = {
   cardSlots: {},
   equipCardToSlot: () => [],
   unequipCardFromSlot: () => {},
+  loadSaveState: () => false,
+  screen: "character-select",
+  changeScreen: () => {},
+  resetGame: () => {},
 };
 
 export const GameContext = createContext<GameContextType>(DEFAULT_GAME_STATE);
@@ -110,6 +122,20 @@ const GameProvider = (props: { children: ReactNode }) => {
   const [purchasedCards, setPurchasedCards] = useState<UniqueCardName[]>([]);
   const [talents, setTalents] = useState<TalentState>({});
   const [cardSlots, setCardSlots] = useState<CardSlotState>({});
+  const [screen, setScreen] = useState<Screen>("character-select");
+
+  const hasLoadedSaveState = useRef(false);
+
+  useEffect(() => {
+    if (!hasLoadedSaveState.current) return;
+    const gameState: GameState = {
+      character,
+      purchasedCards,
+      talents,
+      cardSlots,
+    };
+    saveToLocalStorage(gameState);
+  }, [cardSlots, character, purchasedCards, talents]);
 
   const updateCharacter = useCallback(
     (update: UpdateCharacterArgs) => {
@@ -218,6 +244,48 @@ const GameProvider = (props: { children: ReactNode }) => {
     [setTalents]
   );
 
+  // TODO: Notify if there was an errors loading state
+  const loadSaveState = useCallback(() => {
+    if (hasLoadedSaveState.current) return false;
+    try {
+      const saveState = loadFromLocalStorage();
+      if (!saveState) {
+        hasLoadedSaveState.current = true;
+        return false;
+      }
+
+      setCharacter(saveState.character);
+      setPurchasedCards(saveState.purchasedCards);
+      setTalents(saveState.talents);
+      setCardSlots(saveState.cardSlots);
+
+      hasLoadedSaveState.current = true;
+      return true;
+    } catch (error) {
+      console.error(error);
+
+      hasLoadedSaveState.current = true;
+      return false;
+    }
+  }, []);
+
+  const changeScreen = useCallback((newScreen: Screen) => {
+    setScreen(newScreen);
+  }, []);
+
+  const resetGame = useCallback(() => {
+    hasLoadedSaveState.current = false;
+    setCharacter(DEFAULT_CHARACTER_STATE);
+    setPurchasedCards([]);
+    setTalents({});
+    setCardSlots({});
+    setScreen("character-select");
+    clearLocalStorage();
+    requestAnimationFrame(() => {
+      hasLoadedSaveState.current = true;
+    });
+  }, []);
+
   const contextValue = useMemo<GameContextType>(
     () => ({
       character,
@@ -231,6 +299,10 @@ const GameProvider = (props: { children: ReactNode }) => {
       cardSlots,
       equipCardToSlot,
       unequipCardFromSlot,
+      loadSaveState,
+      screen,
+      changeScreen,
+      resetGame,
     }),
     [
       character,
@@ -244,6 +316,10 @@ const GameProvider = (props: { children: ReactNode }) => {
       cardSlots,
       equipCardToSlot,
       unequipCardFromSlot,
+      loadSaveState,
+      screen,
+      changeScreen,
+      resetGame,
     ]
   );
 

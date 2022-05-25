@@ -12,7 +12,7 @@ export interface Props {
 }
 
 const CharacterConfigModalContent = (props: Props) => {
-  const { character, levelUp } = useContext(GameContext);
+  const { character, levelUp, resetGame } = useContext(GameContext);
   const levelUpDisabled = !isValidLevel(character.level + 1);
   return (
     <ModalContent>
@@ -45,8 +45,8 @@ const CharacterConfigModalContent = (props: Props) => {
             >
               Level up
             </Button>
-            <Button buttonType="action" buttonStyle="danger" shouldConfirm>
-              Delete
+            <Button onClick={resetGame} buttonType="action" buttonStyle="danger" shouldConfirm>
+              Reroll
             </Button>
           </ButtonsContainer>
         </ModalFooter>
@@ -85,7 +85,7 @@ const ModalFooter = styled.div`
 
 const ButtonsContainer = styled.div`
   display: flex;
-  flex-flow: row wrap;
+  flex-flow: row nowrap;
   padding: 8px;
   gap: 8px;
 `;

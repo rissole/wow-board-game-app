@@ -2,6 +2,7 @@ import { createElement, ReactNode } from "react";
 
 const RAW_DESCRIPTION_TAG_NAME_MAP: { [k: string]: string } = { b: "strong", i: "em" };
 const TAG_REGX: RegExp = /(<.{1,2}>)/;
+const CLOSING_TAG_DELIMITER = "/";
 
 export function rawDescriptionToReact(rawDescription: string): ReactNode[] {
   const rawNodes = splitIntoNodes(rawDescription);
@@ -10,7 +11,7 @@ export function rawDescriptionToReact(rawDescription: string): ReactNode[] {
 
 function splitIntoNodes(rawDescription: string): string[] {
   //split html into nodes while still retaining the insides of the tags
-  return rawDescription.split(/(<.{1,2}>)/);
+  return rawDescription.split(TAG_REGX);
 }
 
 function parseRawNodes(rawNodes: string[]): ReactNode[] {
@@ -26,7 +27,7 @@ function parseRawNodes(rawNodes: string[]): ReactNode[] {
     if (currentNode.match(TAG_REGX)) {
       //dealing with an opening tag
       if (currentNode.length === 3) {
-        const closingTag = currentNode.slice(0, 1) + "/" + currentNode.slice(1);
+        const closingTag = currentNode.slice(0, 1) + CLOSING_TAG_DELIMITER + currentNode.slice(1);
         const endingTagIndex = rawNodes.findIndex((value, index) => index > i && value === closingTag);
         const nestedElement = rawNodes.slice(i + 1, endingTagIndex + 1);
         reactNodes.push(

@@ -7,7 +7,9 @@ interface Props {
 const CostBox = ({ cost }: Props) => {
   return (
     <CostBoxInner>
-      <Bolt />
+      <Wrapper>
+        <Bolt />
+      </Wrapper>
       <NumberWrapper>{cost}</NumberWrapper>
     </CostBoxInner>
   );
@@ -15,7 +17,12 @@ const CostBox = ({ cost }: Props) => {
 
 const NumberWrapper = styled.div`
   position: relative;
-  top: -26px;
+  line-height: 28px;
+`;
+
+const Wrapper = styled.div`
+  position: absolute;
+  top: 6px;
 `;
 
 const Bolt = styled.div`
@@ -56,17 +63,16 @@ const Bolt = styled.div`
 `;
 
 const CostBoxInner = styled.div`
+  position: relative;
   background: rgb(196, 150, 217);
   color: #000000;
   width: 32px;
   height: 32px;
   text-align: center;
-  padding: 6px 0;
   border-radius: 50%;
   border: 2px outset #777777;
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 700;
-  line-height: 14px;
 `;
 
 export default CostBox;

@@ -1,49 +1,51 @@
 import { createElement, ReactNode } from "react";
 
 const RAW_DESCRIPTION_TAG_NAME_MAP: { [k: string]: string } = { b: "strong", i: "em" };
+const VALID_TAGS: string[] = Object.keys(RAW_DESCRIPTION_TAG_NAME_MAP);
+const TAG_REGX: RegExp = /(<.{1,2}>)/;
 
 export function rawDescriptionToReact(rawDescription: string): ReactNode[] {
-  return rawDescriptionToReactRecursive(rawDescription).nodes;
+  const rawNodes = splitIntoNodes(rawDescription);
+  return parseRawNodes(rawNodes);
 }
 
-function rawDescriptionToReactRecursive(rawDescription: string): {
-  nodes: ReactNode[];
-  stringLeft: string;
-} {
-  const nodes: ReactNode[] = [];
-  let stringLeftToProcess: string = rawDescription;
-  let processedString: string = "";
+function splitIntoNodes(rawDescription: string): string[] {
+  //split html into nodes while still retaining the insides of the tags
+  return rawDescription.split(/(<.{1,2}>)/);
+}
 
-  for (let i = processedString.length; i < stringLeftToProcess.length; i++) {
-    processedString += stringLeftToProcess[i];
-    const stringChunk = processedString.slice(processedString.length - 3);
+function parseRawNodes(rawNodes: string[]): ReactNode[] {
+  const reactNodes: ReactNode[] = [];
 
-    //See if we're dealing with a tag, if not continue to process string
-    if (stringChunk.startsWith("</") || (stringChunk.startsWith("<") && stringChunk.endsWith(">"))) {
-      //We're dealing with luke's crazy paragraph things
-      if (stringChunk === "</p") {
-        nodes.push(processedString.slice(0, processedString.length - 3), createElement("p", { key: nodes.length }));
-        stringLeftToProcess = stringLeftToProcess.slice(i + 1);
-        //If we're dealing with a closing tag, we've closed off the element, so we can return.
-      } else if (stringChunk.startsWith("</")) {
-        nodes.push(processedString.slice(0, processedString.length - 3));
-        return { nodes, stringLeft: stringLeftToProcess.slice(i + 1) };
-        // We know we're dealing with an opening tag
-      } else {
-        nodes.push(processedString.slice(0, processedString.length - 3));
-        //Get all the nested nodes under this tag, then append as element
-        const nestedNodes = rawDescriptionToReactRecursive(stringLeftToProcess.slice(i + 1));
-        nodes.push(
-          createElement(RAW_DESCRIPTION_TAG_NAME_MAP[stringChunk[1]!]!, { key: nodes.length }, nestedNodes.nodes)
+  for (let i = 0; i < rawNodes.length; i++) {
+    const currentNode = rawNodes[i];
+    if (currentNode === undefined) {
+      throw new Error("Unable to locate current node");
+    }
+
+    //dealing with a tag
+    if (currentNode.match(TAG_REGX)) {
+      //dealing with an opening tag
+      if (currentNode.length === 3) {
+        const closingTag = currentNode.slice(0, 1) + "/" + currentNode.slice(1);
+        const endingTagIndex = rawNodes.findIndex((value, index) => index > i && value === closingTag);
+        const nestedElement = rawNodes.slice(i + 1, endingTagIndex + 1);
+        reactNodes.push(
+          createElement(RAW_DESCRIPTION_TAG_NAME_MAP[currentNode[1]!]!, { key: i }, parseRawNodes(nestedElement))
         );
-        stringLeftToProcess = nestedNodes.stringLeft;
+        i += nestedElement.length;
+      } else if (currentNode === "</p>") {
+        //dealing with a paragraph tag
+        reactNodes.push(createElement("p", { key: i }));
+      } else {
+        //dealing with an end tag
+        return reactNodes;
       }
-      //reset process
-      processedString = "";
-      i = 0;
+    } else {
+      //dealing with a text node
+      reactNodes.push(currentNode);
     }
   }
 
-  nodes.push(processedString);
-  return { nodes, stringLeft: "" };
+  return reactNodes;
 }

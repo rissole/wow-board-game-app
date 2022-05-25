@@ -41,7 +41,7 @@ const ValueEdit = (props: ValueProps) => {
 const ValueEditContainer = styled.div`
   display: flex;
   flex-flow: column nowrap;
-  width: 100%;
+  width: min(100%, 390px);
   font-size: 64px;
   align-items: center;
 `;
@@ -57,9 +57,8 @@ const Icon = styled.div<{ path: string }>`
   justify-content: center;
   text-shadow: -1px 1px 0 #000, 1px 1px 0 #000, 1px -1px 0 #000, -1px -1px 0 #000;
   filter: grayscale(50%);
-  width: 45vw;
-  height: 45vw;
-  max-width: 50vh;
+  width: 160px;
+  height: 160px;
   font-size: 80px;
   margin: 8px 0 8px;
 `;

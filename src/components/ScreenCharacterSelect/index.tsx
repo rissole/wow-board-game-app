@@ -23,21 +23,21 @@ interface Props {
   onConfirmSelection: (faction: Faction, heroClass: HeroClass) => void;
 }
 
+export const heroClassIconMap = {
+  paladin: paladinIcon,
+  warlock: warlockIcon,
+  rogue: rogueIcon,
+  mage: mageIcon,
+  hunter: hunterIcon,
+  druid: druidIcon,
+  warrior: warriorIcon,
+  shaman: shamanIcon,
+  priest: priestIcon,
+};
+
 const CharacterSelectScreen = (props: Props) => {
   const [selectedFaction, setSelectedFaction] = useState<Faction | null>(null);
   const [selectedClass, setSelectedClass] = useState<HeroClass | null>(null);
-
-  const heroClassIconMap = {
-    paladin: paladinIcon,
-    warlock: warlockIcon,
-    rogue: rogueIcon,
-    mage: mageIcon,
-    hunter: hunterIcon,
-    druid: druidIcon,
-    warrior: warriorIcon,
-    shaman: shamanIcon,
-    priest: priestIcon,
-  };
 
   const renderClassCards = () => {
     return CLASSES.map((val) => (
@@ -63,7 +63,7 @@ const CharacterSelectScreen = (props: Props) => {
 
   return (
     <>
-      <div className="main">
+      <Main>
         <FactionGrid>
           <FactionCard
             isSelected={selectedFaction === "alliance"}
@@ -95,24 +95,29 @@ const CharacterSelectScreen = (props: Props) => {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            width: "100%",
             flex: "1 0 auto",
-            flexFlow: "column nowrap",
           }}
         >
           <ConfirmSelectionButton disabled={!selectedClass || !selectedFaction} onClick={handleConfirm} />
         </div>
-      </div>
+      </Main>
     </>
   );
 };
+
+const Main = styled.div`
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  height: 100%;
+`;
 
 const FactionGrid = styled.div`
   padding: 8px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr;
-  width: 100vw;
+  width: min(100vw, 390px);
   height: 25vh;
 `;
 

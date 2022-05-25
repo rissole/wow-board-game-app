@@ -23,8 +23,9 @@ export type UniqueCardName = string;
  */
 export type UniqueTalentName = string;
 
+export const MAX_CHARACTER_LEVEL: CharacterLevel = 5;
 export const isValidLevel = (n: number): n is CharacterLevel =>
-  Array.from({ length: 5 })
+  Array.from({ length: MAX_CHARACTER_LEVEL })
     .map((_, index) => index + 1)
     .includes(n);
 

@@ -1,19 +1,18 @@
-import React, { useContext, useEffect, useState, useRef } from "react";
+import React, { useContext, useEffect } from "react";
 import "./App.scss";
-import { Screen, Faction, HeroClass } from "./types";
+import { Faction, HeroClass } from "./types";
 import ScreenMain from "./components/ScreenMain";
 import CharacterSelectScreen from "./components/ScreenCharacterSelect";
 import GameProvider, { GameContext } from "./components/GameProvider";
 
 function App() {
-  const [screen, setScreen] = useState<Screen>("character-select");
-  const { updateCharacter, loadSaveState } = useContext(GameContext);
+  const { screen, changeScreen, updateCharacter, loadSaveState } = useContext(GameContext);
 
   useEffect(() => {
     requestAnimationFrame(() => {
       const loadedSuccessfully = loadSaveState();
       if (loadedSuccessfully) {
-        setScreen("main");
+        changeScreen("main");
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -21,7 +20,7 @@ function App() {
 
   const handleCharacterSelectConfirm = (faction: Faction, heroClass: HeroClass) => {
     updateCharacter({ faction, heroClass });
-    setScreen("main");
+    changeScreen("main");
   };
 
   const renderActiveScreen = () => {

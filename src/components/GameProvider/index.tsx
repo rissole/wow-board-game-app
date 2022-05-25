@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { HERO_CLASS_CARD_SLOT_METADATA, statsForLevel } from "../../data-accessor";
-import { saveToLocalStorage, loadFromLocalStorage } from "../../util/local-storage";
+import { saveToLocalStorage, loadFromLocalStorage, clearLocalStorage } from "./utils";
 
 import {
   CharacterLevel,
@@ -12,6 +12,7 @@ import {
   CardSlot,
   SlotNumber,
   isValidSlotNumber,
+  Screen,
 } from "../../types";
 
 export interface CharacterState {
@@ -79,6 +80,9 @@ export type GameContextType = {
    */
   unequipCardFromSlot: (slotNumber: SlotNumber, name: UniqueCardName) => void;
   loadSaveState: () => boolean;
+  screen: Screen;
+  changeScreen: (changeScreen: Screen) => void;
+  resetGame: () => void;
 };
 
 export type GameState = Pick<GameContextType, "character" | "purchasedCards" | "talents" | "cardSlots">;
@@ -105,6 +109,9 @@ const DEFAULT_GAME_STATE: GameContextType = {
   equipCardToSlot: () => [],
   unequipCardFromSlot: () => {},
   loadSaveState: () => false,
+  screen: "character-select",
+  changeScreen: () => {},
+  resetGame: () => {},
 };
 
 export const GameContext = createContext<GameContextType>(DEFAULT_GAME_STATE);
@@ -115,6 +122,7 @@ const GameProvider = (props: { children: ReactNode }) => {
   const [purchasedCards, setPurchasedCards] = useState<UniqueCardName[]>([]);
   const [talents, setTalents] = useState<TalentState>({});
   const [cardSlots, setCardSlots] = useState<CardSlotState>({});
+  const [screen, setScreen] = useState<Screen>("character-select");
 
   const hasLoadedSaveState = useRef(false);
 
@@ -249,26 +257,7 @@ const GameProvider = (props: { children: ReactNode }) => {
       setCharacter(saveState.character);
       setPurchasedCards(saveState.purchasedCards);
       setTalents(saveState.talents);
-
-      // Load card slots
-      let slotMetadataForClass = HERO_CLASS_CARD_SLOT_METADATA[character.heroClass];
-      if (slotMetadataForClass === undefined) {
-        console.warn(`No slot metadata for ${character.heroClass}, falling back to druid`);
-        // assuming we always have druid
-        slotMetadataForClass = HERO_CLASS_CARD_SLOT_METADATA["druid"]!;
-      }
-      const initialCardSlotState = slotMetadataForClass.reduce<CardSlotState>((accum, metadata, slotNumber) => {
-        if (!isValidSlotNumber(slotNumber)) {
-          throw new Error(`Found invalid slot number ${slotNumber} when trying to initialise card slots`);
-        }
-        accum[slotNumber] = {
-          metadata,
-          equipped: saveState.cardSlots.find((cs) => cs.key === slotNumber)?.equipped || [],
-        };
-        return accum;
-      }, {});
-
-      setCardSlots(initialCardSlotState);
+      setCardSlots(saveState.cardSlots);
 
       hasLoadedSaveState.current = true;
       return true;
@@ -278,7 +267,24 @@ const GameProvider = (props: { children: ReactNode }) => {
       hasLoadedSaveState.current = true;
       return false;
     }
-  }, [character.heroClass]);
+  }, []);
+
+  const changeScreen = useCallback((newScreen: Screen) => {
+    setScreen(newScreen);
+  }, []);
+
+  const resetGame = useCallback(() => {
+    hasLoadedSaveState.current = false;
+    setCharacter(DEFAULT_CHARACTER_STATE);
+    setPurchasedCards([]);
+    setTalents({});
+    setCardSlots({});
+    setScreen("character-select");
+    clearLocalStorage();
+    requestAnimationFrame(() => {
+      hasLoadedSaveState.current = true;
+    });
+  }, []);
 
   const contextValue = useMemo<GameContextType>(
     () => ({
@@ -294,6 +300,9 @@ const GameProvider = (props: { children: ReactNode }) => {
       equipCardToSlot,
       unequipCardFromSlot,
       loadSaveState,
+      screen,
+      changeScreen,
+      resetGame,
     }),
     [
       character,
@@ -308,6 +317,9 @@ const GameProvider = (props: { children: ReactNode }) => {
       equipCardToSlot,
       unequipCardFromSlot,
       loadSaveState,
+      screen,
+      changeScreen,
+      resetGame,
     ]
   );
 

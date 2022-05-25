@@ -3,7 +3,7 @@ import styled from "styled-components";
 import COLORS from "../../util/colors";
 
 export type ButtonType = "base" | "carousel" | "action";
-export type ButtonStyle = "danger" | "default";
+export type ButtonStyle = "danger" | "default" | "primary";
 
 export const BaseButton = styled.button({
   border: `solid 3px ${COLORS.foregroundPrimary}`,
@@ -26,14 +26,23 @@ export const CarouselButton = styled(BaseButton)`
 `;
 
 export const ActionButton = styled.button<{ buttonStyle?: ButtonStyle }>(({ buttonStyle = "default" }) => {
-  const rgbMap: { [k in typeof buttonStyle]: string } = { default: "0, 150, 0", danger: "196, 0, 0" };
+  const rgbMap: { [k in typeof buttonStyle]: string } = {
+    default: "98, 98, 98",
+    danger: "196, 0, 0",
+    primary: "255, 238, 51",
+  };
   return {
     padding: "12px",
     border: "1px solid black",
     borderRadius: "5px",
     fontSize: "18px",
     fontWeight: "bold",
-    color: COLORS.foregroundBase,
+    color:
+      buttonStyle === "primary"
+        ? COLORS.backgroundBase
+        : buttonStyle === "danger"
+        ? COLORS.foregroundBase
+        : COLORS.foregroundPrimary,
     backgroundColor: `rgb(${rgbMap[buttonStyle]})`,
     "&:active": { filter: "brightness(0.7)" },
     [`&[disabled], &[aria-disabled="true"]`]: { opacity: "10%", filter: "grayscale(100%)" },
@@ -94,7 +103,7 @@ const Button = ({
       disabled={isDisabled}
       type="button"
       onClick={handleClick}
-      buttonStyle={buttonStyle}
+      buttonStyle={shouldConfirm && isConfirming ? "primary" : buttonStyle}
       {...buttonProps}
     >
       {shouldConfirm && isConfirming ? "Confirm" : children}

@@ -47,7 +47,7 @@ const Header = ({ activeList, setActiveList }: Props) => {
           onClick={toggleSpellbookModal}
           label="Train Spells"
         />
-        <TopNavItem className="talents" iconPath={talentsIcon} onClick={toggleTalentModal} label="Learn Talents" />
+        <TopNavItem className="talents" iconPath={talentsIcon} onClick={toggleTalentModal} label="View Talents" />
         <TopNavItem
           className="items"
           iconPath={shopIcon}

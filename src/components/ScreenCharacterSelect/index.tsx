@@ -23,21 +23,21 @@ interface Props {
   onConfirmSelection: (faction: Faction, heroClass: HeroClass) => void;
 }
 
+export const heroClassIconMap = {
+  paladin: paladinIcon,
+  warlock: warlockIcon,
+  rogue: rogueIcon,
+  mage: mageIcon,
+  hunter: hunterIcon,
+  druid: druidIcon,
+  warrior: warriorIcon,
+  shaman: shamanIcon,
+  priest: priestIcon,
+};
+
 const CharacterSelectScreen = (props: Props) => {
   const [selectedFaction, setSelectedFaction] = useState<Faction | null>(null);
   const [selectedClass, setSelectedClass] = useState<HeroClass | null>(null);
-
-  const heroClassIconMap = {
-    paladin: paladinIcon,
-    warlock: warlockIcon,
-    rogue: rogueIcon,
-    mage: mageIcon,
-    hunter: hunterIcon,
-    druid: druidIcon,
-    warrior: warriorIcon,
-    shaman: shamanIcon,
-    priest: priestIcon,
-  };
 
   const renderClassCards = () => {
     return CLASSES.map((val) => (

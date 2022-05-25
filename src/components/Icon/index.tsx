@@ -12,7 +12,7 @@ const Icon = styled.div<IconProps>((props) => ({
   height: props.height ?? props.width,
   backgroundImage: `url(${props.path})`,
   backgroundSize: "100% 100%",
-  ...(props.isRound ? { borderRadius: "50%" } : {}),
+  ...(props.isRound ? { borderRadius: "50%" } : { borderRadius: "2px" }),
 }));
 
 export default Icon;

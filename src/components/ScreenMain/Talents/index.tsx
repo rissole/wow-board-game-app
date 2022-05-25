@@ -3,13 +3,13 @@ import COLORS from "../../../util/colors";
 import { useCallback, useContext } from "react";
 import { GameContext, TalentState } from "../../GameProvider";
 import Icon from "../../Icon";
-import { UniqueCardName, CharacterLevel, UniqueTalentName } from "../../../types";
+import { UniqueCardName, CharacterLevel, UniqueTalentName, HeroClass } from "../../../types";
 import samwisePath from "../../../assets/samwise.png";
-import lockPath from "../../../assets/lock-icon.svg";
 import { ALL_TALENTS } from "../../../data-accessor";
 import useFlipFlop from "../../useFlipFlop";
 import SelectTalents from "../../CarouselClassTalentsSelect";
 import BrowseTalents from "../../CarouselClassTalentsBrowse";
+import { heroClassIconMap } from "../../ScreenCharacterSelect";
 
 const Container = styled.div`
   width: 100%;
@@ -29,19 +29,14 @@ interface IconProps {
   currentLevel: CharacterLevel;
   talents: TalentState;
   addTalent: (level: CharacterLevel, name: UniqueTalentName) => void;
+  heroClass: HeroClass;
 }
 
-function getIconPath(
-  talentName: UniqueTalentName | undefined,
-  talentLevel: CharacterLevel,
-  currentLevel: CharacterLevel
-): string {
+function getIconPath(talentName: UniqueTalentName | undefined, heroClass: HeroClass): string {
   if (talentName !== undefined) {
     return ALL_TALENTS[talentName]?.iconLink ?? samwisePath;
-  } else if (talentLevel <= currentLevel) {
-    return samwisePath;
   } else {
-    return lockPath;
+    return heroClassIconMap[heroClass];
   }
 }
 
@@ -59,21 +54,21 @@ const TalentIcon = (props: IconProps) => {
 
   const equippedTalent = props.talents[props.talentLevel];
   const talentUnlocked = props.currentLevel >= props.talentLevel;
+  const isTalentUnlockedAndEmpty = equippedTalent === undefined && talentUnlocked;
   return (
-    <div>
+    <TalentIconInner>
       <Icon
-        path={getIconPath(equippedTalent, props.talentLevel, props.currentLevel)}
-        height={40}
-        width={40}
+        path={getIconPath(equippedTalent, props.heroClass)}
+        height={36}
+        width={36}
         onClick={
-          equippedTalent === undefined && talentUnlocked
-            ? showTalentSelect
-            : equippedTalent !== undefined
-            ? showTalentView
-            : undefined
+          isTalentUnlockedAndEmpty ? showTalentSelect : equippedTalent !== undefined ? showTalentView : undefined
         }
+        style={{ filter: talentUnlocked ? undefined : "brightness(0.4)" }}
       />
-      {props.talentLevel}
+      <TalentText highlight={isTalentUnlockedAndEmpty}>
+        {isTalentUnlockedAndEmpty ? "Available" : props.talentLevel}
+      </TalentText>
       {isShowingTalentSelect ? (
         <SelectTalents
           onClose={hideTalentSelect}
@@ -85,7 +80,7 @@ const TalentIcon = (props: IconProps) => {
       {isShowingTalentView && equippedTalent !== undefined ? (
         <BrowseTalents onClose={hideTalentView} talentsToShow={[equippedTalent]} />
       ) : null}
-    </div>
+    </TalentIconInner>
   );
 };
 
@@ -93,15 +88,50 @@ const Talents = () => {
   const { talents, character, addTalent } = useContext(GameContext);
   return (
     <Container>
-      <div>Talents</div>
+      <small>Talents</small>
       <TalentDisplay>
-        <TalentIcon talentLevel={2} currentLevel={character.level} talents={talents} addTalent={addTalent} />
-        <TalentIcon talentLevel={3} currentLevel={character.level} talents={talents} addTalent={addTalent} />
-        <TalentIcon talentLevel={4} currentLevel={character.level} talents={talents} addTalent={addTalent} />
-        <TalentIcon talentLevel={5} currentLevel={character.level} talents={talents} addTalent={addTalent} />
+        <TalentIcon
+          talentLevel={2}
+          currentLevel={character.level}
+          talents={talents}
+          addTalent={addTalent}
+          heroClass={character.heroClass}
+        />
+        <TalentIcon
+          talentLevel={3}
+          currentLevel={character.level}
+          talents={talents}
+          addTalent={addTalent}
+          heroClass={character.heroClass}
+        />
+        <TalentIcon
+          talentLevel={4}
+          currentLevel={character.level}
+          talents={talents}
+          addTalent={addTalent}
+          heroClass={character.heroClass}
+        />
+        <TalentIcon
+          talentLevel={5}
+          currentLevel={character.level}
+          talents={talents}
+          addTalent={addTalent}
+          heroClass={character.heroClass}
+        />
       </TalentDisplay>
     </Container>
   );
 };
 
 export default Talents;
+
+const TalentIconInner = styled.div`
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  width: 25%;
+`;
+const TalentText = styled.small<{ highlight?: boolean }>`
+  text-align: center;
+  ${(props) => (props.highlight ? `color: ${COLORS.foregroundPrimary}; font-weight: 600` : "")}
+`;

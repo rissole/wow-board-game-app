@@ -23,9 +23,9 @@ const Bolt = styled.div`
   top: -9px;
   left: 6px;
 
-  opacity: 75%;
+  opacity: 50%;
   border: 4px solid rgba(0, 0, 0, 0);
-  border-bottom: 22px solid #ffdf00;
+  border-bottom: 22px solid #fafa87;
   transform: rotateZ(-160deg);
   padding: 2px;
   width: 0;
@@ -38,10 +38,10 @@ const Bolt = styled.div`
 
   &:after {
     content: "";
-    top: -9px;
+    top: -8px;
     left: -8px;
     border: 5px solid rgba(0, 0, 0, 0);
-    border-bottom: 25px solid #ffdf00;
+    border-bottom: 25px solid #fafa87;
     transform: rotateZ(4deg);
     padding: 0;
     width: 0;
@@ -56,8 +56,7 @@ const Bolt = styled.div`
 `;
 
 const CostBoxInner = styled.div`
-  background: rgb(173, 53, 250);
-  background: linear-gradient(90deg, rgba(173, 53, 250, 1) 0%, rgba(196, 150, 217, 1) 76%);
+  background: rgb(196, 150, 217);
   color: #000000;
   width: 32px;
   height: 32px;

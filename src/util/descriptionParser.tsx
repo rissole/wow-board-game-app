@@ -1,7 +1,6 @@
 import { createElement, ReactNode } from "react";
 
 const RAW_DESCRIPTION_TAG_NAME_MAP: { [k: string]: string } = { b: "strong", i: "em" };
-const VALID_TAGS: string[] = Object.keys(RAW_DESCRIPTION_TAG_NAME_MAP);
 const TAG_REGX: RegExp = /(<.{1,2}>)/;
 
 export function rawDescriptionToReact(rawDescription: string): ReactNode[] {
